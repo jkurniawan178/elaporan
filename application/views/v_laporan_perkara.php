@@ -20,7 +20,7 @@
 							<div class="item form-group">
 								<label class="col-form-label col-md-3 col-sm-3 label-align">Jenis Laporan</label>
 								<div class="col-md-6 col-sm-6 ">
-									<select class="form-control" id="jenis_perkara">
+									<select class="form-control" id="jenis_laporan">
 										<option value="-" disabled selected>====== Silahkan Pilih Jenis Laporan ======</option>
 										<option value="lipa_1">LAPORAN KEADAAN PERKARA (LIPA.1) </option>
 										<option value="lipa_2">LAPORAN PERKARA YANG DIMOHONKAN BANDING (LIPA.2) </option>
@@ -86,11 +86,17 @@
 							</div>
 							<div class="item form-group">
 								<label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Tanggal Laporan</label>
-								<div class="col-md-3 col-sm-3 xdisplay_inputx form-group row has-feedback">
-									<input type="text" class="form-control has-feedback-left" id="single_cal2" placeholder="First Name" aria-describedby="inputSuccess2Status2">
-									<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
-									<span id="inputSuccess2Status2" class="sr-only">(success)</span>
-								</div>
+								<fieldset>
+									<div class="control-group">
+										<div class="controls">
+											<div class="col-md-11 xdisplay_inputx form-group row has-feedback">
+												<input type="text" class="form-control has-feedback-left" id="date_lapor" placeholder="First Name" aria-describedby="inputSuccess2Status2">
+												<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+												<span id="inputSuccess2Status2" class="sr-only">(success)</span>
+											</div>
+										</div>
+									</div>
+								</fieldset>
 							</div>
 							<div class="ln_solid"></div>
 							<div class="item form-group">
@@ -101,59 +107,122 @@
 						</form>
 					</div>
 				</div>
-				<div class="x_panel" id="panel-verifikasi">
-					<ul class="nav navbar-right panel_toolbox">
-						<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-						</li>
-						<li><a class="close-link"><i class="fa fa-close"></i></a>
-						</li>
-					</ul>
-					<div class="clearfix"></div>
+				<div class="d-flex justify-content-center">
+					<div class="spinner-border text-info" id="spinner" style="width: 5rem; height: 5rem; display:none;" role="status">
+						<span class="sr-only">Loading...</span>
+					</div>
+				</div>
+				<div class="x_panel" id="panel-verifikasi" style="display: none;">
+					<div class=" x_title">
+						<h2 id="preview_laporan">Preview Laporan <small>Periksa Laporan Terlebih Dahulu Sebelum anda verifikasi</small></h2>
+						<ul class="nav navbar-right panel_toolbox">
+							<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+							</li>
+						</ul>
+						<div class="clearfix"></div>
+					</div>
 					<div class="x_content">
 						<br />
 						<form id="form-verifikasi" data-parsley-validate class="form-horizontal form-label-left">
 							<div class="item form-group">
-								<label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Periode <span class="required">*</span>
-								</label>
-								<div class="col-md-6 col-sm-6">
-									<div class="row">
-										<div class="col-md-5 col-sm-5">
-											<a href="#" class="btn btn-link">Download Laporan</a>
-										</div>
-										<div class="col-md-5 col-sm-5">
-											<button type="button" class="btn btn-success">Verifikasi Laporan</button>
-										</div>
-									</div>
-								</div>
+								<a href="#" id="btn-download-laporan" class="btn btn-primary pull-right btn-sm"><i class="fa fa-download"></i> Download Laporan</a>
+								<button type="button" class="btn btn-info btn-sm" style="display: none;">Verifikasi Laporan</button>
 							</div>
 						</form>
+						<div class="ln_solid"></div>
+						<!-- <div>
+							<h2 class="text-center">PREVIEW LAPORAN YANG DIMOHONKAN BANDING</h2>
+							<h2 class="text-center">PADA PENGADILAN AGAMA TERNATE</h2>
+							<h2 class="text-center">BULAN JANUARI 2023</h2>
+							<h4 class="text-right">Lipa.2</h4>
+							<table class="table table table-bordered text-center">
+								<col>
+								<col>
+								<col>
+								<colgroup span="8"></colgroup>
+								<thead class="table-success">
+									<tr>
+										<th scope="col" rowspan="2">No</th>
+										<th scope="col" rowspan="2">Nomor Perkara PA</th>
+										<th scope="col" rowspan="2">Nama Majelis Hakim</th>
+										<th colspan="8" scope="colgroup">Tanggal</th>
+										<th scope="col" rowspan="2">Ket</th>
+									</tr>
+									<tr>
+										<th scope="col">Putusan PA</th>
+										<th scope="col">Permohonan Banding</th>
+										<th scope="col">Pemberitahuan Inzage</th>
+										<th scope="col">Pengiriman Berkas PTA</th>
+										<th scope="col">Putusan Banding</th>
+										<th scope="col">Penerimaan Kembali di PA</th>
+										<th scope="col">Pemberitahuan ke Para Pihak</th>
+										<th scope="col">Penyampaian Fotocopy Relas PBT ke PTA</th>
+									</tr>
+								</thead>
+								<tbody id="show_data"></tbody>
+							</table> -->
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+</div>
 <!-- /page content -->
 
 <!-- jQuery -->
-<script src="<?php echo base_url() ?>template/vendors/jquery/dist/jquery.min.js"></script>
+<script src="<?php echo base_url() ?>resources/jquery/dist/jquery.min.js"></script>
+
 <script type="text/javascript">
 	$(document).ready(function() {
+		const formatDate = 'DD/MM/YYYY'
+		$("#date_lapor").daterangepicker({
+				singleDatePicker: true,
+				singleClasses: "picker_1",
+				locale: {
+					format: formatDate,
+				}
+			},
+			function(start, end, label) {
+				// console.log(start.toISOString(), end.toISOString());
+			}
+		);
 		$('#btn_generate').on('click', function() {
-			var jenis_perkara = $('#jenis_perkara').val();
+			var jenis_laporan = $('#jenis_laporan').val();
 			var bulan = $('#bulan').val();
 			var tahun = $('#tahun').val();
+			var tanggal_laporan = $('#date_lapor').val();
+			$('#btn-download-laporan').attr("href", '')
+			$('#panel-verifikasi').hide();
 			$.ajax({
 				type: "POST",
 				url: "<?php echo base_url('index.php/laporan_perkara/get_lipa') ?>",
 				dataType: "JSON",
 				data: {
-					jenis_perkara: jenis_perkara,
+					jenis_laporan: jenis_laporan,
 					bulan: bulan,
-					tahun: tahun
+					tahun: tahun,
+					tanggal_laporan: tanggal_laporan
+				},
+				beforeSend: function() {
+					$('#spinner').show();
 				},
 				success: function(data) {
-					alert("success")
+					if (data.kode == "200") {
+						var jenis = jenis_laporan.replace("_", " ").toUpperCase();
+						$('#panel-verifikasi').show();
+						$('#btn-download-laporan').attr("href", data.data)
+						$('#preview_laporan').html('Preview Laporan ' + jenis + '<small>Periksa Laporan Terlebih Dahulu Sebelum anda verifikasi</small>');
+					} else if (data.kode == "201" || data.kode == '202') {
+						//create something here
+						alert(data.data)
+					}
+				},
+				error: function(xhr, status, error) {
+					//do something here
+				},
+				complete: function(xhr, status) {
+					$('#spinner').hide();
 				}
 			});
 			return false;
