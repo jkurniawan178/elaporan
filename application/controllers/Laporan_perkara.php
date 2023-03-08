@@ -55,6 +55,7 @@ class Laporan_perkara extends CI_Controller
           $data = $this->laporan_model->getLIPA2($bulan, $tahun);
           $encoded = json_encode($data);
           $hasil = $this->export_excel_lipa2($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+          $pdf = $this->export_pdf_lipa2($data);
           echo json_encode($hasil);
           break;
         default:
@@ -173,6 +174,27 @@ class Laporan_perkara extends CI_Controller
       'data' => base_url() . 'hasil/' . $namafile
     ];
     return $response;
+  }
+
+  public function export_pdf_lipa2($data)
+  {
+    $this->load->library('pdf');
+
+    $hasil['lipa2'] = $data;
+    $this->load->view('laporan/template_pdf/v_template_lipa2', $hasil);
+
+    $paper_size = 'folio';
+    $orientation = 'landscape';
+    $html = $this->output->get_output();
+
+    $pdf = new Pdf();
+    $pdf->setPaper($paper_size, $orientation);
+
+    $pdf->loadHtml($html);
+    $pdf->render();
+    $pdf_file_path = FCPATH . 'hasil/pdf2.pdf';
+    file_put_contents($pdf_file_path, $pdf->output());
+    return $pdf_file_path;
   }
 }
 

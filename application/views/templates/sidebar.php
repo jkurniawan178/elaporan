@@ -18,6 +18,7 @@
           <li><a href="<?php echo site_url() ?>laporan_perkara">Laporan Perkara</a></li>
           <li><a href="media_gallery.html">Validasi</a></li>
           <li><a href="media_gallery.html">Laporan Terkirim</a></li>
+          <li><a href="<?php echo site_url() ?>tes_laporan">Tes Laporan PDF</a></li>
         </ul>
       </li>
       <li><a><i class="fa fa-table"></i> Setting <span class="fa fa-chevron-down"></span></a>
