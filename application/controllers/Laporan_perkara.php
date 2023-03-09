@@ -28,7 +28,7 @@ class Laporan_perkara extends CI_Controller
     $this->load->helper('fungsi_helper');
     $this->load->library('Config_library');
   }
-
+  //-----------------------------------------------------------------------------------------------
   public function index()
   {
     $data['contents'] = 'v_laporan_perkara';
@@ -36,7 +36,7 @@ class Laporan_perkara extends CI_Controller
 
     $this->load->view('templates/index', $data);
   }
-
+  //-----------------------------------------------------------------------------------------------
   public function get_lipa()
   {
     $jenis_laporan = $this->input->post('jenis_laporan');
@@ -76,7 +76,7 @@ class Laporan_perkara extends CI_Controller
       //something wrong here
     }
   }
-
+  //-----------------------------------------------------------------------------------------------
   protected function export_excel_lipa2($data, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan)
   {
     if (!file_exists(FCPATH . "new_templates/" . $jenis_laporan . ".xls")) {
@@ -129,6 +129,7 @@ class Laporan_perkara extends CI_Controller
 
     $objPHPExcel->getActiveSheet()->getStyle('A9:L' . $row)->applyFromArray($styleArray);
     $objPHPExcel->getActiveSheet()->getStyle('A9:L' . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('A9:L' . $row)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
     //tanda tangan 
     $kolom_kpa = "C";
@@ -181,10 +182,10 @@ class Laporan_perkara extends CI_Controller
     ];
     return $response;
   }
-
-  public function export_excel_lipa3($data, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan)
+  //-----------------------------------------------------------------------------------------------
+  protected function export_excel_lipa3($data, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan)
   {
-    if (!file_exists(FCPATH . "templates/" . $jenis_laporan . ".xls")) {
+    if (!file_exists(FCPATH . "new_templates/" . $jenis_laporan . ".xls")) {
       $response = [
         'kode' => '202',
         'data' => 'Template Belum Tersedia'
@@ -194,7 +195,7 @@ class Laporan_perkara extends CI_Controller
     }
 
     $objReader = PHPExcel_IOFactory::createReader('Excel5');
-    $objPHPExcel = $objReader->load(FCPATH . "templates/" . $jenis_laporan . ".xls");
+    $objPHPExcel = $objReader->load(FCPATH . "new_templates/" . $jenis_laporan . ".xls");
 
     $styleArray = array(
       'borders' => array(
@@ -206,7 +207,7 @@ class Laporan_perkara extends CI_Controller
 
     $obj = json_decode($data, true);
     $no = 1;
-    $baseRow = 9;
+    $baseRow = 10;
 
     $objPHPExcel->getActiveSheet()->setCellValue('A2', "PADA " . $settingSIPP['NamaPN']);
     $objPHPExcel->getActiveSheet()->setCellValue('A3', "BULAN " . strtoupper(pilihbulan($bulan)) . " " . $tahun);
@@ -221,20 +222,23 @@ class Laporan_perkara extends CI_Controller
         ->setCellValue('E' . $row, tgl_dari_mysql($item['penerimaan_memori_kasasi']))
         ->setCellValue('F' . $row, tgl_dari_mysql($item['tidak_memenuhi_syarat']))
         ->setCellValue('G' . $row, tgl_dari_mysql($item['pengiriman_berkas_kasasi']))
-        ->setCellValue('H' . $row, tgl_dari_mysql($item['putusan_kasasi']))
+        ->setCellValue('H' . $row, tgl_dari_mysql(($item['tanggal_cabut'] === null) ? $item['putusan_kasasi'] : $item['tanggal_cabut']))
         ->setCellValue('I' . $row, tgl_dari_mysql($item['penerimaan_berkas_kasasi']))
         ->setCellValue('J' . $row, tgl_dari_mysql($item['pbt_putusan_p']) . chr(13) . tgl_dari_mysql($item['pbt_putusan_t']))
-        ->getRowDimension($row)->setRowHeight(46);
+        ->setCellValue('K' . $row, ($item['tanggal_cabut'] !== null) ? 'cabut' : null)
+        ->getRowDimension($row)->setRowHeight(18);
 
       //$objPHPExcel->getActiveSheet()->insertNewRowAfter($row); 
       $no++;
     }
 
-    $objPHPExcel->getActiveSheet()->getStyle('A9:K' . $row)->applyFromArray($styleArray);
+    $objPHPExcel->getActiveSheet()->getStyle('A10:K' . $row)->applyFromArray($styleArray);
+    $objPHPExcel->getActiveSheet()->getStyle('A10:K' . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('A10:K' . $row)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
     //tanda tangan 
-    $kolom_kpa = "C";
-    $kolom_pansek = "I";
+    $kolom_kpa = "B";
+    $kolom_pansek = "H";
     $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
 
     $KetuaPNNama = $settingSIPP['KetuaPNNama'];
@@ -253,8 +257,8 @@ class Laporan_perkara extends CI_Controller
 
     $row++;
     $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN'])))
-      ->setCellValue($kolom_pansek . $row, "Panitera")
+      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN'] . ',')))
+      ->setCellValue($kolom_pansek . $row, "Panitera,")
       ->getRowDimension($row)->setRowHeight(20);
     $row = $row + 5;
     $objPHPExcel->getActiveSheet()
