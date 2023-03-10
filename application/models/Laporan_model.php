@@ -30,11 +30,12 @@ class Laporan_model extends CI_Model
 
 
 	// ------------------------------------------------------------------------
-
+	// -----------------------------Ambil Data Lipa 1--------------------------
 	public function getLIPA1($bulan, $tahun)
 	{
 	}
 	// ------------------------------------------------------------------------
+	// -----------------------------Ambil Data Lipa 2--------------------------
 	public function getLIPA2($bulan, $tahun)
 	{
 		$sql = "
@@ -63,6 +64,7 @@ class Laporan_model extends CI_Model
 		return $hasil->result();
 	}
 	// ------------------------------------------------------------------------
+	// -----------------------------Ambil Data Lipa 3--------------------------
 	public function getLIPA3($bulan, $tahun)
 	{
 		$sql = "
@@ -87,6 +89,78 @@ class Laporan_model extends CI_Model
 				AND (kas.putusan_kasasi IS NULL OR DATE_FORMAT(kas.putusan_kasasi,'%Y-%m')>='$tahun-$bulan')
 				AND ((SELECT tanggal_cabut FROM perkara_kasasi_detil WHERE perkara_id=kas.`perkara_id` AND status_pihak_id=1 LIMIT 1) IS NULL
 				OR (SELECT DATE_FORMAT(tanggal_cabut,'%Y-%m') FROM perkara_kasasi_detil WHERE perkara_id=kas.`perkara_id` AND status_pihak_id=1 LIMIT 1) >= '$tahun-$bulan')
+				";
+		$hasil = $this->db->query($sql);
+		return $hasil->result();
+	}
+	// ------------------------------------------------------------------------
+	// -----------------------------Ambil Data Lipa 4--------------------------
+	public function getLIPA4($bulan, $tahun)
+	{
+		$sql = "
+				SELECT DISTINCT
+				pk.nomor_perkara_pn
+				,bdg.nomor_putusan_banding
+				,kas.nomor_putusan_kasasi
+				,pk.permohonan_pk 
+				,pk.pengiriman_berkas_pk
+				,pk.putusan_pk
+				,pk.penerimaan_berkas_pk
+				,(SELECT pemberitahuan_putusan_pk FROM perkara_pk_detil WHERE perkara_id=pk.perkara_id AND status_pihak_id=1 LIMIT 1) AS pbt_pk_p	
+				,(SELECT pemberitahuan_putusan_pk FROM perkara_pk_detil WHERE perkara_id=pk.perkara_id AND status_pihak_id=4 LIMIT 1) AS pbt_pk_t
+				,(SELECT tanggal_cabut FROM perkara_pk_detil WHERE perkara_id=pk.`perkara_id` AND status_pihak_id=1 LIMIT 1) AS tanggal_cabut
+				FROM perkara_pk AS pk
+				LEFT JOIN perkara_pk_detil AS petil ON petil.perkara_id = pk.perkara_id
+				LEFT JOIN perkara_banding AS bdg ON bdg.perkara_id=pk.perkara_id	
+				LEFT JOIN perkara_kasasi AS kas ON kas.perkara_id=pk.perkara_id
+				WHERE DATE_FORMAT( pk.permohonan_pk,'%Y-%m')>='1900-01' AND DATE_FORMAT( pk.permohonan_pk,'%Y-%m')<='$tahun-$bulan' 
+				AND (pk.putusan_pk IS NULL OR DATE_FORMAT(pk.putusan_pk,'%Y-%m')>='$tahun-$bulan')
+				AND ((SELECT tanggal_cabut FROM perkara_pk_detil WHERE perkara_id=pk.`perkara_id` AND status_pihak_id=1 LIMIT 1) IS NULL
+				OR (SELECT DATE_FORMAT(tanggal_cabut,'%Y-%m') FROM perkara_pk_detil WHERE perkara_id=pk.`perkara_id` AND status_pihak_id=1 LIMIT 1) >= '$tahun-$bulan')
+				";
+		$hasil = $this->db->query($sql);
+		return $hasil->result();
+	}
+	// ------------------------------------------------------------------------
+	// -----------------------------Ambil Data Lipa 5--------------------------
+	public function getLIPA5($bulan, $tahun)
+	{
+		$sql = "
+				SELECT
+				eks.nomor_register_eksekusi AS nomor_register_eksekusi,
+				eks.eksekusi_nomor_perkara AS eksekusi_nomor_perkara,
+				eks.permohonan_eksekusi AS permohonan_eksekusi,
+				eks.penetapan_teguran_eksekusi	AS penetapan_teguran_eksekusi,
+				eks.pelaksanaan_teguran_eksekusi AS pelaksanaan_teguran_eksekusi,
+				eks.penetapan_sita_eksekusi AS penetapan_sita_eksekusi,
+				eks.penetapan_perintah_eksekusi_rill AS penetapan_eksekusi_rill,
+				eks.pelaksanaan_eksekusi_rill AS pelaksanaan_eksekusi_rill,
+				eks.pelaksanaan_sita_eksekusi AS pelaksanaan_sita_eksekusi,
+				eks.penetapan_noneksekusi AS penetapan_noneksekusi, 
+				eks.alasan_eksekusi AS alasan									
+				FROM perkara_eksekusi AS eks
+				WHERE DATE_FORMAT( eks.permohonan_eksekusi,'%Y-%m')>='1900-01' AND DATE_FORMAT( eks.permohonan_eksekusi,'%Y-%m')<='2023-02' 
+				AND (eks.pelaksanaan_eksekusi_rill = '0000-00-00' OR DATE_FORMAT(eks.pelaksanaan_eksekusi_rill,'%Y-%m')>='2023-02')
+				AND (eks.penetapan_noneksekusi = '0000-00-00' OR DATE_FORMAT(eks.penetapan_noneksekusi, '%Y-%m') >= '2023-02')
+				
+				UNION
+	
+				SELECT
+				ht.eksekusi_nomor_perkara AS nomor_register_eksekusi,
+				ht.putusan_pn AS eksekusi_nomor_perkara,
+				ht.permohonan_eksekusi AS permohonan_eksekusi,
+				ht.penetapan_teguran_eksekusi	AS penetapan_teguran_eksekusi,
+				ht.pelaksanaan_teguran_eksekusi AS pelaksanaan_teguran_eksekusi,
+				ht.penetapan_sita_eksekusi AS penetapan_sita_eksekusi,
+				ht.penetapan_perintah_eksekusi_rill AS penetapan_eksekusi_rill,
+				ht.pelaksanaan_eksekusi_rill AS pelaksanaan_eksekusi_rill,
+				ht.pelaksanaan_sita_eksekusi AS pelaksanaan_sita_eksekusi,
+				ht.penetapan_noneksekusi AS penetapan_noneksekusi, 
+				ht.alasan_eksekusi AS alasan									
+				FROM perkara_eksekusi_ht AS ht
+				WHERE DATE_FORMAT( ht.permohonan_eksekusi,'%Y-%m')>='1900-01' AND DATE_FORMAT( ht.permohonan_eksekusi,'%Y-%m')<='2023-02' 
+				AND (ht.pelaksanaan_eksekusi_rill = '0000-00-00' OR DATE_FORMAT(ht.pelaksanaan_eksekusi_rill,'%Y-%m')>='2023-02')
+				AND (ht.penetapan_noneksekusi = '0000-00-00' OR DATE_FORMAT(ht.penetapan_noneksekusi, '%Y-%m') >= '2023-02')
 				";
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
