@@ -25,7 +25,6 @@ class Laporan_perkara extends CI_Controller
   {
     parent::__construct();
     $this->load->model('laporan_model');
-    $this->load->helper('fungsi_helper');
     $this->load->library('Config_library');
   }
   //-----------------------------------------------------------------------------------------------
@@ -37,6 +36,7 @@ class Laporan_perkara extends CI_Controller
     $this->load->view('templates/index', $data);
   }
   //-----------------------------------------------------------------------------------------------
+  //----------------Fungsi get laporan LIPA yang dipanggil dari view-------------------------------
   public function get_lipa()
   {
     $jenis_laporan = $this->input->post('jenis_laporan');
@@ -76,7 +76,22 @@ class Laporan_perkara extends CI_Controller
       //something wrong here
     }
   }
-  //-----------------------------------------------------------------------------------------------
+  //----------------------------------------------------------------------------------------------
+  //--------------------------------Helper Output Excel-------------------------------------------
+  protected function writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan)
+  {
+    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+    $namafile = $tahun . '_' . $bulan . '_' . $jenis_laporan . '.xlsx';
+    $file = FCPATH . 'hasil/' . $namafile;
+    $objWriter->save($file);
+    $response = [
+      'kode' => '200',
+      'data' => base_url() . 'hasil/' . $namafile
+    ];
+    return $response;
+  }
+  //----------------------------------------------------------------------------------------------
+  //--------------------------------Export Data Lipa 2 ke Excel-----------------------------------
   protected function export_excel_lipa2($data, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan)
   {
     if (!file_exists(FCPATH . "new_templates/" . $jenis_laporan . ".xls")) {
@@ -116,11 +131,11 @@ class Laporan_perkara extends CI_Controller
         ->setCellValue('E' . $row, tgl_dari_mysql($item['permohonan_banding']))
         ->setCellValue('F' . $row, tgl_dari_mysql($item['pbt_inzage_p']) . chr(13) . tgl_dari_mysql($item['pbt_inzage_t']))
         ->setCellValue('G' . $row, tgl_dari_mysql($item['pengiriman_berkas_banding']))
-        ->setCellValue('H' . $row, tgl_dari_mysql($item['putusan_banding']))
+        ->setCellValue('H' . $row, tgl_dari_mysql(($item['tanggal_cabut'] === null) ? $item['putusan_banding'] : $item['tanggal_cabut']))
         ->setCellValue('I' . $row, tgl_dari_mysql($item['penerimaan_kembali_berkas_banding']))
         ->setCellValue('J' . $row, tgl_dari_mysql($item['pbt_banding_p']) . chr(13) . tgl_dari_mysql($item['pbt_banding_t']))
         ->setCellValue('K' . $row,  '')
-        ->setCellValue('L' . $row,  '')
+        ->setCellValue('L' . $row, ($item['tanggal_cabut'] === null) ? '' : 'cabut')
         ->getRowDimension($row)->setRowHeight(46);
 
       //$objPHPExcel->getActiveSheet()->insertNewRowAfter($row); 
@@ -149,11 +164,10 @@ class Laporan_perkara extends CI_Controller
       ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
       ->getRowDimension($row)->setRowHeight(20);
 
-
     $row++;
     $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN'])))
-      ->setCellValue($kolom_pansek . $row, "Panitera")
+      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN']) . ','))
+      ->setCellValue($kolom_pansek . $row, "Panitera, ")
       ->getRowDimension($row)->setRowHeight(20);
     $row = $row + 5;
     $objPHPExcel->getActiveSheet()
@@ -172,17 +186,10 @@ class Laporan_perkara extends CI_Controller
     //tanda tangan 
     $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
 
-    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-    $namafile = $tahun . '_' . $bulan . '_' . $jenis_laporan . '.xlsx';
-    $file = FCPATH . 'hasil/' . $namafile;
-    $objWriter->save($file);
-    $response = [
-      'kode' => '200',
-      'data' => base_url() . 'hasil/' . $namafile
-    ];
-    return $response;
+    return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
   }
   //-----------------------------------------------------------------------------------------------
+  //--------------------------------Export Data Lipa 3 ke Excel-----------------------------------
   protected function export_excel_lipa3($data, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan)
   {
     if (!file_exists(FCPATH . "new_templates/" . $jenis_laporan . ".xls")) {
@@ -237,8 +244,8 @@ class Laporan_perkara extends CI_Controller
     $objPHPExcel->getActiveSheet()->getStyle('A10:K' . $row)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
     //tanda tangan 
-    $kolom_kpa = "B";
-    $kolom_pansek = "H";
+    $kolom_kpa = "C";
+    $kolom_pansek = "I";
     $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
 
     $KetuaPNNama = $settingSIPP['KetuaPNNama'];
@@ -277,15 +284,7 @@ class Laporan_perkara extends CI_Controller
     //tanda tangan 
     $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
 
-    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-    $namafile = $tahun . '_' . $bulan . '_' . $jenis_laporan . '.xlsx';
-    $file = FCPATH . 'hasil/' . $namafile;
-    $objWriter->save($file);
-    $response = [
-      'kode' => '200',
-      'data' => base_url() . 'hasil/' . $namafile
-    ];
-    return $response;
+    return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
   }
 }
 

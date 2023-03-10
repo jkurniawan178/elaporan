@@ -1,6 +1,6 @@
 <?php $this->load->view('templates/header') ?>
 
-<body class="nav-md">
+<body class="nav-md footer_fixed">
   <div class="container body">
     <div class="main_container">
       <div class="col-md-3 left_col">

@@ -16,16 +16,16 @@
       <li><a><i class="fa fa-desktop"></i> Laporan <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
           <li><a href="<?php echo site_url() ?>laporan_perkara">Laporan Perkara</a></li>
-          <li><a href="media_gallery.html">Validasi</a></li>
-          <li><a href="media_gallery.html">Laporan Terkirim</a></li>
+          <!-- <li><a href="media_gallery.html">Validasi</a></li>
+          <li><a href="media_gallery.html">Laporan Terkirim</a></li> -->
         </ul>
       </li>
-      <li><a><i class="fa fa-table"></i> Setting <span class="fa fa-chevron-down"></span></a>
+      <li><a><i class="fa fa-table"></i> Saldo Awal <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
-          <li><a href="tables.html">Database</a></li>
+          <!-- <li><a href="tables.html">Database</a></li> -->
           <li><a href="tables_dynamic.html">Pagu Anggaran DIPA</a></li>
           <li><a href="tables_dynamic.html">Saldo Awal Keuangan Perkara</a></li>
-          <li><a href="tables_dynamic.html">Lain-lain</a></li>
+          <!-- <li><a href="tables_dynamic.html">Lain-lain</a></li> -->
         </ul>
       </li>
   </div>
