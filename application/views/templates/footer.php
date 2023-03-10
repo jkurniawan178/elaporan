@@ -1,7 +1,7 @@
 <!-- footer content -->
 <footer>
   <div class="pull-right">
-    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+    Hak Cipta © Pengadilan Tinggi Agama Maluku Utara 2023
   </div>
   <div class="clearfix"></div>
 </footer>

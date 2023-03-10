@@ -28,5 +28,5 @@
   <link href="<?php echo base_url() ?>resources/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
   <!-- Custom Theme Style -->
-  <link href="<?php echo base_url() ?>resources/css/custom.min.css" rel="stylesheet">
+  <link href="<?php echo base_url() ?>resources/css/custom.css" rel="stylesheet">
 </head>

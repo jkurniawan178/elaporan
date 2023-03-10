@@ -38,22 +38,26 @@ class Laporan_model extends CI_Model
 	public function getLIPA2($bulan, $tahun)
 	{
 		$sql = "
-				SELECT 	bdg.perkara_id
+				SELECT DISTINCT
+				bdg.perkara_id
 				,perkara_penetapan.majelis_hakim_nama
 				,bdg.nomor_perkara_pn
 				, bdg.putusan_pn
 				, bdg.permohonan_banding
-				, (SELECT pemberitahuan_inzage FROM perkara_banding_detil WHERE perkara_id=bdg.perkara_id AND status_pihak_id=1 limit 1) as pbt_inzage_p
-				, (SELECT pemberitahuan_inzage FROM perkara_banding_detil WHERE perkara_id=bdg.perkara_id AND status_pihak_id=4 limit 1) as pbt_inzage_t
+				, (SELECT pemberitahuan_inzage FROM perkara_banding_detil WHERE perkara_id=bdg.perkara_id AND status_pihak_id=1 LIMIT 1) AS pbt_inzage_p
+				, (SELECT pemberitahuan_inzage FROM perkara_banding_detil WHERE perkara_id=bdg.perkara_id AND status_pihak_id=4 LIMIT 1) AS pbt_inzage_t
 				, bdg.pengiriman_berkas_banding
 				, bdg.putusan_banding
+				,(SELECT tanggal_cabut FROM perkara_banding_detil WHERE perkara_id=bdg.perkara_id AND status_pihak_id=1 LIMIT 1) AS tanggal_cabut
 				, bdg.penerimaan_kembali_berkas_banding 
-				, (SELECT pemberitahuan_putusan_banding FROM perkara_banding_detil WHERE perkara_id=bdg.perkara_id AND status_pihak_id=1 limit 1) as pbt_banding_p
-				, (SELECT pemberitahuan_putusan_banding FROM perkara_banding_detil WHERE perkara_id=bdg.perkara_id AND status_pihak_id=4 limit 1) as pbt_banding_t
-				FROM perkara_banding AS bdg
+				, (SELECT pemberitahuan_putusan_banding FROM perkara_banding_detil WHERE perkara_id=bdg.perkara_id AND status_pihak_id=1 LIMIT 1) AS pbt_banding_p
+				, (SELECT pemberitahuan_putusan_banding FROM perkara_banding_detil WHERE perkara_id=bdg.perkara_id AND status_pihak_id=4 LIMIT 1) AS pbt_banding_t
+				FROM perkara_banding AS bdg LEFT JOIN perkara_banding_detil AS batil ON bdg.`perkara_id` = batil.`perkara_id`
 				LEFT JOIN perkara_penetapan ON perkara_penetapan.perkara_id=bdg.perkara_id
-				WHERE date_format( bdg.permohonan_banding,'%Y-%m')>='1900-01' and date_format( bdg.permohonan_banding,'%Y-%m')<='$tahun-$bulan' 
-				AND (bdg.putusan_banding IS NULL OR date_format(bdg.putusan_banding,'%Y-%m')>='$tahun-$bulan')
+				WHERE DATE_FORMAT( bdg.permohonan_banding,'%Y-%m')>='1900-01' AND DATE_FORMAT( bdg.permohonan_banding,'%Y-%m')<='$tahun-$bulan' 
+				AND (bdg.putusan_banding IS NULL OR DATE_FORMAT(bdg.putusan_banding,'%Y-%m')>='$tahun-$bulan')
+				AND ((SELECT tanggal_cabut FROM perkara_banding_detil WHERE perkara_id=bdg.`perkara_id` AND status_pihak_id=1 LIMIT 1) IS NULL
+				OR (SELECT DATE_FORMAT(tanggal_cabut,'%Y-%m') FROM perkara_banding_detil WHERE perkara_id=bdg.`perkara_id` AND status_pihak_id=1 LIMIT 1) >= '$tahun-$bulan')
 				";
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
