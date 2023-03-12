@@ -47,5 +47,9 @@
 <script src="<?php echo base_url() ?>resources/moment/min/moment.min.js"></script>
 <script src="<?php echo base_url() ?>resources/bootstrap-daterangepicker/daterangepicker.js"></script>
 
+<!-- Page level plugins -->
+<script src="<?php echo base_url() ?>resources/datatables/jquery.dataTables.min.js"></script>
+<script src="<?php echo base_url() ?>resources/datatables/dataTables.bootstrap4.min.js"></script>
+
 <!-- Custom Theme Scripts -->
 <script src="<?php echo base_url() ?>resources/js/custom.js"></script>

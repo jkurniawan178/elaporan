@@ -126,7 +126,7 @@
 						<form id="form-verifikasi" data-parsley-validate class="form-horizontal form-label-left">
 							<div class="item form-group">
 								<a href="#" id="btn-download-laporan" class="btn btn-primary pull-right btn-sm"><i class="fa fa-download"></i> Download Laporan</a>
-								<button type="button" class="btn btn-info btn-sm" style="display: none;">Verifikasi Laporan</button>
+								<!-- <button type="button" class="btn btn-info btn-sm" style="display: none;">Verifikasi Laporan</button> -->
 							</div>
 						</form>
 						<div class="ln_solid"></div>
