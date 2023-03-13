@@ -48,8 +48,8 @@ class Sidkel_model extends CI_Model
             COALESCE(SUM(r2.realisasi), 0) AS realisasi_sampai_bulan_lalu,
             r.realisasi,
             COALESCE(SUM(r2.realisasi), 0) + r.realisasi AS jumlah_realisasi,
-            p.pagu_awal - (COALESCE(SUM(r2.realisasi), 0) + r.realisasi) AS saldo,
-            r.jml_kegiatan, r.jml_perkara
+            IF(p.pagu_revisi = 0, p.pagu_awal, p.pagu_revisi) - (COALESCE(SUM(r2.realisasi), 0) + r.realisasi) AS saldo,
+            r.jml_kegiatan, r.jml_perkara, r.keterangan
             FROM elaporan_lipa_14 r
             INNER JOIN elaporan_pagu_14 p ON r.tahun = p.tahun_anggaran
             LEFT JOIN elaporan_lipa_14 r2 ON r.bulan > r2.bulan AND r2.tahun = r.tahun
@@ -59,14 +59,15 @@ class Sidkel_model extends CI_Model
     return $hasil->result();
   }
 
-  public function getby_periode($bulan, $tahun)
+  public function getLIPA14($bulan, $tahun)
   {
     $db2 = $this->load->database('dbelaporan', true);
-    $sql = "SELECT r.id, r.bulan, r.tahun, IF(p.pagu_revisi = 0, p.pagu_awal, p.pagu_revisi) AS pagu_awal,
+    $sql = "SELECT r.id, r.bulan, r.tahun,p.pagu_awal, p.pagu_revisi,
             COALESCE(SUM(r2.realisasi), 0) AS realisasi_sampai_bulan_lalu,
             r.realisasi,
             COALESCE(SUM(r2.realisasi), 0) + r.realisasi AS jumlah_realisasi,
-            p.pagu_awal - (COALESCE(SUM(r2.realisasi), 0) + r.realisasi) AS saldo
+            IF(p.pagu_revisi = 0, p.pagu_awal, p.pagu_revisi) - (COALESCE(SUM(r2.realisasi), 0) + r.realisasi) AS saldo,
+            r.jml_kegiatan, r.jml_perkara, r.keterangan
             FROM elaporan_lipa_14 r
             INNER JOIN elaporan_pagu_14 p ON r.tahun = p.tahun_anggaran
             LEFT JOIN elaporan_lipa_14 r2 ON r.bulan > r2.bulan AND r2.tahun = r.tahun
