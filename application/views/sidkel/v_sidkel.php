@@ -36,9 +36,9 @@
                             </div>
 
                             <div class="ml-auto">
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#add-modal">
+                                <a href="<?php echo site_url() ?>pagu_14" type="button" class="btn btn-danger">
                                     Setting Pagu Awal
-                                </button>
+                                </a>
                                 <a href="<?php echo site_url() ?>laporan_perkara" type="button" class="btn btn-outline-secondary">
                                     <i class="fa fa-print"></i>
                                     Cetak
@@ -49,7 +49,54 @@
                     </div>
                     <div class="x_content">
                         <br />
-
+                        <table id="datatable-responsive" class=" text-center table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th class="align-middle" scope="col">No</th>
+                                    <th class="align-middle" scope="col">Periode</th>
+                                    <th class="align-middle" scope="col">Pagu Awal</th>
+                                    <th class="align-middle" scope="col">Pagu Revisi</th>
+                                    <th class="align-middle" scope="col">Realisasi s/d Bulan Lalu</th>
+                                    <th class="align-middle" scope="col">Realisasi Bulan Ini</th>
+                                    <th class="align-middle" scope="col">Jumlah</th>
+                                    <th class="align-middle" scope="col">Sisa</th>
+                                    <th class="align-middle" scope="col">Jumlah Kegiatan</th>
+                                    <th class="align-middle" scope="col">Jumlah Perkara</th>
+                                    <th class="align-middle" scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $no = 1;
+                                foreach ($sidkel as $value) { ?>
+                                    <tr>
+                                        <td><?= $no++ ?></td>
+                                        <td><?= pilihbulan($value->bulan) . ' ' . $value->tahun ?></td>
+                                        <td><?= number_format($value->pagu_awal, 0, ',', '.') ?></td>
+                                        <td><?= number_format($value->pagu_revisi, 0, ',', '.') ?></td>
+                                        <td><?= number_format($value->realisasi_sampai_bulan_lalu, 0, ',', '.') ?></td>
+                                        <td><?= number_format($value->realisasi, 0, ',', '.') ?></td>
+                                        <td><?= number_format($value->jumlah_realisasi, 0, ',', '.') ?></td>
+                                        <td><?= number_format($value->saldo, 0, ',', '.') ?></td>
+                                        <td><?= number_format($value->jml_kegiatan, 0, ',', '.') ?></td>
+                                        <td><?= number_format($value->jml_perkara, 0, ',', '.') ?></td>
+                                        <td>
+                                            <!-- <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update">
+                                                            <span class="icon text-white-50">
+                                                                <i class="fa fa-edit"></i>
+                                                            </span>
+                                                            <span class="text">Edit</span>
+                                                        </a> -->
+                                            <!-- <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<%= jabatan[i].id %>">
+                                                            <span class="icon text-white-50">
+                                                                <i class="fas fa-trash"></i>
+                                                            </span>
+                                                            <span class="text">Hapus</span>
+                                                        </a> -->
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="d-flex justify-content-center">
@@ -68,59 +115,68 @@
 <!-- jQuery -->
 <script src="<?php echo base_url() ?>resources/jquery/dist/jquery.min.js"></script>
 
-<!-- <script type="text/javascript">
+<script type="text/javascript">
     $(document).ready(function() {
-        const formatDate = 'DD/MM/YYYY'
-        $("#date_lapor").daterangepicker({
-                singleDatePicker: true,
-                singleClasses: "picker_1",
-                locale: {
-                    format: formatDate,
-                }
-            },
-            function(start, end, label) {
-                // console.log(start.toISOString(), end.toISOString());
-            }
-        );
-        $('#btn_generate').on('click', function() {
-            var jenis_laporan = $('#jenis_laporan').val();
-            var bulan = $('#bulan').val();
-            var tahun = $('#tahun').val();
-            var tanggal_laporan = $('#date_lapor').val();
-            $('#btn-download-laporan').attr("href", '')
-            $('#panel-verifikasi').hide();
+        $('#btn_reset').on('click', function() {
+            $('#form_hide').hide();
+            $('#btn_simpan').prop('disabled', true);
+            $('#btn_cek').show();
+            $('#tahun_modal').prop('disabled', false);
+            $('#bulan_modal').prop('disabled', false);
+            $('#pagu_awal').val('');
+        })
+        // set the initial value of hidden input field
+        var selected_month = $('#bulan_modal').find(':selected').val();
+        $('#bulan_hidden').val(selected_month);
+
+        var selected_year = $('#tahun_modal').find(':selected').val();
+        $('#tahun_hidden').val(selected_year);
+
+        // Set the value of the hidden input field when the selected option changes
+        $('#bulan_modal').on('change', function() {
+            var selected_option = $(this).find(':selected').val();
+            $('#bulan_hidden').val(selected_option);
+        });
+
+        $('#tahun_modal').on('change', function() {
+            var selected_option = $(this).find(':selected').val();
+            $('#tahun_hidden').val(selected_option);
+        });
+
+        $('#btn_cek').on('click', function() {
+            var tahun = $('#tahun_modal').val();
+            var bulan = $('#bulan_modal').val();
+            // $('#panel-verifikasi').hide();
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url('index.php/laporan_perkara/get_lipa') ?>",
+                url: "<?php echo base_url('index.php/sidkel/cek_pagu') ?>",
                 dataType: "JSON",
                 data: {
-                    jenis_laporan: jenis_laporan,
-                    bulan: bulan,
                     tahun: tahun,
-                    tanggal_laporan: tanggal_laporan
+                    bulan,
+                    bulan
                 },
                 beforeSend: function() {
-                    $('#spinner').show();
+                    // $('#spinner').show();
                 },
                 success: function(data) {
                     if (data.kode == "200") {
-                        var jenis = jenis_laporan.replace("_", " ").toUpperCase();
-                        $('#panel-verifikasi').show();
-                        $('#btn-download-laporan').attr("href", data.data)
-                        $('#preview_laporan').html('Preview Laporan ' + jenis + '<small>Periksa Laporan Terlebih Dahulu Sebelum anda verifikasi</small>');
-                    } else if (data.kode == "201" || data.kode == '202') {
+                        $('#form_hide').show();
+                        $('#btn_simpan').prop('disabled', false);
+                        $('#btn_cek').hide();
+                        $('#tahun_modal').prop('disabled', true);
+                        $('#bulan_modal').prop('disabled', true);
+                        $('#pagu_awal').val(data.data);
+                    } else if (data.kode == "201") {
                         //create something here
                         alert(data.data)
                     }
                 },
-                error: function(xhr, status, error) {
-                    //do something here
-                },
                 complete: function(xhr, status) {
-                    $('#spinner').hide();
+                    // $('#spinner').hide();
                 }
             });
             return false;
         });
     })
-</script> -->
+</script>

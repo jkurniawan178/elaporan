@@ -1,4 +1,9 @@
 <!-- page content -->
+<?php if ($this->session->flashdata('alert')) : ?>
+    <div class="alert alert-danger" role="alert">
+        <?php echo $this->session->flashdata('alert'); ?>
+    </div>
+<?php endif; ?>
 <div class="right_col" role="main">
     <div class="">
         <div class="page-title">
@@ -44,18 +49,18 @@
                                                 <tr>
                                                     <td><?= $no++ ?></td>
                                                     <td><?= $value->tahun_anggaran ?></td>
-                                                    <td><?= $value->pagu_awal ?></td>
-                                                    <td><?= $value->pagu_revisi ?></td>
+                                                    <td><?= number_format($value->pagu_awal, 0, ',', '.') ?></td>
+                                                    <td><?= number_format($value->pagu_revisi, 0, ',', '.') ?></td>
                                                     <td><?= $value->target_lokasi ?></td>
                                                     <td><?= $value->target_kegiatan ?></td>
                                                     <td><?= $value->target_perkara ?></td>
                                                     <td>
-                                                        <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update">
+                                                        <!-- <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update">
                                                             <span class="icon text-white-50">
                                                                 <i class="fa fa-edit"></i>
                                                             </span>
                                                             <span class="text">Edit</span>
-                                                        </a>
+                                                        </a> -->
                                                         <!-- <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<%= jabatan[i].id %>">
                                                             <span class="icon text-white-50">
                                                                 <i class="fas fa-trash"></i>
@@ -86,60 +91,3 @@
 
 <!-- jQuery -->
 <script src="<?php echo base_url() ?>resources/jquery/dist/jquery.min.js"></script>
-
-<!-- <script type="text/javascript">
-    $(document).ready(function() {
-        const formatDate = 'DD/MM/YYYY'
-        $("#date_lapor").daterangepicker({
-                singleDatePicker: true,
-                singleClasses: "picker_1",
-                locale: {
-                    format: formatDate,
-                }
-            },
-            function(start, end, label) {
-                // console.log(start.toISOString(), end.toISOString());
-            }
-        );
-        $('#btn_generate').on('click', function() {
-            var jenis_laporan = $('#jenis_laporan').val();
-            var bulan = $('#bulan').val();
-            var tahun = $('#tahun').val();
-            var tanggal_laporan = $('#date_lapor').val();
-            $('#btn-download-laporan').attr("href", '')
-            $('#panel-verifikasi').hide();
-            $.ajax({
-                type: "POST",
-                url: "<?php echo base_url('index.php/laporan_perkara/get_lipa') ?>",
-                dataType: "JSON",
-                data: {
-                    jenis_laporan: jenis_laporan,
-                    bulan: bulan,
-                    tahun: tahun,
-                    tanggal_laporan: tanggal_laporan
-                },
-                beforeSend: function() {
-                    $('#spinner').show();
-                },
-                success: function(data) {
-                    if (data.kode == "200") {
-                        var jenis = jenis_laporan.replace("_", " ").toUpperCase();
-                        $('#panel-verifikasi').show();
-                        $('#btn-download-laporan').attr("href", data.data)
-                        $('#preview_laporan').html('Preview Laporan ' + jenis + '<small>Periksa Laporan Terlebih Dahulu Sebelum anda verifikasi</small>');
-                    } else if (data.kode == "201" || data.kode == '202') {
-                        //create something here
-                        alert(data.data)
-                    }
-                },
-                error: function(xhr, status, error) {
-                    //do something here
-                },
-                complete: function(xhr, status) {
-                    $('#spinner').hide();
-                }
-            });
-            return false;
-        });
-    })
-</script> -->
