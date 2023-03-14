@@ -76,6 +76,13 @@ class Laporan_perkara extends CI_Controller
           $hasil = $this->export_excel_lipa5($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
           echo json_encode($hasil);
           break;
+        case 'lipa_6':
+          $data = $this->laporan_model->getLIPA6($bulan, $tahun);
+          // echo json_encode($data);
+          $encoded = json_encode($data);
+          $hasil = $this->export_excel_lipa6($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+          echo json_encode($hasil);
+          break;
         case 'lipa_14':
           $data = $this->sidkel_model->getLIPA14($bulan, $tahun);
           $encoded = json_encode($data);
@@ -487,6 +494,115 @@ class Laporan_perkara extends CI_Controller
     //tanda tangan 
     $kolom_kpa = "C";
     $kolom_pansek = "J";
+    $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
+
+    $KetuaPNNama = $settingSIPP['KetuaPNNama'];
+    $PanSekNama = $settingSIPP['PanSekNama'];
+    $KetuaPNNIP = $settingSIPP['KetuaPNNIP'];
+    $PanSekNIP = $settingSIPP['PanSekNIP'];
+    $row = $row + 3;
+    $row_awal_ttd = $row;
+    //fungsi tanda tangan
+
+    $objPHPExcel->getActiveSheet()
+      ->setCellValue($kolom_kpa . $row, "Mengetahui")
+      ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
+      ->getRowDimension($row)->setRowHeight(20);
+
+
+    $row++;
+    $objPHPExcel->getActiveSheet()
+      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN'] . ',')))
+      ->setCellValue($kolom_pansek . $row, "Panitera,")
+      ->getRowDimension($row)->setRowHeight(20);
+    $row = $row + 5;
+    $objPHPExcel->getActiveSheet()
+      ->setCellValue($kolom_kpa . $row, $KetuaPNNama)
+      ->setCellValue($kolom_pansek . $row, $PanSekNama)
+      ->getRowDimension($row)->setRowHeight(20);
+    $row++;
+    $objPHPExcel->getActiveSheet()
+      ->setCellValue($kolom_kpa . $row, "NIP. " . $KetuaPNNIP)
+      ->setCellValue($kolom_pansek . $row, "NIP. " . $PanSekNIP)
+      ->getRowDimension($row)->setRowHeight(20);
+    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setWrapText(false);
+    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+
+    //fungsi tanda tangan 
+    //tanda tangan 
+    $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
+
+    return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
+  }
+  //-----------------------------------------------------------------------------------------------
+  //--------------------------------Export Data Lipa 6 ke Excel------------------------------------
+  protected function export_excel_lipa6($data, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan)
+  {
+    if (!file_exists(FCPATH . "new_templates/" . $jenis_laporan . ".xls")) {
+      $response = [
+        'kode' => '202',
+        'data' => 'Template Belum Tersedia'
+      ];
+      return $response;
+      exit;
+    }
+
+    $objReader = PHPExcel_IOFactory::createReader('Excel5');
+    $objPHPExcel = $objReader->load(FCPATH . "new_templates/" . $jenis_laporan . ".xls");
+
+    $styleArray = array(
+      'borders' => array(
+        'allborders' => array(
+          'style' => PHPExcel_Style_Border::BORDER_THIN,
+        ),
+        'font' => array(
+          'name' => 'Arial Narrow'
+        ),
+        'alignment' => array(
+          'wrap' => true,
+        )
+      ),
+    );
+
+    $obj = json_decode($data, true);
+    $no = 1;
+    $baseRow = 9;
+
+    $objPHPExcel->getActiveSheet()->setCellValue('A2', "PADA " . $settingSIPP['NamaPN']);
+    $objPHPExcel->getActiveSheet()->setCellValue('A3', "BULAN " . strtoupper(pilihbulan($bulan)) . " " . $tahun);
+    foreach ($obj as $item) {
+      $row = $baseRow + $no;
+
+      $objPHPExcel->getActiveSheet()
+        ->setCellValue('A' . $row, $no)
+        ->setCellValue('B' . $row, $item['nama_gelar'])
+        ->setCellValue('C' . $row, $item['sisa_lalu_G'])
+        ->setCellValue('D' . $row, $item['sisa_lalu_P'])
+        ->setCellValue('E' . $row, $item['Diterima_G'])
+        ->setCellValue('F' . $row, $item['Diterima_P'])
+        ->setCellValue('G' . $row, intval($item['sisa_lalu_G']) + intval($item['Diterima_G']))
+        ->setCellValue('H' . $row, intval($item['sisa_lalu_P']) + intval($item['Diterima_P']))
+        ->setCellValue('I' . $row, $item['putus_G'])
+        ->setCellValue('J' . $row, $item['putus_P'])
+        ->setCellValue('K' . $row, intval($item['sisa_lalu_G']) + intval($item['Diterima_G']) - intval($item['putus_G']))
+        ->setCellValue('L' . $row, intval($item['sisa_lalu_P']) + intval($item['Diterima_P']) - intval($item['putus_P']))
+        ->setCellValue('M' . $row, $item['minut_G'])
+        ->setCellValue('N' . $row, $item['minut_P'])
+        ->setCellValue('O' . $row, intval($item['putus_G']) - intval($item['minut_G']))
+        ->setCellValue('P' . $row, intval($item['putus_P']) - intval($item['minut_P']))
+        ->getRowDimension($row)->setRowHeight(25);
+
+      //$objPHPExcel->getActiveSheet()->insertNewRowAfter($row); 
+      $no++;
+    }
+
+    $objPHPExcel->getActiveSheet()->getStyle('A10:P' . $row)->applyFromArray($styleArray);
+    $objPHPExcel->getActiveSheet()->getStyle('A10:P' . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('A10:P' . $row)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+    //tanda tangan 
+    $kolom_kpa = "C";
+    $kolom_pansek = "M";
     $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
 
     $KetuaPNNama = $settingSIPP['KetuaPNNama'];

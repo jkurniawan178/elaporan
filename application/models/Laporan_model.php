@@ -122,6 +122,7 @@ class Laporan_model extends CI_Model
 	// -----------------------------Ambil Data Lipa 5--------------------------
 	public function getLIPA5($bulan, $tahun)
 	{
+		$periode = $tahun . '-' . $bulan;
 		$sql = "SELECT
 				eks.nomor_register_eksekusi AS nomor_register_eksekusi,
 				eks.eksekusi_nomor_perkara AS eksekusi_nomor_perkara,
@@ -135,9 +136,9 @@ class Laporan_model extends CI_Model
 				eks.penetapan_noneksekusi AS penetapan_noneksekusi, 
 				eks.alasan_eksekusi AS alasan									
 				FROM perkara_eksekusi AS eks
-				WHERE DATE_FORMAT( eks.permohonan_eksekusi,'%Y-%m')>='1900-01' AND DATE_FORMAT( eks.permohonan_eksekusi,'%Y-%m')<='2023-02' 
-				AND (eks.pelaksanaan_eksekusi_rill = '0000-00-00' OR DATE_FORMAT(eks.pelaksanaan_eksekusi_rill,'%Y-%m')>='2023-02')
-				AND (eks.penetapan_noneksekusi = '0000-00-00' OR DATE_FORMAT(eks.penetapan_noneksekusi, '%Y-%m') >= '2023-02')
+				WHERE DATE_FORMAT( eks.permohonan_eksekusi,'%Y-%m')>='1900-01' AND DATE_FORMAT( eks.permohonan_eksekusi,'%Y-%m')<='$periode' 
+				AND (eks.pelaksanaan_eksekusi_rill = '0000-00-00' OR DATE_FORMAT(eks.pelaksanaan_eksekusi_rill,'%Y-%m')>='$periode')
+				AND (eks.penetapan_noneksekusi = '0000-00-00' OR DATE_FORMAT(eks.penetapan_noneksekusi, '%Y-%m') >= '$periode')
 				
 				UNION
 	
@@ -154,10 +155,58 @@ class Laporan_model extends CI_Model
 				ht.penetapan_noneksekusi AS penetapan_noneksekusi, 
 				ht.alasan_eksekusi AS alasan									
 				FROM perkara_eksekusi_ht AS ht
-				WHERE DATE_FORMAT( ht.permohonan_eksekusi,'%Y-%m')>='1900-01' AND DATE_FORMAT( ht.permohonan_eksekusi,'%Y-%m')<='2023-02' 
-				AND (ht.pelaksanaan_eksekusi_rill = '0000-00-00' OR DATE_FORMAT(ht.pelaksanaan_eksekusi_rill,'%Y-%m')>='2023-02')
-				AND (ht.penetapan_noneksekusi = '0000-00-00' OR DATE_FORMAT(ht.penetapan_noneksekusi, '%Y-%m') >= '2023-02')
+				WHERE DATE_FORMAT( ht.permohonan_eksekusi,'%Y-%m')>='1900-01' AND DATE_FORMAT( ht.permohonan_eksekusi,'%Y-%m')<='$periode' 
+				AND (ht.pelaksanaan_eksekusi_rill = '0000-00-00' OR DATE_FORMAT(ht.pelaksanaan_eksekusi_rill,'%Y-%m')>='$periode')
+				AND (ht.penetapan_noneksekusi = '0000-00-00' OR DATE_FORMAT(ht.penetapan_noneksekusi, '%Y-%m') >= '$periode')
 				";
+		$hasil = $this->db->query($sql);
+		return $hasil->result();
+	}
+	// ------------------------------------------------------------------------
+	// -	----------------------------Ambil Data Lipa 6--------------------------
+	public function getLIPA6($bulan, $tahun)
+	{
+		$periode = $tahun . '-' . $bulan;
+		$sql = "SELECT D.id,D.nama_gelar,	
+		(SELECT COUNT(A.nomor_perkara) FROM perkara A LEFT JOIN perkara_putusan B USING (perkara_id)
+			LEFT JOIN perkara_penetapan C USING(perkara_id)
+			WHERE SUBSTRING_INDEX(C.majelis_hakim_id,',','1')= D.id
+			AND DATE_FORMAT(A.tanggal_pendaftaran,'%Y-%m')< '$periode' 
+			AND (B.tanggal_putusan IS NULL OR DATE_FORMAT(B.tanggal_putusan,'%Y-%m') >= '$periode') 
+			AND A.alur_perkara_id = 15
+			ORDER BY C.majelis_hakim_text ASC) AS sisa_lalu_G,
+		(SELECT COUNT(A.nomor_perkara) FROM perkara A LEFT JOIN perkara_putusan B USING (perkara_id)
+			LEFT JOIN perkara_penetapan C USING(perkara_id)
+			WHERE SUBSTRING_INDEX(C.majelis_hakim_id,',','1')= D.id
+			AND DATE_FORMAT(A.tanggal_pendaftaran,'%Y-%m')< '$periode'
+			AND (B.tanggal_putusan IS NULL OR DATE_FORMAT(B.tanggal_putusan,'%Y-%m') >= '$periode') 
+			AND A.alur_perkara_id = 16
+			ORDER BY C.majelis_hakim_text ASC) AS sisa_lalu_P,
+		(SELECT COUNT(A.nomor_perkara) FROM perkara A LEFT JOIN perkara_penetapan B USING(perkara_id)
+			WHERE SUBSTRING_INDEX(B.majelis_hakim_id,',','1')= D.id AND
+			DATE_FORMAT(tanggal_pendaftaran,'%Y-%m') >= '$periode' AND alur_perkara_id = 15) 
+			AS Diterima_G,
+		(SELECT COUNT(A.nomor_perkara) FROM perkara A LEFT JOIN perkara_penetapan B USING(perkara_id)
+			WHERE SUBSTRING_INDEX(B.majelis_hakim_id,',','1')= D.id AND
+			DATE_FORMAT(tanggal_pendaftaran,'%Y-%m') >= '$periode' AND alur_perkara_id = 16) 
+			AS Diterima_P,
+		(SELECT COUNT(A.nomor_perkara) FROM perkara A LEFT JOIN perkara_putusan B USING(perkara_id)
+			LEFT JOIN perkara_penetapan C USING(perkara_id)
+			WHERE SUBSTRING_INDEX(C.majelis_hakim_id,',','1')= D.id AND DATE_FORMAT(B.tanggal_putusan,'%Y-%m')='$periode' 
+			AND alur_perkara_id = 15) AS putus_G,
+		(SELECT COUNT(A.nomor_perkara) FROM perkara A LEFT JOIN perkara_putusan B USING(perkara_id)
+			LEFT JOIN perkara_penetapan C USING(perkara_id)
+			WHERE SUBSTRING_INDEX(C.majelis_hakim_id,',','1')= D.id AND DATE_FORMAT(B.tanggal_putusan,'%Y-%m')='$periode' 
+			AND alur_perkara_id = 16) AS putus_P,
+		(SELECT COUNT(A.nomor_perkara) FROM perkara A LEFT JOIN perkara_putusan B USING(perkara_id)
+			LEFT JOIN perkara_penetapan USING(perkara_id)
+			WHERE SUBSTRING_INDEX(majelis_hakim_id,',','1')=D.id AND DATE_FORMAT(B.tanggal_minutasi,'%Y-%m')='$periode'
+			AND alur_perkara_id = 15) AS minut_G,
+		(SELECT COUNT(A.nomor_perkara) FROM perkara A LEFT JOIN perkara_putusan B USING(perkara_id)
+			LEFT JOIN perkara_penetapan USING(perkara_id)
+			WHERE SUBSTRING_INDEX(majelis_hakim_id,',','1')=D.id AND DATE_FORMAT(B.tanggal_minutasi,'%Y-%m')='$periode'
+			AND alur_perkara_id = 16) AS minut_P
+		FROM hakim_pn D WHERE aktif='Y' ORDER BY nama_gelar";
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
 	}
