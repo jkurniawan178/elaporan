@@ -46,8 +46,8 @@
 										<option value="lipa_20">LAPORAN TINGKAT PENYELESAIAN PERKARA (LIPA.20)</option>
 										<option value="lipa_21">LAPORAN VERZET TERHADAP PUTUSAN VERSTEK (LIPA.21)</option>
 										<option value="lipa_22">LAPORAN PENANGANAN BANTUAN PANGGILAN ATAU PEMBERITAHUAN (LIPA.22)</option>
-										<option value="lipa_23">LAPORAN (LIPA.23)</option>
-										<option value="lipa_24">LAPORAN (LIPA.24)</option>
+										<option value="lipa_23">LAPORAN PERKARA E-COURT (LIPA.23)</option>
+										<option value="lipa_24">LAPORAN PERSIDANGAN ELEKTRONIK (LIPA.24)</option>
 									</select>
 								</div>
 							</div>

@@ -34,6 +34,7 @@ class Sidkel extends CI_Controller
     $data['contents'] = 'sidkel/v_sidkel';
     $data['nm_bulan'] = $this->config_library->get_nm_bulan();
     $data['sidkel'] = $this->sidkel_model->get_All();
+    $data['settings'] = $this->config_library->get_config_SIPP();
     $this->load->view('templates/index', $data);
   }
 

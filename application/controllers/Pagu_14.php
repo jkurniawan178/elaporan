@@ -25,12 +25,14 @@ class Pagu_14 extends CI_Controller
   {
     parent::__construct();
     $this->load->model('pagu_14_model');
+    $this->load->library('config_library');
   }
 
   public function index()
   {
     $data['contents'] = 'pagu_14/v_pagu_14';
     $data['pagu_14'] = $this->pagu_14_model->get_pagu_14_all();
+    $data['settings'] = $this->config_library->get_config_SIPP();
     $this->load->view('templates/index', $data);
   }
 

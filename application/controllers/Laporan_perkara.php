@@ -33,7 +33,7 @@ class Laporan_perkara extends CI_Controller
   {
     $data['contents'] = 'v_laporan_perkara';
     $data['nm_bulan'] = $this->config_library->get_nm_bulan();
-
+    $data['settings'] = $this->config_library->get_config_SIPP();
     $this->load->view('templates/index', $data);
   }
   //-----------------------------------------------------------------------------------------------
