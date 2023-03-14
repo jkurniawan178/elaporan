@@ -26,13 +26,14 @@ class Laporan_perkara extends CI_Controller
     parent::__construct();
     $this->load->model('laporan_model');
     $this->load->library('Config_library');
+    $this->load->model('sidkel_model');
   }
   //-----------------------------------------------------------------------------------------------
   public function index()
   {
     $data['contents'] = 'v_laporan_perkara';
     $data['nm_bulan'] = $this->config_library->get_nm_bulan();
-
+    $data['settings'] = $this->config_library->get_config_SIPP();
     $this->load->view('templates/index', $data);
   }
   //-----------------------------------------------------------------------------------------------
@@ -73,6 +74,12 @@ class Laporan_perkara extends CI_Controller
           $data = $this->laporan_model->getLIPA5($bulan, $tahun);
           $encoded = json_encode($data);
           $hasil = $this->export_excel_lipa5($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+          echo json_encode($hasil);
+          break;
+        case 'lipa_14':
+          $data = $this->sidkel_model->getLIPA14($bulan, $tahun);
+          $encoded = json_encode($data);
+          $hasil = $this->export_excel_lipa14($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
           echo json_encode($hasil);
           break;
         default:
@@ -480,6 +487,110 @@ class Laporan_perkara extends CI_Controller
     //tanda tangan 
     $kolom_kpa = "C";
     $kolom_pansek = "J";
+    $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
+
+    $KetuaPNNama = $settingSIPP['KetuaPNNama'];
+    $PanSekNama = $settingSIPP['PanSekNama'];
+    $KetuaPNNIP = $settingSIPP['KetuaPNNIP'];
+    $PanSekNIP = $settingSIPP['PanSekNIP'];
+    $row = $row + 3;
+    $row_awal_ttd = $row;
+    //fungsi tanda tangan
+
+    $objPHPExcel->getActiveSheet()
+      ->setCellValue($kolom_kpa . $row, "Mengetahui")
+      ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
+      ->getRowDimension($row)->setRowHeight(20);
+
+
+    $row++;
+    $objPHPExcel->getActiveSheet()
+      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN'] . ',')))
+      ->setCellValue($kolom_pansek . $row, "Panitera,")
+      ->getRowDimension($row)->setRowHeight(20);
+    $row = $row + 5;
+    $objPHPExcel->getActiveSheet()
+      ->setCellValue($kolom_kpa . $row, $KetuaPNNama)
+      ->setCellValue($kolom_pansek . $row, $PanSekNama)
+      ->getRowDimension($row)->setRowHeight(20);
+    $row++;
+    $objPHPExcel->getActiveSheet()
+      ->setCellValue($kolom_kpa . $row, "NIP. " . $KetuaPNNIP)
+      ->setCellValue($kolom_pansek . $row, "NIP. " . $PanSekNIP)
+      ->getRowDimension($row)->setRowHeight(20);
+    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setWrapText(false);
+    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+
+    //fungsi tanda tangan 
+    //tanda tangan 
+    $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
+
+    return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
+  }
+  //-----------------------------------------------------------------------------------------------
+  //--------------------------------Export Data Lipa 14 ke Excel------------------------------------
+  protected function export_excel_lipa14($data, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan)
+  {
+    if (!file_exists(FCPATH . "new_templates/" . $jenis_laporan . ".xls")) {
+      $response = [
+        'kode' => '202',
+        'data' => 'Template Belum Tersedia'
+      ];
+      return $response;
+      exit;
+    }
+
+    $objReader = PHPExcel_IOFactory::createReader('Excel5');
+    $objPHPExcel = $objReader->load(FCPATH . "new_templates/" . $jenis_laporan . ".xls");
+
+    $styleArray = array(
+      'borders' => array(
+        'allborders' => array(
+          'style' => PHPExcel_Style_Border::BORDER_THIN,
+        ),
+        'font' => array(
+          'name' => 'Arial Narrow'
+        ),
+        'alignment' => array(
+          'wrap' => true,
+        )
+      ),
+    );
+
+    $obj = json_decode($data, true);
+    $no = 1;
+    $baseRow = 9;
+
+    $objPHPExcel->getActiveSheet()->setCellValue('A2', "PADA " . $settingSIPP['NamaPN']);
+    $objPHPExcel->getActiveSheet()->setCellValue('A3', "BULAN " . strtoupper(pilihbulan($bulan)) . " " . $tahun);
+    foreach ($obj as $item) {
+      $row = $baseRow + $no;
+
+      $objPHPExcel->getActiveSheet()
+        ->setCellValue('A' . $row, $no)
+        ->setCellValue('B' . $row, $item['pagu_awal'])
+        ->setCellValue('C' . $row, $item['pagu_revisi'])
+        ->setCellValue('D' . $row, $item['realisasi_sampai_bulan_lalu'])
+        ->setCellValue('E' . $row, $item['realisasi'])
+        ->setCellValue('F' . $row, $item['jumlah_realisasi'])
+        ->setCellValue('G' . $row, $item['saldo'])
+        ->setCellValue('H' . $row, $item['jml_kegiatan'])
+        ->setCellValue('I' . $row, $item['jml_perkara'])
+        ->setCellValue('J' . $row, $item['keterangan'])
+        ->getRowDimension($row)->setRowHeight(25);
+
+      //$objPHPExcel->getActiveSheet()->insertNewRowAfter($row); 
+      $no++;
+    }
+
+    $objPHPExcel->getActiveSheet()->getStyle('A10:J' . $row)->applyFromArray($styleArray);
+    $objPHPExcel->getActiveSheet()->getStyle('A10:J' . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('A10:J' . $row)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('B10:G' . $row)->getNumberFormat()->setFormatCode('_(Rp* #,##0_);_(Rp* (#,##0);_(Rp* "-"??_);_(@_)', true);
+
+    //tanda tangan 
+    $kolom_kpa = "C";
+    $kolom_pansek = "H";
     $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
 
     $KetuaPNNama = $settingSIPP['KetuaPNNama'];

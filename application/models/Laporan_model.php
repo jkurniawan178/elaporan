@@ -38,8 +38,7 @@ class Laporan_model extends CI_Model
 	// -----------------------------Ambil Data Lipa 2--------------------------
 	public function getLIPA2($bulan, $tahun)
 	{
-		$sql = "
-				SELECT DISTINCT
+		$sql = "SELECT DISTINCT
 				bdg.perkara_id
 				,perkara_penetapan.majelis_hakim_nama
 				,bdg.nomor_perkara_pn
@@ -67,8 +66,7 @@ class Laporan_model extends CI_Model
 	// -----------------------------Ambil Data Lipa 3--------------------------
 	public function getLIPA3($bulan, $tahun)
 	{
-		$sql = "
-				SELECT DISTINCT
+		$sql = "SELECT DISTINCT
 				kas.perkara_id
 				, kas.permohonan_kasasi
 				, kas.permohonan_kasasi
@@ -97,8 +95,7 @@ class Laporan_model extends CI_Model
 	// -----------------------------Ambil Data Lipa 4--------------------------
 	public function getLIPA4($bulan, $tahun)
 	{
-		$sql = "
-				SELECT DISTINCT
+		$sql = "SELECT DISTINCT
 				pk.nomor_perkara_pn
 				,bdg.nomor_putusan_banding
 				,kas.nomor_putusan_kasasi
@@ -125,8 +122,7 @@ class Laporan_model extends CI_Model
 	// -----------------------------Ambil Data Lipa 5--------------------------
 	public function getLIPA5($bulan, $tahun)
 	{
-		$sql = "
-				SELECT
+		$sql = "SELECT
 				eks.nomor_register_eksekusi AS nomor_register_eksekusi,
 				eks.eksekusi_nomor_perkara AS eksekusi_nomor_perkara,
 				eks.permohonan_eksekusi AS permohonan_eksekusi,

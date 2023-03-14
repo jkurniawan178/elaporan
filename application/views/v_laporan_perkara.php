@@ -46,8 +46,8 @@
 										<option value="lipa_20">LAPORAN TINGKAT PENYELESAIAN PERKARA (LIPA.20)</option>
 										<option value="lipa_21">LAPORAN VERZET TERHADAP PUTUSAN VERSTEK (LIPA.21)</option>
 										<option value="lipa_22">LAPORAN PENANGANAN BANTUAN PANGGILAN ATAU PEMBERITAHUAN (LIPA.22)</option>
-										<option value="lipa_23">LAPORAN (LIPA.23)</option>
-										<option value="lipa_24">LAPORAN (LIPA.24)</option>
+										<option value="lipa_23">LAPORAN PERKARA E-COURT (LIPA.23)</option>
+										<option value="lipa_24">LAPORAN PERSIDANGAN ELEKTRONIK (LIPA.24)</option>
 									</select>
 								</div>
 							</div>
@@ -126,7 +126,7 @@
 						<form id="form-verifikasi" data-parsley-validate class="form-horizontal form-label-left">
 							<div class="item form-group">
 								<a href="#" id="btn-download-laporan" class="btn btn-primary pull-right btn-sm"><i class="fa fa-download"></i> Download Laporan</a>
-								<button type="button" class="btn btn-info btn-sm" style="display: none;">Verifikasi Laporan</button>
+								<!-- <button type="button" class="btn btn-info btn-sm" style="display: none;">Verifikasi Laporan</button> -->
 							</div>
 						</form>
 						<div class="ln_solid"></div>

@@ -13,6 +13,7 @@
 
   <!-- Bootstrap -->
   <link href="<?php echo base_url() ?>resources/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
   <!-- Font Awesome -->
   <link href="<?php echo base_url() ?>resources/font-awesome/css/font-awesome.min.css" rel="stylesheet">
   <!-- NProgress -->
@@ -26,7 +27,9 @@
   <link href="<?php echo base_url() ?>resources/jqvmap/dist/jqvmap.min.css" rel="stylesheet" />
   <!-- bootstrap-daterangepicker -->
   <link href="<?php echo base_url() ?>resources/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-
+  <!-- Datatables -->
+  <!-- Custom styles for this page -->
+  <link href="<?php echo base_url() ?>resources/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
   <!-- Custom Theme Style -->
   <link href="<?php echo base_url() ?>resources/css/custom.css" rel="stylesheet">
 </head>

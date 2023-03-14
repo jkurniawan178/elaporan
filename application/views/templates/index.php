@@ -1,6 +1,6 @@
 <?php $this->load->view('templates/header') ?>
 
-<body class="nav-md footer_fixed">
+<body class="nav-md">
   <div class="container body">
     <div class="main_container">
       <div class="col-md-3 left_col">
@@ -37,9 +37,13 @@
 
       <!-- top navigation -->
       <div class="top_nav">
-        <div class="nav_menu" style="min-height: 50px;">
+        <div class="nav_menu pt-3 pb-2" style="min-height: 50px;">
           <div class="nav toggle">
             <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+          </div>
+          <div class="col-md-6">
+            <h4><?php echo $settings['NamaPT'] ?></h4>
+            <h2>( <?php echo $settings['NamaPN'] ?> )</h2>
           </div>
           <nav class="nav navbar-nav">
             <ul class=" navbar-right">
