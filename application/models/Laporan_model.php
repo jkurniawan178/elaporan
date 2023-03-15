@@ -184,11 +184,11 @@ class Laporan_model extends CI_Model
 			ORDER BY C.majelis_hakim_text ASC) AS sisa_lalu_P,
 		(SELECT COUNT(A.nomor_perkara) FROM perkara A LEFT JOIN perkara_penetapan B USING(perkara_id)
 			WHERE B.majelis_hakim_id = F.majelis_hakim_id AND
-			DATE_FORMAT(tanggal_pendaftaran,'%Y-%m') >= '$periode' AND alur_perkara_id = 15) 
+			DATE_FORMAT(A.tanggal_pendaftaran,'%Y-%m')='$periode' AND alur_perkara_id = 15) 
 			AS Diterima_G,
 			(SELECT COUNT(A.nomor_perkara) FROM perkara A LEFT JOIN perkara_penetapan B USING(perkara_id)
 			WHERE B.majelis_hakim_id = F.majelis_hakim_id AND
-			DATE_FORMAT(tanggal_pendaftaran,'%Y-%m') >= '$periode' AND alur_perkara_id = 16) 
+			DATE_FORMAT(A.tanggal_pendaftaran,'%Y-%m')='$periode' AND alur_perkara_id = 16) 
 			AS Diterima_P,
 		(SELECT COUNT(A.nomor_perkara) FROM perkara A LEFT JOIN perkara_putusan B USING(perkara_id)
 			LEFT JOIN perkara_penetapan C USING(perkara_id)
