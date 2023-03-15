@@ -167,46 +167,51 @@ class Laporan_model extends CI_Model
 	public function getLIPA6($bulan, $tahun)
 	{
 		$periode = $tahun . '-' . $bulan;
-		$sql = "SELECT D.id,D.nama_gelar,	
+		$sql = "SELECT F.majelis_hakim_text AS nama_gelar,
 		(SELECT COUNT(A.nomor_perkara) FROM perkara A LEFT JOIN perkara_putusan B USING (perkara_id)
 			LEFT JOIN perkara_penetapan C USING(perkara_id)
-			WHERE SUBSTRING_INDEX(C.majelis_hakim_id,',','1')= D.id
+			WHERE C.majelis_hakim_id = F.majelis_hakim_id
 			AND DATE_FORMAT(A.tanggal_pendaftaran,'%Y-%m')< '$periode' 
 			AND (B.tanggal_putusan IS NULL OR DATE_FORMAT(B.tanggal_putusan,'%Y-%m') >= '$periode') 
 			AND A.alur_perkara_id = 15
 			ORDER BY C.majelis_hakim_text ASC) AS sisa_lalu_G,
 		(SELECT COUNT(A.nomor_perkara) FROM perkara A LEFT JOIN perkara_putusan B USING (perkara_id)
 			LEFT JOIN perkara_penetapan C USING(perkara_id)
-			WHERE SUBSTRING_INDEX(C.majelis_hakim_id,',','1')= D.id
-			AND DATE_FORMAT(A.tanggal_pendaftaran,'%Y-%m')< '$periode'
+			WHERE C.majelis_hakim_id = F.majelis_hakim_id
+			AND DATE_FORMAT(A.tanggal_pendaftaran,'%Y-%m')< '$periode' 
 			AND (B.tanggal_putusan IS NULL OR DATE_FORMAT(B.tanggal_putusan,'%Y-%m') >= '$periode') 
 			AND A.alur_perkara_id = 16
 			ORDER BY C.majelis_hakim_text ASC) AS sisa_lalu_P,
 		(SELECT COUNT(A.nomor_perkara) FROM perkara A LEFT JOIN perkara_penetapan B USING(perkara_id)
-			WHERE SUBSTRING_INDEX(B.majelis_hakim_id,',','1')= D.id AND
+			WHERE B.majelis_hakim_id = F.majelis_hakim_id AND
 			DATE_FORMAT(tanggal_pendaftaran,'%Y-%m') >= '$periode' AND alur_perkara_id = 15) 
 			AS Diterima_G,
-		(SELECT COUNT(A.nomor_perkara) FROM perkara A LEFT JOIN perkara_penetapan B USING(perkara_id)
-			WHERE SUBSTRING_INDEX(B.majelis_hakim_id,',','1')= D.id AND
+			(SELECT COUNT(A.nomor_perkara) FROM perkara A LEFT JOIN perkara_penetapan B USING(perkara_id)
+			WHERE B.majelis_hakim_id = F.majelis_hakim_id AND
 			DATE_FORMAT(tanggal_pendaftaran,'%Y-%m') >= '$periode' AND alur_perkara_id = 16) 
 			AS Diterima_P,
 		(SELECT COUNT(A.nomor_perkara) FROM perkara A LEFT JOIN perkara_putusan B USING(perkara_id)
 			LEFT JOIN perkara_penetapan C USING(perkara_id)
-			WHERE SUBSTRING_INDEX(C.majelis_hakim_id,',','1')= D.id AND DATE_FORMAT(B.tanggal_putusan,'%Y-%m')='$periode' 
+			WHERE C.majelis_hakim_id = F.majelis_hakim_id AND DATE_FORMAT(B.tanggal_putusan,'%Y-%m')='$periode' 
 			AND alur_perkara_id = 15) AS putus_G,
 		(SELECT COUNT(A.nomor_perkara) FROM perkara A LEFT JOIN perkara_putusan B USING(perkara_id)
 			LEFT JOIN perkara_penetapan C USING(perkara_id)
-			WHERE SUBSTRING_INDEX(C.majelis_hakim_id,',','1')= D.id AND DATE_FORMAT(B.tanggal_putusan,'%Y-%m')='$periode' 
+			WHERE C.majelis_hakim_id = F.majelis_hakim_id AND DATE_FORMAT(B.tanggal_putusan,'%Y-%m')='$periode' 
 			AND alur_perkara_id = 16) AS putus_P,
 		(SELECT COUNT(A.nomor_perkara) FROM perkara A LEFT JOIN perkara_putusan B USING(perkara_id)
-			LEFT JOIN perkara_penetapan USING(perkara_id)
-			WHERE SUBSTRING_INDEX(majelis_hakim_id,',','1')=D.id AND DATE_FORMAT(B.tanggal_minutasi,'%Y-%m')='$periode'
+			LEFT JOIN perkara_penetapan C USING(perkara_id)
+			WHERE C.majelis_hakim_id = F.majelis_hakim_id AND DATE_FORMAT(B.tanggal_minutasi,'%Y-%m')='$periode'
 			AND alur_perkara_id = 15) AS minut_G,
 		(SELECT COUNT(A.nomor_perkara) FROM perkara A LEFT JOIN perkara_putusan B USING(perkara_id)
-			LEFT JOIN perkara_penetapan USING(perkara_id)
-			WHERE SUBSTRING_INDEX(majelis_hakim_id,',','1')=D.id AND DATE_FORMAT(B.tanggal_minutasi,'%Y-%m')='$periode'
+			LEFT JOIN perkara_penetapan C USING(perkara_id)
+			WHERE C.majelis_hakim_id = F.majelis_hakim_id AND DATE_FORMAT(B.tanggal_minutasi,'%Y-%m')='$periode'
 			AND alur_perkara_id = 16) AS minut_P
-		FROM hakim_pn D WHERE aktif='Y' ORDER BY nama_gelar";
+		FROM perkara D LEFT JOIN perkara_putusan E USING(perkara_id)
+		LEFT JOIN perkara_penetapan F USING(perkara_id) 
+		WHERE DATE_FORMAT(D.tanggal_pendaftaran,'%Y-%m')<= '$periode' 
+		AND (E.tanggal_putusan IS NULL OR DATE_FORMAT(E.tanggal_putusan,'%Y-%m') >= '$periode')
+		GROUP BY F.majelis_hakim_id
+		ORDER BY majelis_hakim_text ASC";
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
 	}
