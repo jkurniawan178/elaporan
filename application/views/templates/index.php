@@ -42,8 +42,8 @@
             <a id="menu_toggle"><i class="fa fa-bars"></i></a>
           </div>
           <div class="col-md-6">
-            <h4><?php echo $settings['NamaPT'] ?></h4>
-            <h2>( <?php echo $settings['NamaPN'] ?> )</h2>
+            <h2><?php echo $settings['NamaPT'] ?></h2>
+            <h4><?php echo $settings['NamaPN'] ?></h4>
           </div>
           <nav class="nav navbar-nav">
             <ul class=" navbar-right">

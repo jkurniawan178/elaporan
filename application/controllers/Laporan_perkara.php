@@ -575,7 +575,7 @@ class Laporan_perkara extends CI_Controller
 
       $objPHPExcel->getActiveSheet()
         ->setCellValue('A' . $row, $no)
-        ->setCellValue('B' . $row, $item['nama_gelar'])
+        ->setCellValue('B' . $row, str_replace('<br/>', chr(13), str_replace('</br>', chr(13), $item['nama_gelar'])))
         ->setCellValue('C' . $row, $item['sisa_lalu_G'])
         ->setCellValue('D' . $row, $item['sisa_lalu_P'])
         ->setCellValue('E' . $row, $item['Diterima_G'])
@@ -590,15 +590,15 @@ class Laporan_perkara extends CI_Controller
         ->setCellValue('N' . $row, $item['minut_P'])
         ->setCellValue('O' . $row, intval($item['putus_G']) - intval($item['minut_G']))
         ->setCellValue('P' . $row, intval($item['putus_P']) - intval($item['minut_P']))
-        ->getRowDimension($row)->setRowHeight(25);
+        ->getRowDimension($row)->setRowHeight(42);
 
       //$objPHPExcel->getActiveSheet()->insertNewRowAfter($row); 
       $no++;
     }
 
-    $objPHPExcel->getActiveSheet()->getStyle('A10:P' . $row)->applyFromArray($styleArray);
-    $objPHPExcel->getActiveSheet()->getStyle('A10:P' . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-    $objPHPExcel->getActiveSheet()->getStyle('A10:P' . $row)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('A9:P' . $row)->applyFromArray($styleArray);
+    $objPHPExcel->getActiveSheet()->getStyle('A9:P' . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('A9:P' . $row)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
     //tanda tangan 
     $kolom_kpa = "C";
