@@ -22,7 +22,7 @@
 								<div class="col-md-6 col-sm-6 ">
 									<select class="form-control" id="jenis_laporan">
 										<option value="-" disabled selected>====== Silahkan Pilih Jenis Laporan ======</option>
-										<!-- <option value="lipa_1">LAPORAN KEADAAN PERKARA (LIPA.1) </option> -->
+										<option value="lipa_1">LAPORAN KEADAAN PERKARA (LIPA.1) </option>
 										<option value="lipa_2">LAPORAN PERKARA YANG DIMOHONKAN BANDING (LIPA.2) </option>
 										<option value="lipa_3">LAPORAN YANG DIMOHONKAN KASASI (LIPA.3) </option>
 										<option value="lipa_4">LAPORAN PERKARA YANG DIMOHONKAN PENINJAUAN KEMBALI (LIPA.4) </option>

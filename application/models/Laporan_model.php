@@ -33,11 +33,179 @@ class Laporan_model extends CI_Model
 	// -----------------------------Ambil Data Lipa 1--------------------------
 	public function getLIPA1($bulan, $tahun)
 	{
+		$awal_periode = $tahun . '-' . $bulan . '-01';
+		$periode = $tahun . '-' . $bulan;
+
+		//----------------------------------Rekapitulasi ---------------------------------------//
+		//-------------------------------Sisa Bulan Lalu --------------------------------------//
+		//G
+		$sisa_bulan_lalu_g = $this->db->query("SELECT a.perkara_id FROM perkara AS a 
+							LEFT JOIN perkara_putusan AS b
+							ON b.`perkara_id`=a.`perkara_id`  
+							WHERE tanggal_pendaftaran <  '$awal_periode' AND ( DATE_FORMAT(tanggal_putusan,'%Y-%m')>='$periode' 
+							OR tanggal_putusan IS NULL) AND alur_perkara_id=15
+							");
+		//G
+
+		//P
+		$sisa_bulan_lalu_p = $this->db->query("SELECT a.perkara_id FROM perkara AS a 
+							LEFT JOIN perkara_putusan AS b
+							ON b.`perkara_id`=a.`perkara_id`  
+							WHERE tanggal_pendaftaran <  '$awal_periode' AND ( DATE_FORMAT(tanggal_putusan,'%Y-%m')>='$periode' 
+							OR tanggal_putusan IS NULL) AND alur_perkara_id=16
+							");
+		//P
+
+		//GS
+		$sisa_bulan_lalu_gs = $this->db->query("SELECT a.perkara_id FROM perkara AS a 
+							LEFT JOIN perkara_putusan AS b
+							ON b.`perkara_id`=a.`perkara_id`  
+							WHERE tanggal_pendaftaran <  '$awal_periode' AND ( DATE_FORMAT(tanggal_putusan,'%Y-%m')>='$periode' 
+							OR tanggal_putusan IS NULL) AND alur_perkara_id=17
+							");
+		//GS
+
+		//-------------------------------------------Diterima Bulan ini------------------------------------//
+		$terima_bulan_ini_g = $this->db->query("SELECT perkara_id FROM perkara 
+							WHERE DATE_FORMAT(tanggal_pendaftaran,'%Y-%m')='$periode' AND  alur_perkara_id=15 
+							");
+
+		$terima_bulan_ini_p = $this->db->query("SELECT perkara_id FROM perkara 
+							WHERE DATE_FORMAT(tanggal_pendaftaran,'%Y-%m')='$periode' AND  alur_perkara_id=16 
+							");
+
+		$terima_bulan_ini_gs = $this->db->query("SELECT perkara_id FROM perkara 
+							WHERE DATE_FORMAT(tanggal_pendaftaran,'%Y-%m')='$periode' AND  alur_perkara_id=17
+							");
+
+		//-------------------------------------------Diputus Bulan ini------------------------------------//	
+		$putus_g = $this->db->query("SELECT b.perkara_id FROM perkara AS a
+					LEFT JOIN perkara_putusan AS b 
+					ON b.`perkara_id`=a.`perkara_id`
+					WHERE DATE_FORMAT(tanggal_putusan,'%Y-%m') ='$periode' AND  a.alur_perkara_id=15
+					");
+		$putus_p = $this->db->query("SELECT b.perkara_id FROM perkara AS a
+					LEFT JOIN perkara_putusan AS b 
+					ON b.`perkara_id`=a.`perkara_id`
+					WHERE DATE_FORMAT(tanggal_putusan,'%Y-%m') ='$periode' AND  a.alur_perkara_id=16
+					");
+		$putus_gs = $this->db->query("SELECT b.perkara_id FROM perkara AS a
+					LEFT JOIN perkara_putusan AS b 
+					ON b.`perkara_id`=a.`perkara_id`
+					WHERE DATE_FORMAT(tanggal_putusan,'%Y-%m') ='$periode' AND  a.alur_perkara_id=17
+					");
+
+		//-------------------------------------------belumdibagi Bulan ini------------------------------------//	
+		$belumbagi_g = $this->db->query("SELECT a.perkara_id , a.nomor_perkara FROM perkara AS a
+					LEFT JOIN perkara_penetapan AS b ON b.`perkara_id`=a.`perkara_id`
+					LEFT JOIN perkara_putusan AS c ON c.perkara_id = a.perkara_id
+					WHERE DATE_FORMAT(a.`tanggal_pendaftaran`,'%Y-%m')<='$periode' 
+					AND (c.tanggal_putusan IS NULL OR DATE_FORMAT(c.tanggal_putusan,'%Y-%m')>='$periode')
+					AND a.alur_perkara_id=15
+					AND (b.`penetapan_majelis_hakim` IS NULL OR 
+						(SELECT DATE_FORMAT(tanggal_penetapan,'%Y-%m') FROM perkara_hakim_pn WHERE perkara_id = a.`perkara_id`
+						AND urutan = 1 ORDER BY tanggal_penetapan ASC LIMIT 1)>'$periode')");
+
+		$belumbagi_p = $this->db->query("SELECT a.perkara_id , a.nomor_perkara FROM perkara AS a
+					LEFT JOIN perkara_penetapan AS b ON b.`perkara_id`=a.`perkara_id`
+					LEFT JOIN perkara_putusan AS c ON c.perkara_id = a.perkara_id
+					WHERE DATE_FORMAT(a.`tanggal_pendaftaran`,'%Y-%m')<='$periode' 
+					AND (c.tanggal_putusan IS NULL OR DATE_FORMAT(c.tanggal_putusan,'%Y-%m')>='$periode')
+					AND a.alur_perkara_id=16
+					AND (b.`penetapan_majelis_hakim` IS NULL OR 
+						(SELECT DATE_FORMAT(tanggal_penetapan,'%Y-%m') FROM perkara_hakim_pn WHERE perkara_id = a.`perkara_id`
+						AND urutan = 1 ORDER BY tanggal_penetapan ASC LIMIT 1)>'$periode')");
+
+
+		$belumbagi_gs = $this->db->query("SELECT a.perkara_id , a.nomor_perkara FROM perkara AS a
+					LEFT JOIN perkara_penetapan AS b ON b.`perkara_id`=a.`perkara_id`
+					LEFT JOIN perkara_putusan AS c ON c.perkara_id = a.perkara_id
+					WHERE DATE_FORMAT(a.`tanggal_pendaftaran`,'%Y-%m')<='$periode' 
+					AND (c.tanggal_putusan IS NULL OR DATE_FORMAT(c.tanggal_putusan,'%Y-%m')>='$periode')
+					AND a.alur_perkara_id=17
+					AND (b.`penetapan_majelis_hakim` IS NULL OR 
+						(SELECT DATE_FORMAT(tanggal_penetapan,'%Y-%m') FROM perkara_hakim_pn WHERE perkara_id = a.`perkara_id`
+						AND urutan = 1 ORDER BY tanggal_penetapan ASC LIMIT 1)>'$periode')");
+
+		//------------------------------------------Data Perkara-------------------------------------------//
+		$sql = "SELECT perkara.perkara_id, perkara.alur_perkara_id AS alur_perkara_id, perkara.nomor_perkara AS nomor_perkara,
+				perkara.jenis_perkara_nama AS kode_perkara,
+				case when DATE_FORMAT(penetapan_majelis_hakim,'%Y-%m')>'$periode' then
+					case when (select date_Format(tanggal_penetapan,'%Y-%m') from perkara_hakim_pn where perkara_id = perkara.`perkara_id` 
+						order by tanggal_penetapan asc limit 1) <= '$periode' then
+						
+						(select group_concat(jabatan_hakim_nama,':', hakim_nama separator '<br/>') from perkara_hakim_pn WHERE perkara_id = perkara.`perkara_id`
+						and urutan between 1 and 3 and aktif = 'T'
+						group by tanggal_penetapan
+						order by tanggal_penetapan asc  limit 1)
+					else ''
+					end
+				else majelis_hakim_text
+				end as majelis_hakim,				
+				SUBSTRING_INDEX(panitera_pengganti_text,': ',-1) AS panitera_pengganti,
+				tanggal_pendaftaran AS tanggal_pendaftaran,
+				
+				case when DATE_FORMAT(penetapan_majelis_hakim,'%Y-%m')>'$periode' then
+					case when (select date_Format(tanggal_penetapan,'%Y-%m') from perkara_hakim_pn where perkara_id = perkara.`perkara_id` 
+						order by tanggal_penetapan asc limit 1) <= '$periode' then
+						(select tanggal_penetapan from perkara_hakim_pn WHERE perkara_id = perkara.`perkara_id`
+						and urutan = 1 and aktif = 'T'
+						order by tanggal_penetapan asc  limit 1)
+					else ''
+					end
+				else penetapan_majelis_hakim
+				end as pmh,
+		
+				IF(DATE_FORMAT(penetapan_hari_sidang,'%Y-%m')>'$periode','',penetapan_hari_sidang) AS phs,
+				IF(DATE_FORMAT(penetapan_hari_sidang,'%Y-%m')>'$periode','',sidang_pertama) AS sidang_pertama,
+				IF(DATE_FORMAT(tanggal_putusan,'%Y-%m')>'$periode','',tanggal_putusan) AS tanggal_putusan,
+				IF(DATE_FORMAT(tanggal_putusan,'%Y-%m')>'$periode' OR tanggal_putusan IS NULL,'',status_putusan.nama) AS jenis_putusan,
+				IF(Date_Format((select tanggal_penetapan from perkara_hakim_pn WHERE perkara_id = perkara.`perkara_id`
+						and urutan = 1 order by tanggal_penetapan asc limit 1),'%Y-%m') > '$periode'
+						or penetapan_majelis_hakim IS NULL,nomor_perkara,'') AS  belum_dibagi,
+				IF(DATE_FORMAT(tanggal_putusan,'%Y-%m')>'$periode' OR tanggal_putusan IS NULL,nomor_perkara,'') AS belum_diputus
+
+				FROM 
+				perkara 
+					LEFT JOIN perkara_penetapan ON perkara_penetapan.`perkara_id`=perkara.`perkara_id`
+					LEFT JOIN perkara_putusan ON perkara_putusan.`perkara_id`=perkara.`perkara_id`
+					LEFT JOIN status_putusan ON status_putusan.id=perkara_putusan.`status_putusan_id`
+
+				WHERE (DATE_FORMAT(tanggal_pendaftaran,'%Y-%m')<='$periode'
+				AND (tanggal_putusan IS NULL OR DATE_FORMAT(tanggal_putusan,'%Y-%m')>='$periode' ))
+
+				group by perkara.perkara_id
+				ORDER BY alur_perkara_id asc , tanggal_pendaftaran asc, nomor_perkara  asc
+				";
+
+		$hasil = $this->db->query($sql);
+		// return $hasil->result();
+
+		$response = array(
+			'rekapitulasi' => array(
+				'sisa_lalu_G' => $sisa_bulan_lalu_g->num_rows(),
+				'sisa_lalu_P' => $sisa_bulan_lalu_p->num_rows(),
+				'sisa_lalu_GS' => $sisa_bulan_lalu_gs->num_rows(),
+				'terima_G' => $terima_bulan_ini_g->num_rows(),
+				'terima_P' => $terima_bulan_ini_p->num_rows(),
+				'terima_GS' => $terima_bulan_ini_gs->num_rows(),
+				'putus_G' => $putus_g->num_rows(),
+				'putus_P' => $putus_p->num_rows(),
+				'putus_GS' => $putus_gs->num_rows(),
+				'belumbagi_G' => $belumbagi_g->num_rows(),
+				'belumbagi_P' => $belumbagi_p->num_rows(),
+				'belumbagi_GS' => $belumbagi_gs->num_rows(),
+			),
+			'hasil' => $hasil->result()
+		);
+
+		return $response;
 	}
 	// ------------------------------------------------------------------------
 	// -----------------------------Ambil Data Lipa 2--------------------------
 	public function getLIPA2($bulan, $tahun)
 	{
+		$periode = $tahun . '-' . $bulan;
 		$sql = "SELECT DISTINCT
 				bdg.perkara_id
 				,perkara_penetapan.majelis_hakim_nama
@@ -54,10 +222,10 @@ class Laporan_model extends CI_Model
 				, (SELECT pemberitahuan_putusan_banding FROM perkara_banding_detil WHERE perkara_id=bdg.perkara_id AND status_pihak_id=4 LIMIT 1) AS pbt_banding_t
 				FROM perkara_banding AS bdg LEFT JOIN perkara_banding_detil AS batil ON bdg.`perkara_id` = batil.`perkara_id`
 				LEFT JOIN perkara_penetapan ON perkara_penetapan.perkara_id=bdg.perkara_id
-				WHERE DATE_FORMAT( bdg.permohonan_banding,'%Y-%m')>='1900-01' AND DATE_FORMAT( bdg.permohonan_banding,'%Y-%m')<='$tahun-$bulan' 
-				AND (bdg.putusan_banding IS NULL OR DATE_FORMAT(bdg.putusan_banding,'%Y-%m')>='$tahun-$bulan')
+				WHERE DATE_FORMAT( bdg.permohonan_banding,'%Y-%m')>='1900-01' AND DATE_FORMAT( bdg.permohonan_banding,'%Y-%m')<='$periode' 
+				AND (bdg.putusan_banding IS NULL OR DATE_FORMAT(bdg.putusan_banding,'%Y-%m')>='$periode')
 				AND ((SELECT tanggal_cabut FROM perkara_banding_detil WHERE perkara_id=bdg.`perkara_id` AND status_pihak_id=1 LIMIT 1) IS NULL
-				OR (SELECT DATE_FORMAT(tanggal_cabut,'%Y-%m') FROM perkara_banding_detil WHERE perkara_id=bdg.`perkara_id` AND status_pihak_id=1 LIMIT 1) >= '$tahun-$bulan')
+				OR (SELECT DATE_FORMAT(tanggal_cabut,'%Y-%m') FROM perkara_banding_detil WHERE perkara_id=bdg.`perkara_id` AND status_pihak_id=1 LIMIT 1) >= '$periode')
 				";
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
@@ -66,6 +234,7 @@ class Laporan_model extends CI_Model
 	// -----------------------------Ambil Data Lipa 3--------------------------
 	public function getLIPA3($bulan, $tahun)
 	{
+		$periode = $tahun . '-' . $bulan;
 		$sql = "SELECT DISTINCT
 				kas.perkara_id
 				, kas.permohonan_kasasi
@@ -83,10 +252,10 @@ class Laporan_model extends CI_Model
 				, bdg.nomor_putusan_banding
 				FROM perkara_kasasi AS kas LEFT JOIN perkara_kasasi_detil AS kasdi ON kasdi.`perkara_id`=kas.`perkara_id` 
 				LEFT JOIN perkara_banding AS bdg ON bdg.perkara_id=kas.perkara_id
-				WHERE DATE_FORMAT( kas.permohonan_kasasi,'%Y-%m')>='1900-01' AND DATE_FORMAT( kas.permohonan_kasasi,'%Y-%m')<='$tahun-$bulan' 
-				AND (kas.putusan_kasasi IS NULL OR DATE_FORMAT(kas.putusan_kasasi,'%Y-%m')>='$tahun-$bulan')
+				WHERE DATE_FORMAT( kas.permohonan_kasasi,'%Y-%m')>='1900-01' AND DATE_FORMAT( kas.permohonan_kasasi,'%Y-%m')<='$periode' 
+				AND (kas.putusan_kasasi IS NULL OR DATE_FORMAT(kas.putusan_kasasi,'%Y-%m')>='$periode')
 				AND ((SELECT tanggal_cabut FROM perkara_kasasi_detil WHERE perkara_id=kas.`perkara_id` AND status_pihak_id=1 LIMIT 1) IS NULL
-				OR (SELECT DATE_FORMAT(tanggal_cabut,'%Y-%m') FROM perkara_kasasi_detil WHERE perkara_id=kas.`perkara_id` AND status_pihak_id=1 LIMIT 1) >= '$tahun-$bulan')
+				OR (SELECT DATE_FORMAT(tanggal_cabut,'%Y-%m') FROM perkara_kasasi_detil WHERE perkara_id=kas.`perkara_id` AND status_pihak_id=1 LIMIT 1) >= '$periode')
 				";
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
@@ -95,6 +264,7 @@ class Laporan_model extends CI_Model
 	// -----------------------------Ambil Data Lipa 4--------------------------
 	public function getLIPA4($bulan, $tahun)
 	{
+		$periode = $tahun . '-' . $bulan;
 		$sql = "SELECT DISTINCT
 				pk.nomor_perkara_pn
 				,bdg.nomor_putusan_banding
@@ -110,10 +280,10 @@ class Laporan_model extends CI_Model
 				LEFT JOIN perkara_pk_detil AS petil ON petil.perkara_id = pk.perkara_id
 				LEFT JOIN perkara_banding AS bdg ON bdg.perkara_id=pk.perkara_id	
 				LEFT JOIN perkara_kasasi AS kas ON kas.perkara_id=pk.perkara_id
-				WHERE DATE_FORMAT( pk.permohonan_pk,'%Y-%m')>='1900-01' AND DATE_FORMAT( pk.permohonan_pk,'%Y-%m')<='$tahun-$bulan' 
-				AND (pk.putusan_pk IS NULL OR DATE_FORMAT(pk.putusan_pk,'%Y-%m')>='$tahun-$bulan')
+				WHERE DATE_FORMAT( pk.permohonan_pk,'%Y-%m')>='1900-01' AND DATE_FORMAT( pk.permohonan_pk,'%Y-%m')<='$periode' 
+				AND (pk.putusan_pk IS NULL OR DATE_FORMAT(pk.putusan_pk,'%Y-%m')>='$periode')
 				AND ((SELECT tanggal_cabut FROM perkara_pk_detil WHERE perkara_id=pk.`perkara_id` AND status_pihak_id=1 LIMIT 1) IS NULL
-				OR (SELECT DATE_FORMAT(tanggal_cabut,'%Y-%m') FROM perkara_pk_detil WHERE perkara_id=pk.`perkara_id` AND status_pihak_id=1 LIMIT 1) >= '$tahun-$bulan')
+				OR (SELECT DATE_FORMAT(tanggal_cabut,'%Y-%m') FROM perkara_pk_detil WHERE perkara_id=pk.`perkara_id` AND status_pihak_id=1 LIMIT 1) >= '$periode')
 				";
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
