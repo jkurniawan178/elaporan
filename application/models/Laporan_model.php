@@ -333,7 +333,7 @@ class Laporan_model extends CI_Model
 		return $hasil->result();
 	}
 	// ------------------------------------------------------------------------
-	// -	----------------------------Ambil Data Lipa 6--------------------------
+	// -----------------------------Ambil Data Lipa 6--------------------------
 	public function getLIPA6($bulan, $tahun)
 	{
 		$periode = $tahun . '-' . $bulan;
@@ -382,6 +382,37 @@ class Laporan_model extends CI_Model
 		AND (E.tanggal_putusan IS NULL OR DATE_FORMAT(E.tanggal_putusan,'%Y-%m') >= '$periode')
 		GROUP BY F.majelis_hakim_id
 		ORDER BY majelis_hakim_text ASC";
+		$hasil = $this->db->query($sql);
+		return $hasil->result();
+	}
+	// ------------------------------------------------------------------------
+	// -----------------------------Ambil Data Lipa 8--------------------------
+	public function getLIPA8($bulan, $tahun)
+	{
+		$periode = $tahun . '-' . $bulan;
+		$sql = "SELECT jp.nama AS jenis_perkara,
+		SUM( CASE WHEN DATE_FORMAT(vpk.tanggal_pendaftaran,'%Y-%m') < '$periode' AND ((vpk.tanggal_putusan IS NULL) OR (DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m') >= '$periode'))  THEN 1 ELSE 0 END) AS sisa_lalu,
+		SUM( CASE WHEN DATE_FORMAT(vpk.tanggal_pendaftaran,'%Y-%m') = '$periode'  THEN 1 ELSE 0 END) AS diterima_bulan_ini,
+		SUM( CASE WHEN ((DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m')='$periode'  AND vpk.`status_putusan_id` IN (7,67,85)) OR DATE_FORMAT(vpk.tanggal_cabut,'%Y-%m')='$periode') THEN 1 ELSE 0 END) AS dicabut,
+		SUM( CASE WHEN DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m')='$periode'  AND vpk.`status_putusan_id`=62 THEN 1 ELSE 0 END) AS dikabulkan,
+		SUM( CASE WHEN DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m')='$periode'  AND (vpk.`status_putusan_id`=63 OR vpk.`status_putusan_id`=92) THEN 1 ELSE 0 END) AS ditolak,
+		SUM( CASE WHEN DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m')='$periode' AND vpk.`status_putusan_id`=64  THEN 1 ELSE 0 END) AS tidak_dapat_diterima,
+		SUM( CASE WHEN DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m')='$periode' AND (vpk.`status_putusan_id`=65 OR vpk.`status_putusan_id`=93)  THEN 1 ELSE 0 END) AS digugurkan,
+		SUM( CASE WHEN DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m')='$periode'  AND vpk.`status_putusan_id`=66   THEN 1 ELSE 0 END) AS dicoret_dari_register,
+		SUM( CASE WHEN DATE_FORMAT(vpk.permohonan_banding,'%Y-%m')='$periode'    THEN 1 ELSE 0 END) AS bandingnya,
+		SUM( CASE WHEN DATE_FORMAT(vpk.permohonan_kasasi,'%Y-%m')='$periode'    THEN 1 ELSE 0 END) AS kasasinya,
+		SUM( CASE WHEN DATE_FORMAT(vpk.permohonan_pk,'%Y-%m')='$periode'    THEN 1 ELSE 0 END) AS pk
+							
+		FROM jenis_perkara jp
+		LEFT JOIN 
+		(SELECT p.tanggal_pendaftaran, p.jenis_perkara_id, pp.status_putusan_id, pp.tanggal_cabut, 
+		 pp.tanggal_putusan, b.permohonan_banding, k.`permohonan_kasasi`, pk.permohonan_pk
+		 FROM perkara p LEFT JOIN perkara_putusan pp ON pp.perkara_id=p.perkara_id
+		 LEFT JOIN perkara_banding b ON b.perkara_id=p.perkara_id
+		 LEFT JOIN perkara_kasasi k ON k.`perkara_id`=p.`perkara_id`
+		 LEFT JOIN perkara_pk pk ON pk.`perkara_id` = p.`perkara_id`) AS
+		 vpk ON jp.id=vpk.jenis_perkara_id
+		 WHERE (jp.id >=341 AND jp.id<=371) GROUP BY jp.nama ORDER BY jp.id";
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
 	}

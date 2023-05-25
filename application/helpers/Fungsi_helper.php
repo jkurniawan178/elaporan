@@ -248,6 +248,24 @@ if (!function_exists('terbilang')) {
   }
 }
 
+if (!function_exists('generateAlphabet')) {
+  function generateAlphabet($number)
+  {
+    $alphabet = range('A', 'Z');
+    $count = count($alphabet);
+    $result = '';
+
+    // var_dump($number);
+    while ($number > 0) {
+      $remainder = ($number - 1) % $count;
+      $result = $alphabet[$remainder] . $result;
+      $number = ($number - $remainder - 1) / $count;
+    }
+
+    return $result;
+  }
+}
+
 
 
 // ------------------------------------------------------------------------
