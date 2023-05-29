@@ -416,6 +416,33 @@ class Laporan_model extends CI_Model
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
 	}
+	// ------------------------------------------------------------------------
+	// -----------------------------Ambil Data Lipa 10--------------------------
+	public function getLIPA10($bulan, $tahun)
+	{
+		$periode = $tahun . '-' . $bulan;
+		$sql = "SELECT 
+					SUM(CASE faktor_perceraian_id WHEN 1 THEN 1 ELSE 0 END) AS zina,
+					SUM(CASE faktor_perceraian_id WHEN 2 THEN 1 ELSE 0 END) AS mabuk,
+					SUM(CASE faktor_perceraian_id WHEN 3 THEN 1 ELSE 0 END) AS madat,
+					SUM(CASE faktor_perceraian_id WHEN 4 THEN 1 ELSE 0 END) AS judi,
+					SUM(CASE WHEN faktor_perceraian_id IN (5,18) THEN 1 ELSE 0 END) AS meninggalkan,
+					SUM(CASE WHEN faktor_perceraian_id IN (6,20) THEN 1 ELSE 0 END) AS dihukum,
+					SUM(CASE WHEN faktor_perceraian_id IN (7,25,26) THEN 1 ELSE 0 END) AS kdrt,
+					SUM(CASE WHEN faktor_perceraian_id IN (8,21) THEN 1 ELSE 0 END) AS cacat,
+					SUM(CASE WHEN faktor_perceraian_id IN (9,24) THEN 1 ELSE 0 END) AS perselisihan,
+					SUM(CASE WHEN faktor_perceraian_id IN (10,19) THEN 1 ELSE 0 END) AS kawin_paksa,
+					SUM(CASE faktor_perceraian_id WHEN 11 THEN 1 ELSE 0 END) AS murtad,
+					SUM(CASE faktor_perceraian_id WHEN 12 THEN 1 ELSE 0 END) AS ekonomi,
+					SUM(CASE WHEN faktor_perceraian_id IN (13,15) THEN 1 ELSE 0 END) AS poligami, 
+					SUM(CASE WHEN faktor_perceraian_id IN (16,17,22,23) THEN 1 ELSE 0 END) AS lain,
+					COUNT(nomor_akta_cerai) AS jumlah								 
+					FROM perkara_akta_cerai  
+					WHERE DATE_FORMAT(tgl_akta_cerai,'%Y-%m')= '$periode'
+				";
+		$hasil = $this->db->query($sql);
+		return $hasil->result();
+	}
 }
 
 /* End of file Laporan_model.php */
