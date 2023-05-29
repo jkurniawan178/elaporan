@@ -443,6 +443,29 @@ class Laporan_model extends CI_Model
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
 	}
+	// ------------------------------------------------------------------------
+	// -----------------------------Ambil Data Lipa 12--------------------------
+	public function getLIPA12($bulan, $tahun)
+	{
+		$periode = $tahun . '-' . $bulan;
+		$sql = "SELECT 
+					SUM(CASE WHEN DATE_FORMAT(tanggal_pendaftaran,'%Y-%m') < '$periode' AND ((tanggal_putusan IS NULL) OR (DATE_FORMAT(tanggal_putusan,'%Y-%m') >= '$periode')) AND jenis_pengadilan=4 THEN 1 ELSE 0 END) AS sisa_lalu,
+					SUM(CASE WHEN DATE_FORMAT(tanggal_pendaftaran,'%Y-%m') = '$periode' AND jenis_pengadilan=4 THEN 1 ELSE 0 END) AS diterima_bulan_ini,
+					SUM(CASE WHEN DATE_FORMAT(dimulai_mediasi,'%Y-%m')<'$periode' AND (DATE_FORMAT(keputusan_mediasi,'%Y-%m')>= '$periode' OR hasil_mediasi IS NULL) AND jenis_pengadilan=4 THEN 1 ELSE 0 END) 
+					AS sisa_mediasi_lalu,
+					SUM(CASE WHEN DATE_FORMAT(dimulai_mediasi,'%Y-%m')='$periode' AND jenis_pengadilan=4 THEN 1 ELSE 0 END)  AS perkara_mediasi,
+					SUM(CASE WHEN DATE_FORMAT(keputusan_mediasi,'%Y-%m')='$periode' AND jenis_pengadilan=4  AND hasil_mediasi='Y1' THEN 1 ELSE 0 END) AS berhasil_akta,
+					SUM(CASE WHEN DATE_FORMAT(keputusan_mediasi,'%Y-%m')='$periode' AND jenis_pengadilan=4  AND hasil_mediasi='S' THEN 1 ELSE 0 END) AS berhasil_sebagian,
+					SUM(CASE WHEN DATE_FORMAT(keputusan_mediasi,'%Y-%m')='$periode' AND jenis_pengadilan=4 AND hasil_mediasi='Y2' THEN 1 ELSE 0 END) AS berhasil_cabut,
+					SUM(CASE WHEN DATE_FORMAT(keputusan_mediasi,'%Y-%m')='$periode' AND jenis_pengadilan=4 AND hasil_mediasi='T' THEN 1 ELSE 0 END) AS tidak_berhasil,
+					SUM(CASE WHEN DATE_FORMAT(keputusan_mediasi,'%Y-%m')='$periode' AND hasil_mediasi='D' THEN 1 ELSE 0 END) AS gagal,
+					SUM(CASE WHEN DATE_FORMAT(dimulai_mediasi,'%Y-%m')='$periode' AND jenis_pengadilan=4 AND (DATE_FORMAT(keputusan_mediasi,'%Y-%m')>'$periode' or hasil_mediasi IS NULL) THEN 1 ELSE 0 END)  AS perkara_proses_mediasi,
+					SUM(CASE WHEN DATE_FORMAT(tanggal_putusan,'%Y-%m')='$periode'  AND status_putusan_id IS NOT NULL THEN 1 ELSE 0 END) AS putus_bulan_ini
+					FROM v_perkara
+				";
+		$hasil = $this->db->query($sql);
+		return $hasil->result();
+	}
 }
 
 /* End of file Laporan_model.php */
