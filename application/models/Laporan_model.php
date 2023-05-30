@@ -466,6 +466,27 @@ class Laporan_model extends CI_Model
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
 	}
+	// ------------------------------------------------------------------------
+	// -----------------------------Ambil Data Lipa 13--------------------------
+	public function getLIPA13($bulan, $tahun)
+	{
+		$periode = $tahun . '-' . $bulan;
+		$sql = "SELECT pac.nomor_akta_cerai,
+				DATE_FORMAT(pac.tgl_akta_cerai, '%d/%m/%Y') AS tgl_terbit_ac,
+				pac.no_seri_akta_cerai,
+				vpk.nomor_perkara, 
+				DATE_FORMAT(vpk.tanggal_putusan, '%d/%m/%Y') AS tanggal_putusan,
+				DATE_FORMAT(vpk.tanggal_bht, '%d/%m/%Y') AS tanggal_bht,
+				DATE_FORMAT(pit.tgl_ikrar_talak, '%d/%m/%Y') AS tgl_ikrar_talak
+				FROM perkara_akta_cerai pac 
+				LEFT JOIN v_perkara vpk ON pac.perkara_id=vpk.perkara_id
+				LEFT JOIN perkara_ikrar_talak pit ON pac.perkara_id=pit.perkara_id 
+				WHERE 
+				vpk.jenis_pengadilan=4 AND DATE_FORMAT(pac.tgl_akta_cerai,'%Y-%m') = '$periode' ORDER BY pac.tgl_akta_cerai,pac.nomor_akta_cerai
+				";
+		$hasil = $this->db->query($sql);
+		return $hasil->result();
+	}
 }
 
 /* End of file Laporan_model.php */
