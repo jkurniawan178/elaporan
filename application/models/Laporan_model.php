@@ -487,6 +487,54 @@ class Laporan_model extends CI_Model
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
 	}
+	// ------------------------------------------------------------------------
+	// -----------------------------Ambil Data Lipa 17--------------------------
+	public function getLIPA17($bulan, $tahun)
+	{
+		$periode = $tahun . '-' . $bulan;
+		$sql = "SELECT
+					coalesce(pendaftaran,0) as pendaftaran, 
+					coalesce(pendaftaran_banding,0) AS pendaftaran_banding,
+					coalesce(pendaftaran_kasasi,0) AS pendaftaran_kasasi,
+					coalesce(pendaftaran_pk,0) AS pendaftaran_pk,
+					coalesce(pendaftaran_eksekusi,0) AS pendaftaran_eksekusi,
+					coalesce(pendaftaran_eksekusi_ht,0) AS pendaftaran_eksekusi_ht,
+					
+					(COALESCE(pendaftaran,0)+ 
+					COALESCE(pendaftaran_banding,0)+
+					COALESCE(pendaftaran_kasasi,0)+
+					COALESCE(pendaftaran_pk,0)+
+					COALESCE(pendaftaran_eksekusi,0)+
+					COALESCE(pendaftaran_eksekusi_ht,0)) AS jumlah
+				FROM
+				(
+					SELECT
+					pendaftaran, pendaftaran_banding, pendaftaran_kasasi, pendaftaran_pk, pendaftaran_eksekusi, pendaftaran_eksekusi_ht
+					FROM
+					(
+					SELECT
+						(SELECT SUM(jumlah) FROM perkara_biaya pb LEFT JOIN v_perkara vpk ON pb.perkara_id=vpk.perkara_id
+						WHERE pb.tahapan_id=10 AND pb.jenis_biaya_id=61 AND vpk.jenis_pengadilan=4
+						AND DATE_FORMAT(pb.tanggal_transaksi,'%Y-%m') = '$periode') AS pendaftaran,
+						(SELECT SUM(jumlah) FROM perkara_biaya pb LEFT JOIN v_perkara vpk ON pb.perkara_id=vpk.perkara_id
+						WHERE pb.tahapan_id=20 AND pb.jenis_biaya_id=62 AND vpk.jenis_pengadilan=4
+						AND DATE_FORMAT(pb.tanggal_transaksi,'%Y-%m') = '$periode') AS pendaftaran_banding,
+						(SELECT SUM(jumlah) FROM perkara_biaya pb LEFT JOIN v_perkara vpk ON pb.perkara_id=vpk.perkara_id
+						WHERE pb.tahapan_id=30 AND pb.jenis_biaya_id=63 AND vpk.jenis_pengadilan=4
+						AND DATE_FORMAT(pb.tanggal_transaksi,'%Y-%m') = '$periode') AS pendaftaran_kasasi,
+						(SELECT SUM(jumlah) FROM perkara_biaya pb LEFT JOIN v_perkara vpk ON pb.perkara_id=vpk.perkara_id
+						WHERE pb.tahapan_id=40 AND pb.jenis_biaya_id=64 AND vpk.jenis_pengadilan=4
+						AND DATE_FORMAT(pb.tanggal_transaksi,'%Y-%m') = '$periode') AS pendaftaran_pk,
+						(SELECT SUM(jumlah) FROM perkara_biaya WHERE jenis_biaya_id = 64 AND tahapan_id = 50 AND
+						DATE_FORMAT(tanggal_transaksi,'%Y-%m') = '$periode') AS pendaftaran_eksekusi,
+						(SELECT SUM(jumlah) FROM perkara_biaya_ht WHERE jenis_biaya_id = 64 AND tahapan_id = 51 AND
+						DATE_FORMAT(tanggal_transaksi,'%Y-%m') = '$periode') AS pendaftaran_eksekusi_ht
+					) AS subquery
+				) AS total_sum_subquery;
+				";
+		$hasil = $this->db->query($sql);
+		return $hasil->result();
+	}
 }
 
 /* End of file Laporan_model.php */
