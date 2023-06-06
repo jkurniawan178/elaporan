@@ -535,6 +535,25 @@ class Laporan_model extends CI_Model
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
 	}
+	// ------------------------------------------------------------------------
+	// -----------------------------Ambil Data Lipa 19--------------------------
+	public function getLIPA19($bulan, $tahun)
+	{
+		$periode = $tahun . '-' . $bulan;
+		$sql = " SELECT perkara.nomor_perkara, perkara_penetapan.majelis_hakim_text AS majelis_hakim,
+		CASE WHEN perkara.alur_perkara_id =15 OR perkara.alur_perkara_id =17  THEN DATE_FORMAT(perkara_putusan.tanggal_putusan,'%d/%m/%Y') ELSE '' END  AS putus_g,
+		CASE WHEN perkara.alur_perkara_id =16  THEN DATE_FORMAT(perkara_putusan.tanggal_putusan,'%d/%m/%Y') ELSE '' END  AS putus_p,
+		CASE WHEN perkara.alur_perkara_id =15 OR perkara.alur_perkara_id =17 THEN DATE_FORMAT(perkara_putusan.tanggal_minutasi,'%d/%m/%Y') ELSE '' END  AS minutasi_g,
+		CASE WHEN perkara.alur_perkara_id =16  THEN DATE_FORMAT(perkara_putusan.tanggal_minutasi,'%d/%m/%Y') ELSE '' END  AS minutasi_p
+		FROM perkara_putusan
+		LEFT JOIN perkara ON perkara.perkara_id=perkara_putusan.perkara_id
+		LEFT JOIN perkara_penetapan ON perkara_penetapan.perkara_id=perkara_putusan.perkara_id
+		WHERE  DATE_FORMAT(perkara_putusan.tanggal_minutasi,'%Y-%m') = '$periode'  
+		ORDER BY perkara.alur_perkara_id ASC,  perkara_putusan.tanggal_putusan ASC, perkara_putusan.tanggal_minutasi ASC, perkara_putusan.perkara_id ASC
+				";
+		$hasil = $this->db->query($sql);
+		return $hasil->result();
+	}
 }
 
 /* End of file Laporan_model.php */
