@@ -554,6 +554,24 @@ class Laporan_model extends CI_Model
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
 	}
+	// ------------------------------------------------------------------------
+	// -----------------------------Ambil Data Lipa 20--------------------------
+	public function getLIPA20($bulan, $tahun)
+	{
+		$periode = $tahun . '-' . $bulan;
+		$tgl_awal_bulanini = $periode . "-01";
+		$sql = " SELECT 
+				SUM(CASE WHEN DATEDIFF(tanggal_putusan,tanggal_pendaftaran) <90 THEN 1 ELSE 0 END ) AS putus_3_bln,
+				SUM(CASE WHEN DATEDIFF(tanggal_putusan,tanggal_pendaftaran) >=90 AND DATEDIFF(tanggal_putusan,tanggal_pendaftaran) <= 150 THEN 1 ELSE 0 END) AS putus_3_5_bln,
+				SUM(CASE WHEN DATEDIFF(tanggal_putusan,tanggal_pendaftaran) >150 THEN 1 ELSE 0 END) AS putus_lebih_5_bln,
+				SUM(CASE WHEN tanggal_putusan IS NULL AND DATEDIFF(LAST_DAY('$tgl_awal_bulanini'),tanggal_pendaftaran) > 150 THEN 1 ELSE 0 END) AS blm_putus_lebih_5_bln
+				FROM
+				perkara AS a LEFT JOIN perkara_putusan  AS b  USING(perkara_id)	 
+				WHERE (DATE_FORMAT(tanggal_putusan,'%Y-%m') = '$periode') OR (DATE_FORMAT(tanggal_pendaftaran,'%Y-%m') <= '$periode' AND tanggal_putusan IS NULL) 
+				";
+		$hasil = $this->db->query($sql);
+		return $hasil->result();
+	}
 }
 
 /* End of file Laporan_model.php */
