@@ -574,6 +574,27 @@ class Laporan_model extends CI_Model
 		return $hasil->result();
 	}
 	// ------------------------------------------------------------------------
+	// -----------------------------Ambil Data Lipa 18--------------------------
+	public function getLIPA18($bulan, $tahun)
+	{
+		$periode = $tahun . '-' . $bulan;
+		$sql = "SELECT  SUM(CASE WHEN jenis_biaya_id IN (348,363,376) THEN jumlah ELSE 0 END) AS salinan,
+				SUM(CASE WHEN jenis_biaya_id IN (157,172,187,202,217) THEN jumlah ELSE 0 END) AS redaksi,
+				SUM(CASE WHEN jenis_biaya_id IN (329,367,354) THEN jumlah ELSE 0 END) AS eksekusi,
+				SUM(CASE WHEN jenis_biaya_id IN (331,369,356) THEN jumlah ELSE 0 END) AS lelang,
+				SUM(CASE WHEN jenis_biaya_id IN (352,146,365) THEN jumlah ELSE 0 END) AS catatan_pembuatan_akta,
+				SUM(CASE WHEN jenis_biaya_id IN (332,370,357) THEN jumlah ELSE 0 END) AS penyerahan_akta, 
+				SUM(CASE WHEN jenis_biaya_id IN (334,359,372) THEN jumlah ELSE 0 END) AS akta_asli, 
+				SUM(CASE WHEN jenis_biaya_id IN (336,374,361) THEN jumlah ELSE 0 END) AS surat_kuasa, 
+				SUM(CASE WHEN jenis_biaya_id IN (337,362,375) THEN jumlah ELSE 0 END) AS surat_kuasa_insidentil,
+				SUM(CASE WHEN jenis_biaya_id IN (330,361,355) THEN jumlah ELSE 0 END) AS surat_dibawah_tangan,
+				SUM(CASE WHEN jenis_biaya_id IN (335,373,360,343) THEN jumlah ELSE 0 END) AS leges       
+				FROM perkara_biaya WHERE DATE_FORMAT(tanggal_transaksi,'%Y-%m')='$periode' AND tahapan_id IN (10,99) 
+				";
+		$hasil = $this->db->query($sql);
+		return $hasil->result();
+	}
+	// ------------------------------------------------------------------------
 	// -----------------------------Ambil Data Lipa 19--------------------------
 	public function getLIPA19($bulan, $tahun)
 	{

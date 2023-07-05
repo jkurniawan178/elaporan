@@ -41,7 +41,7 @@
 										<!-- <option value="lipa_15">LAPORAN PELAKSANAAN PEMBEBASAN BIAYA PERKARA (LIPA.15)</option> -->
 										<!-- <option value="lipa_16">LAPORAN PELAKSANAAN POSYANKUM (LIPA.16)</option> -->
 										<option value="lipa_17">LAPORAN PENERIMAAN HAK-HAK KEPANITERAAN (HHK) (LIPA.17) </option>
-										<!-- <option value="lipa_18">LAPORAN PENERIMAAN HAK-HAK KEPANITERAAN LAINNYA (HHKL) (LIPA.18) </option> -->
+										<option value="lipa_18">LAPORAN PENERIMAAN HAK-HAK KEPANITERAAN LAINNYA (HHKL) (LIPA.18) </option>
 										<option value="lipa_19">LAPORAN MINUTASI PERKARA (LIPA.19)</option>
 										<option value="lipa_20">LAPORAN TINGKAT PENYELESAIAN PERKARA (LIPA.20)</option>
 										<!-- <option value="lipa_21">LAPORAN VERZET TERHADAP PUTUSAN VERSTEK (LIPA.21)</option> -->
