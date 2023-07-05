@@ -32,7 +32,7 @@
 										<option value="lipa_7_b">LAPORAN KEUANGAN PERKARA EKSEKUSI (LIPA.7.B) </option>
 										<option value="lipa_7_c">LAPORAN KEUANGAN PERKARA KONSIGNASI(LIPA.7.C) </option> -->
 										<option value="lipa_8">LAPORAN PERKARA DITERIMA, DICABUT DAN DIPUTUS MENURUT JENIS PERKARA (LIPA.8) </option>
-										<!-- <option value="lipa_9">LAPORAN PERKARA KHUSUS PP. NO.10 TAHUN 1983 JO. PP. NO.45 TAHUN 1990 (LIPA.9) </option> -->
+										<option value="lipa_9">LAPORAN PERKARA KHUSUS PP. NO.10 TAHUN 1983 JO. PP. NO.45 TAHUN 1990 (LIPA.9) </option>
 										<option value="lipa_10">LAPORAN PENYEBAB TERJADINYA PERCERAIAN (LIPA.10) </option>
 										<!-- <option value="lipa_11">LAPORAN PERTANGGUNGJAWABAN UANG IWADL (LIPA.11) </option> -->
 										<option value="lipa_12">LAPORAN MEDIASI (LIPA.12) </option>

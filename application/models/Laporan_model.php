@@ -417,6 +417,44 @@ class Laporan_model extends CI_Model
 		return $hasil->result();
 	}
 	// ------------------------------------------------------------------------
+	// -----------------------------Ambil Data Lipa 9--------------------------
+	public function getLIPA9($bulan, $tahun)
+	{
+		$periode = $tahun . '-' . $bulan;
+		$sql = " SELECT  
+				SUM(CASE WHEN jenis_perkara_id = 341 AND (tanggal_putusan IS NULL OR DATE_FORMAT(tanggal_putusan,'%Y-%m') >='$periode') AND DATE_FORMAT(tanggal_pendaftaran,'%Y-%m')  < '$periode' 
+						THEN 1 ELSE 0 END ) AS sisa_poligami,
+				SUM(CASE WHEN jenis_perkara_id = 341 AND DATE_FORMAT(tanggal_pendaftaran,'%Y-%m')  = '$periode' THEN 1 ELSE 0 END ) AS masuk_poligami,
+				SUM(CASE WHEN jenis_perkara_id = 341 AND (tanggal_putusan IS NOT NULL AND DATE_FORMAT(tanggal_putusan,'%Y-%m') ='$periode')  THEN 1 ELSE 0 END ) AS putus_poligami,
+				SUM(CASE WHEN jenis_perkara_id = 346 AND (tanggal_putusan IS NULL OR DATE_FORMAT(tanggal_putusan,'%Y-%m') >='$periode') AND DATE_FORMAT(tanggal_pendaftaran,'%Y-%m')  < '$periode' 
+						THEN 1 ELSE 0 END ) AS sisa_talak,
+				SUM(CASE WHEN jenis_perkara_id = 346 AND DATE_FORMAT(tanggal_pendaftaran,'%Y-%m')  = '$periode' THEN 1 ELSE 0 END ) AS masuk_talak,
+				SUM(CASE WHEN jenis_perkara_id = 346 AND (tanggal_putusan IS NOT NULL AND DATE_FORMAT(tanggal_putusan,'%Y-%m') ='$periode')  THEN 1 ELSE 0 END) AS putus_talak,
+				SUM(CASE WHEN jenis_perkara_id = 347 AND (tanggal_putusan IS NULL OR DATE_FORMAT(tanggal_putusan,'%Y-%m') >='$periode') AND DATE_FORMAT(tanggal_pendaftaran,'%Y-%m')  < '$periode' 
+						THEN 1 ELSE 0 END) AS sisa_gugat,
+				SUM(CASE WHEN jenis_perkara_id = 347 AND DATE_FORMAT(tanggal_pendaftaran,'%Y-%m')  = '$periode' THEN 1 ELSE 0 END ) AS masuk_gugat,
+				SUM(CASE WHEN jenis_perkara_id = 347 AND tanggal_putusan IS NOT NULL AND DATE_FORMAT(tanggal_putusan,'%Y-%m') ='$periode'  THEN 1 ELSE 0 END) AS putus_gugat,
+				SUM(CASE WHEN statusizin = 1 AND status_pihak = 1 AND tanggal_putusan IS NOT NULL AND DATE_FORMAT(tanggal_putusan,'%Y-%m') ='$periode' THEN 1 ELSE 0 END) AS pemohonizin,
+				SUM(CASE WHEN (statusizin = 0 OR statusizin IS NULL OR statusizin='') AND status_pihak=1 AND tanggal_putusan IS NOT NULL AND DATE_FORMAT(tanggal_putusan,'%Y-%m') ='$periode' THEN 1 ELSE 0 END) AS pemohontidakizin,
+				SUM(CASE WHEN statusizin = 1 AND status_pihak=2 AND tanggal_putusan IS NOT NULL AND DATE_FORMAT(tanggal_putusan,'%Y-%m') ='$periode' THEN 1 ELSE 0 END) AS termohonizin,
+				SUM(CASE WHEN (statusizin = 0 OR statusizin IS NULL OR statusizin='') AND status_pihak=2 AND tanggal_putusan IS NOT NULL AND DATE_FORMAT(tanggal_putusan,'%Y-%m') ='$periode' THEN 1 ELSE 0 END) AS termohontidakizin
+				FROM v_perkara vpk LEFT JOIN (SELECT * FROM 
+								(SELECT p1.perkara_id,p1.pihak_id,p1.nama,p.pekerjaan,izin.status AS statusizin,'1' AS status_pihak 
+								FROM perkara_pihak1 AS p1 LEFT JOIN  pihak AS p ON p1.pihak_id = p.id
+								LEFT JOIN perkara_izin_cerai AS izin ON izin.perkara_id = p1.perkara_id AND p1.pihak_id = izin.pihak_id) AS pihak
+								UNION
+								(SELECT p2.perkara_id,p2.pihak_id,p2.nama,p.pekerjaan,izin.status AS statusizin,'2' AS status_pihak 
+								FROM perkara_pihak2 AS p2 LEFT JOIN  pihak AS p ON p2.pihak_id = p.id
+								LEFT JOIN perkara_izin_cerai AS izin ON izin.perkara_id = p2.perkara_id AND p2.pihak_id = izin.pihak_id)) AS pihaks
+								ON vpk.perkara_id=pihaks.perkara_id
+											
+				WHERE jenis_perkara_id IN (341,347,346) AND pekerjaan IN ('Tentara Nasional Indonesia','Pegawai Negeri Sipil','Pegawai BUMN/BUMD','POLRI')
+				AND DATE_FORMAT(tanggal_pendaftaran,'%Y-%m') <='$periode' 
+				";
+		$hasil = $this->db->query($sql);
+		return $hasil->result();
+	}
+	// ------------------------------------------------------------------------
 	// -----------------------------Ambil Data Lipa 10--------------------------
 	public function getLIPA10($bulan, $tahun)
 	{
