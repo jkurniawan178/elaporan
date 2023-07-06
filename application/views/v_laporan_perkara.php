@@ -44,7 +44,7 @@
 										<option value="lipa_18">LAPORAN PENERIMAAN HAK-HAK KEPANITERAAN LAINNYA (HHKL) (LIPA.18) </option>
 										<option value="lipa_19">LAPORAN MINUTASI PERKARA (LIPA.19)</option>
 										<option value="lipa_20">LAPORAN TINGKAT PENYELESAIAN PERKARA (LIPA.20)</option>
-										<!-- <option value="lipa_21">LAPORAN VERZET TERHADAP PUTUSAN VERSTEK (LIPA.21)</option> -->
+										<option value="lipa_21">LAPORAN VERZET TERHADAP PUTUSAN VERSTEK (LIPA.21)</option>
 										<!-- <option value="lipa_22">LAPORAN PENANGANAN BANTUAN PANGGILAN ATAU PEMBERITAHUAN (LIPA.22)</option> -->
 										<!-- <option value="lipa_23">LAPORAN PERKARA E-COURT (LIPA.23)</option> -->
 										<!-- <option value="lipa_24">LAPORAN PERSIDANGAN ELEKTRONIK (LIPA.24)</option> -->

@@ -631,6 +631,34 @@ class Laporan_model extends CI_Model
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
 	}
+	// ------------------------------------------------------------------------
+	// -----------------------------Ambil Data Lipa 21--------------------------
+	public function getLIPA21($bulan, $tahun)
+	{
+		$periode = $tahun . '-' . $bulan;
+		$sql = " SELECT 
+					vpk.nomor_perkara AS nomor_perkara,
+					vpk.jenis_perkara_nama AS kode_perkara,
+					pv.majelis_hakim_nama AS majelis_hakim,
+					SUBSTRING_INDEX(pv.panitera_pengganti_text,': ',-1) AS panitera_pengganti,
+					DATE_FORMAT(pv.tanggal_pendaftaran_verzet,'%d/%m/%Y') AS penerimaan,
+					DATE_FORMAT(pv.penetapan_majelis_hakim,'%d/%m/%Y') AS pmh,
+					DATE_FORMAT(pv.tanggal_penetapan_sidang_verzet,'%d/%m/%Y') AS phs,
+					DATE_FORMAT(pv.tanggal_sidang_pertama_verzet,'%d/%m/%Y') AS sidang_pertama,
+					DATE_FORMAT(pv.putusan_verzet,'%d/%m/%Y') AS diputus,
+					sp.nama AS jenis_putusan,   
+					CASE WHEN pv.penetapan_majelis_hakim  IS NULL THEN vpk.nomor_perkara  END AS belum_dibagi,
+					CASE WHEN pv.putusan_verzet IS NULL THEN vpk.nomor_perkara END AS belum_putus,
+        			CASE WHEN pv.tanggal_minutasi_verzet IS NULL THEN vpk.nomor_perkara END AS belum_minutasi
+					FROM perkara_verzet pv 
+					LEFT JOIN v_perkara vpk ON pv.perkara_id=vpk.perkara_id
+					LEFT JOIN status_putusan sp ON pv.status_putusan_verzet_id = sp.id        
+					WHERE vpk.jenis_pengadilan=4 AND DATE_FORMAT(pv.tanggal_pendaftaran_verzet,'%Y-%m') < '$periode' AND 
+					(pv.putusan_verzet IS NULL OR DATE_FORMAT(pv.putusan_verzet,'%Y-%m') >= '$periode') 
+				";
+		$hasil = $this->db->query($sql);
+		return $hasil->result();
+	}
 }
 
 /* End of file Laporan_model.php */
