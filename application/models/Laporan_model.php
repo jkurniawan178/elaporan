@@ -665,19 +665,18 @@ class Laporan_model extends CI_Model
 	{
 		$periode = $tahun . '-' . $bulan;
 		$sql_masuk = "  SELECT
-							delegasi_masuk.perkara_id,
+							REPLACE(REPLACE(delegasi_masuk.pn_asal_text, 'PENGADILAN AGAMA', 'PA'),'MAHKAMAH SYAR\'IYAH','MS') AS pa_asal_text,
 							delegasi_masuk.nomor_perkara,
-							REPLACE(REPLACE(delegasi_masuk.pn_asal_text, 'PENGADILAN AGAMA', 'PA'),'MAHKAMAH SYAR\'IYAH','MS') AS pn_asal_text,
-							delegasi_masuk.jenis_delegasi_text,
 							REPLACE(SUBSTRING_INDEX(delegasi_masuk.pihak, '<br>', 1), 'Nama  :', '') AS pihak,
 							delegasi_masuk.nomor_surat,
 							DATE_FORMAT(delegasi_masuk.tgl_surat,'%d/%m/%Y') AS tgl_surat,
 							DATE_FORMAT(delegasi_masuk.tgl_sidang,'%d/%m/%Y') AS tgl_sidang,
-							DATE_FORMAT(delegasi_masuk.tgl_delegasi,'%d/%m/%Y') AS tgl_delegasi,
+							DATE_FORMAT(delegasi_proses_masuk.tgl_surat_diterima,'%d/%m/%Y') AS tgl_surat_diterima,
+							DATE_FORMAT(delegasi_proses_masuk.tgl_penunjukan_jurusita,'%d/%m/%Y') AS tgl_disposisi,
 							DATE_FORMAT(delegasi_proses_masuk.tgl_relaas,'%d/%m/%Y') AS tgl_relaas,
 							DATE_FORMAT(delegasi_proses_masuk.tgl_pengiriman_relaas,'%d/%m/%Y') AS tgl_pengiriman_relaas,
-							DATE_FORMAT(delegasi_proses_masuk.tgl_penunjukan_jurusita,'%d/%m/%Y') AS disposisi,
-							delegasi_proses_masuk.jurusita_nama       
+							delegasi_proses_masuk.jurusita_nama,
+							delegasi_masuk.id_jenis_delegasi       
 						FROM 
 							delegasi_masuk LEFT JOIN delegasi_proses_masuk ON delegasi_proses_masuk.delegasi_id=delegasi_masuk.id 
 						WHERE 
@@ -692,14 +691,14 @@ class Laporan_model extends CI_Model
 							delegasi_keluar.nomor_perkara,
 							REPLACE(SUBSTRING_INDEX(delegasi_keluar.pihak, '<br>', 1), 'Nama  :', '') AS pihak,
 							delegasi_keluar.nomor_surat,
-							DATE_FORMAT(delegasi_keluar.`tgl_surat`,'%d/%m/%Y') AS tgl_surat,
+							DATE_FORMAT(delegasi_keluar.tgl_surat,'%d/%m/%Y') AS tgl_surat,
 							DATE_FORMAT(delegasi_keluar.tgl_sidang,'%d/%m/%Y') AS tgl_sidang,
-							DATE_FORMAT(delegasi_proses_keluar.`tgl_surat_diterima`,'%d/%m/%Y') AS tgl_surat_diterima,
+							DATE_FORMAT(delegasi_proses_keluar.tgl_surat_diterima,'%d/%m/%Y') AS tgl_surat_diterima,
 							DATE_FORMAT(delegasi_proses_keluar.tgl_penunjukan_jurusita,'%d/%m/%Y') AS tgl_disposisi,
 							DATE_FORMAT(delegasi_proses_keluar.tgl_relaas,'%d/%m/%Y') AS tgl_relaas,
 							DATE_FORMAT(delegasi_proses_keluar.tgl_pengiriman_relaas,'%d/%m/%Y') AS tgl_pengiriman_relaas,
 							TRIM(REPLACE(REPLACE(perkara_penetapan.jurusita_text, 'Jurusita:',''), 'Juru Sita Pengganti:','')) AS jurusita_nama,
-							delegasi_keluar.jenis_delegasi_text 
+							delegasi_keluar.id_jenis_delegasi 
 						FROM 
 							delegasi_keluar LEFT JOIN delegasi_proses_keluar ON delegasi_proses_keluar.delegasi_id=delegasi_keluar.id
 							LEFT JOIN perkara_penetapan ON perkara_penetapan.`perkara_id` = delegasi_keluar.`perkara_id`

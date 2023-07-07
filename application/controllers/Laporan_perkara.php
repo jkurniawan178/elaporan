@@ -2129,18 +2129,19 @@ class Laporan_perkara extends CI_Controller
         'allborders' => array(
           'style' => PHPExcel_Style_Border::BORDER_THIN,
         ),
-        'font' => array(
-          'name' => 'Arial Narrow'
-        ),
-        'alignment' => array(
-          'wrap' => true,
-        )
       ),
+      'font' => array(
+        'name' => 'Arial Narrow'
+      ),
+      'alignment' => array(
+        'wrap' => true,
+        'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+        'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+      )
     );
 
     // $obj = json_decode($data, true);
     $no = 1;
-    $no_urut = 1;
     $baseRow = 7;
 
     $objPHPExcel->getActiveSheet()->setCellValue('A2', "PADA " . $settingSIPP['NamaPN']);
@@ -2163,22 +2164,133 @@ class Laporan_perkara extends CI_Controller
         ->setCellValue('J' . $row, $item->tgl_relaas)
         ->setCellValue('K' . $row, $item->tgl_pengiriman_relaas)
         ->setCellValue('L' . $row, $item->jurusita_nama)
-        ->setCellValue('M' . $row, $item->jenis_delegasi_text)
-        ->getRowDimension($row)->setRowHeight(15.75);
+        ->setCellValue('M' . $row, kode_delegasi($item->id_jenis_delegasi))
+        ->getRowDimension($row)->setRowHeight(-1);
 
       //$objPHPExcel->getActiveSheet()->insertNewRowAfter($row); 
       $no++;
     }
 
     $objPHPExcel->getActiveSheet()->getStyle('A7:M' . $row)->applyFromArray($styleArray);
-    $objPHPExcel->getActiveSheet()->getStyle('A7:M' . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-    $objPHPExcel->getActiveSheet()->getStyle('A7:M' . $row)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
     //Delegasi masuk
-    $row = $row + 5;
+    //Tabel Header
+    $row = $row + 3;
     $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, 'B. Bantuan Panggilan Masuk')
       ->getStyle('A' . $row)->getFont()->setBold(true);
     $objPHPExcel->getActiveSheet()->getStyle('A' . $row)->getAlignment()->setWrapText(false);
+
+    $row = $row + 1;
+    $objPHPExcel->getActiveSheet()
+      ->setCellValue('A' . $row, 'No')
+      ->setCellValue('B' . $row, 'Nama Pengadilan')
+      ->setCellValue('C' . $row, 'No. Perkara')
+      ->setCellValue('D' . $row, 'Nama Pihak')
+      ->setCellValue('E' . $row, 'No. Surat')
+      ->setCellValue('F' . $row, 'Tgl Surat')
+      ->setCellValue('G' . $row, 'Tgl Sidang')
+      ->setCellValue('H' . $row, 'Tgl Terima')
+      ->setCellValue('I' . $row, 'Tgl Disposisi')
+      ->setCellValue('J' . $row, 'Tgl Relaas')
+      ->setCellValue('K' . $row, 'Tgl Pengembalian')
+      ->setCellValue('L' . $row, 'JS/JSP')
+      ->setCellValue('M' . $row, 'KET')
+      ->getRowDimension($row)->setRowHeight(36.75);
+
+    $styleHeader = array(
+      'borders' => array(
+        'allborders' => array(
+          'style' => PHPExcel_Style_Border::BORDER_THIN,
+        ),
+      ),
+      'font' => array(
+        'name' => 'Arial Narrow',
+        'bold' => true,
+      ),
+      'alignment' => array(
+        'wrap' => true,
+        'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+        'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+      ),
+      'fill' => array(
+        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+        'color' => array('rgb' => '92d050')
+      )
+    );
+    $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':M' . $row)->applyFromArray($styleHeader);
+
+    //Kolom SubHeader
+    $row = $row + 1;
+    $objPHPExcel->getActiveSheet()
+      ->setCellValue('A' . $row, '1')
+      ->setCellValue('B' . $row, '2')
+      ->setCellValue('C' . $row, '3')
+      ->setCellValue('D' . $row, '4')
+      ->setCellValue('E' . $row, '5')
+      ->setCellValue('F' . $row, '6')
+      ->setCellValue('G' . $row, '7')
+      ->setCellValue('H' . $row, '8')
+      ->setCellValue('I' . $row, '9')
+      ->setCellValue('J' . $row, '10')
+      ->setCellValue('K' . $row, '11')
+      ->setCellValue('L' . $row, '12')
+      ->setCellValue('M' . $row, '13')
+      ->getRowDimension($row)->setRowHeight(15.75);
+
+    $styleHeader = array(
+      'borders' => array(
+        'allborders' => array(
+          'style' => PHPExcel_Style_Border::BORDER_THIN,
+        ),
+      ),
+      'font' => array(
+        'name' => 'Arial Narrow',
+        'bold' => true,
+        'size' => 10,
+        'italic' => true,
+      ),
+      'alignment' => array(
+        'wrap' => true,
+        'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+        'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+      ),
+      'fill' => array(
+        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+        'color' => array('rgb' => 'f4b084')
+      ),
+    );
+    $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':M' . $row)->applyFromArray($styleHeader);
+    $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':M' . $row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_GENERAL);
+
+
+    //Delegasi Masuk
+    $no_urut = 1;
+    $baseRow_masuk = $row;
+
+    foreach ($masuk as $item) {
+      $row = $baseRow_masuk + $no_urut;
+      $objPHPExcel->getActiveSheet()
+        ->setCellValue('A' . $row, $no_urut)
+        ->setCellValue('B' . $row, $item->pa_asal_text)
+        ->setCellValue('C' . $row, $item->nomor_perkara)
+        ->setCellValue('D' . $row, $item->pihak)
+        ->setCellValue('E' . $row, $item->nomor_surat)
+        ->setCellValue('F' . $row, $item->tgl_surat)
+        ->setCellValue('G' . $row, $item->tgl_sidang)
+        ->setCellValue('H' . $row, $item->tgl_surat_diterima)
+        ->setCellValue('I' . $row, $item->tgl_disposisi)
+        ->setCellValue('J' . $row, $item->tgl_relaas)
+        ->setCellValue('K' . $row, $item->tgl_pengiriman_relaas)
+        ->setCellValue('L' . $row, $item->jurusita_nama)
+        ->setCellValue('M' . $row, kode_delegasi($item->id_jenis_delegasi))
+        ->getRowDimension($row)->setRowHeight(-1);
+
+      //$objPHPExcel->getActiveSheet()->insertNewRowAfter($row); 
+      $no_urut++;
+    }
+
+    $objPHPExcel->getActiveSheet()->getStyle('A' . $baseRow_masuk . ':M' . $row)->applyFromArray($styleArray);
+
 
     //tanda tangan 
     $kolom_kpa = "C";
@@ -2218,105 +2330,6 @@ class Laporan_perkara extends CI_Controller
 
     //fungsi tanda tangan 
     //tanda tangan
-
-
-    // //rekap 
-    // $baris_rekap = $row + 3;
-    // // $baris_rekap_awal = $baris_rekap;
-    // $row = $baris_rekap;
-    // //nambah 2 baris		
-    // $objPHPExcel->getActiveSheet()
-    //   ->setCellValue('B' . $baris_rekap,  "Rekapitulasi :")
-    //   ->setCellValue('C' . $baris_rekap,  "G")
-    //   ->setCellValue('D' . $baris_rekap,  "P")
-    //   ->setCellValue('E' . $baris_rekap,  "G.S")
-    //   ->getRowDimension($baris_rekap)->setRowHeight(20);
-    // $objPHPExcel->getActiveSheet()->getStyle('B' . $baris_rekap . ':E' . $baris_rekap)->applyFromArray($styleArray);
-    // $objPHPExcel->getActiveSheet()->getStyle('B' . $baris_rekap)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    // //rekap sisa bulan lalu
-    // $baris_rekap++;
-    // $row = $baris_rekap;
-    // //nambah 1 baris		
-    // $objPHPExcel->getActiveSheet()
-    //   ->setCellValue('B' . $baris_rekap,  "Sisa Bulan Lalu")
-    //   ->setCellValue('C' . $baris_rekap,  $rekap['sisa_lalu_G'])
-    //   ->setCellValue('D' . $baris_rekap,  $rekap['sisa_lalu_P'])
-    //   ->setCellValue('E' . $baris_rekap,  $rekap['sisa_lalu_GS'])
-    //   ->getRowDimension($baris_rekap)->setRowHeight(20);
-    // $objPHPExcel->getActiveSheet()->getStyle('B' . $baris_rekap . ':E' . $baris_rekap)->applyFromArray($styleArray);
-    // $objPHPExcel->getActiveSheet()->getStyle('B' . $baris_rekap)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    // //rekap diterima bulan ini
-    // $baris_rekap++;
-    // $row = $baris_rekap;
-    // //nambah 1 baris		
-    // $objPHPExcel->getActiveSheet()
-    //   ->setCellValue('B' . $baris_rekap,  "Terima Bulan ini")
-    //   ->setCellValue('C' . $baris_rekap,  $rekap['terima_G'])
-    //   ->setCellValue('D' . $baris_rekap,  $rekap['terima_P'])
-    //   ->setCellValue('E' . $baris_rekap,  $rekap['terima_GS'])
-    //   ->getRowDimension($baris_rekap)->setRowHeight(20);
-    // $objPHPExcel->getActiveSheet()->getStyle('B' . $baris_rekap . ':E' . $baris_rekap)->applyFromArray($styleArray);
-    // $objPHPExcel->getActiveSheet()->getStyle('B' . $baris_rekap)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    // //rekap putus
-    // $baris_rekap++;
-    // $row = $baris_rekap;
-    // //nambah 1 baris		
-    // $objPHPExcel->getActiveSheet()
-    //   ->setCellValue('B' . $baris_rekap,  "Putus")
-    //   ->setCellValue('C' . $baris_rekap,  $rekap['putus_G'])
-    //   ->setCellValue('D' . $baris_rekap,  $rekap['putus_P'])
-    //   ->setCellValue('E' . $baris_rekap,  $rekap['putus_GS'])
-    //   ->getRowDimension($baris_rekap)->setRowHeight(20);
-    // $objPHPExcel->getActiveSheet()->getStyle('B' . $baris_rekap . ':E' . $baris_rekap)->applyFromArray($styleArray);
-    // $objPHPExcel->getActiveSheet()->getStyle('B' . $baris_rekap)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-
-    // //rekap sisa akhir
-    // $baris_rekap++;
-    // $row = $baris_rekap;
-    // $Sisa_G = $rekap['sisa_lalu_G'] + $rekap['terima_G'] - $rekap['putus_G'];
-    // $Sisa_P = $rekap['sisa_lalu_P'] + $rekap['terima_P'] - $rekap['putus_P'];
-    // $Sisa_GS = $rekap['sisa_lalu_GS'] + $rekap['terima_GS'] - $rekap['putus_GS'];
-    // $objPHPExcel->getActiveSheet()
-    //   ->setCellValue('B' . $baris_rekap,  "Sisa Akhir")
-    //   ->setCellValue('C' . $baris_rekap, $Sisa_G)
-    //   ->setCellValue('D' . $baris_rekap, $Sisa_P)
-    //   ->setCellValue('E' . $baris_rekap, $Sisa_GS)
-    //   ->getRowDimension($baris_rekap)->setRowHeight(20);
-    // $objPHPExcel->getActiveSheet()->getStyle('B' . $baris_rekap . ':E' . $baris_rekap)->applyFromArray($styleArray);
-    // $objPHPExcel->getActiveSheet()->getStyle('B' . $baris_rekap)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    // // rekap Belum dibagi
-    // $baris_rekap++;
-    // $row = $baris_rekap;
-    // $objPHPExcel->getActiveSheet()
-    //   ->setCellValue('B' . $baris_rekap,  "a.Belum Dibagi")
-    //   ->setCellValue('C' . $baris_rekap, $rekap['belumbagi_G'])
-    //   ->setCellValue('D' . $baris_rekap, $rekap['belumbagi_P'])
-    //   ->setCellValue('E' . $baris_rekap, $rekap['belumbagi_GS'])
-    //   ->getRowDimension($baris_rekap)->setRowHeight(20);
-    // $objPHPExcel->getActiveSheet()->getStyle('B' . $baris_rekap . ':E' . $baris_rekap)->applyFromArray($styleArray);
-    // $objPHPExcel->getActiveSheet()->getStyle('B' . $baris_rekap)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    // //rekap belum diputus
-    // $baris_rekap++;
-    // $row = $baris_rekap;
-    // $BelumPutus_G = $rekap['sisa_lalu_G'] + $rekap['terima_G'] - $rekap['putus_G'];
-    // $BelumPutus_P = $rekap['sisa_lalu_P'] + $rekap['terima_P'] - $rekap['putus_P'];
-    // $BelumPutus_GS = $rekap['sisa_lalu_GS'] + $rekap['terima_GS'] - $rekap['putus_GS'];
-    // $objPHPExcel->getActiveSheet()
-    //   ->setCellValue('B' . $baris_rekap,  "b.Belum Diputus")
-    //   ->setCellValue('C' . $baris_rekap, $BelumPutus_G)
-    //   ->setCellValue('D' . $baris_rekap, $BelumPutus_P)
-    //   ->setCellValue('E' . $baris_rekap, $BelumPutus_GS)
-    //   ->getRowDimension($baris_rekap)->setRowHeight(20);
-    // $objPHPExcel->getActiveSheet()->getStyle('B' . $baris_rekap . ':E' . $baris_rekap)->applyFromArray($styleArray);
-    // $objPHPExcel->getActiveSheet()->getStyle('B' . $baris_rekap)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    //rekap
     $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
 
     return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
