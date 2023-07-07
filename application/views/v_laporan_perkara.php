@@ -19,7 +19,7 @@
 						<form id="form-laporan" data-parsley-validate class="form-horizontal form-label-left">
 							<div class="item form-group">
 								<label class="col-form-label col-md-3 col-sm-3 label-align">Jenis Laporan</label>
-								<div class="col-md-6 col-sm-6 ">
+								<div class="col-md-8 col-sm-8 ">
 									<select class="form-control" id="jenis_laporan">
 										<option value="-" disabled selected>====== Silahkan Pilih Jenis Laporan ======</option>
 										<option value="lipa_1">LAPORAN KEADAAN PERKARA (LIPA.1) </option>
@@ -45,7 +45,7 @@
 										<option value="lipa_19">LAPORAN MINUTASI PERKARA (LIPA.19)</option>
 										<option value="lipa_20">LAPORAN TINGKAT PENYELESAIAN PERKARA (LIPA.20)</option>
 										<option value="lipa_21">LAPORAN VERZET TERHADAP PUTUSAN VERSTEK (LIPA.21)</option>
-										<!-- <option value="lipa_22">LAPORAN PENANGANAN BANTUAN PANGGILAN ATAU PEMBERITAHUAN (LIPA.22)</option> -->
+										<option value="lipa_22">LAPORAN PENANGANAN BANTUAN PANGGILAN ATAU PEMBERITAHUAN (LIPA.22)</option>
 										<!-- <option value="lipa_23">LAPORAN PERKARA E-COURT (LIPA.23)</option> -->
 										<!-- <option value="lipa_24">LAPORAN PERSIDANGAN ELEKTRONIK (LIPA.24)</option> -->
 									</select>

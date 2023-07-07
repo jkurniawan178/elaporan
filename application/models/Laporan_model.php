@@ -659,6 +659,66 @@ class Laporan_model extends CI_Model
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
 	}
+	// ------------------------------------------------------------------------
+	// -----------------------------Ambil Data Lipa 22--------------------------
+	public function getLIPA22($bulan, $tahun)
+	{
+		$periode = $tahun . '-' . $bulan;
+		$sql_masuk = "  SELECT
+							REPLACE(REPLACE(delegasi_masuk.pn_asal_text, 'PENGADILAN AGAMA', 'PA'),'MAHKAMAH SYAR\'IYAH','MS') AS pa_asal_text,
+							delegasi_masuk.nomor_perkara,
+							REPLACE(SUBSTRING_INDEX(delegasi_masuk.pihak, '<br>', 1), 'Nama  :', '') AS pihak,
+							delegasi_masuk.nomor_surat,
+							DATE_FORMAT(delegasi_masuk.tgl_surat,'%d/%m/%Y') AS tgl_surat,
+							DATE_FORMAT(delegasi_masuk.tgl_sidang,'%d/%m/%Y') AS tgl_sidang,
+							DATE_FORMAT(delegasi_proses_masuk.tgl_surat_diterima,'%d/%m/%Y') AS tgl_surat_diterima,
+							DATE_FORMAT(delegasi_proses_masuk.tgl_penunjukan_jurusita,'%d/%m/%Y') AS tgl_disposisi,
+							DATE_FORMAT(delegasi_proses_masuk.tgl_relaas,'%d/%m/%Y') AS tgl_relaas,
+							DATE_FORMAT(delegasi_proses_masuk.tgl_pengiriman_relaas,'%d/%m/%Y') AS tgl_pengiriman_relaas,
+							delegasi_proses_masuk.jurusita_nama,
+							delegasi_masuk.id_jenis_delegasi       
+						FROM 
+							delegasi_masuk LEFT JOIN delegasi_proses_masuk ON delegasi_proses_masuk.delegasi_id=delegasi_masuk.id 
+						WHERE 
+							DATE_FORMAT(delegasi_masuk.tgl_delegasi,'%Y-%m')<='$periode'
+							AND
+							(DATE_FORMAT(delegasi_proses_masuk.tgl_pengiriman_relaas,'%Y-%m')>='$periode'
+							OR  
+							delegasi_masuk.status_kirim <> 1) 
+						";
+		$sql_keluar = " SELECT
+							REPLACE(REPLACE(delegasi_keluar.pn_tujuan_text, 'PENGADILAN AGAMA', 'PA'),'MAHKAMAH SYAR\'IYAH','MS') AS pa_tujuan_text,
+							delegasi_keluar.nomor_perkara,
+							REPLACE(SUBSTRING_INDEX(delegasi_keluar.pihak, '<br>', 1), 'Nama  :', '') AS pihak,
+							delegasi_keluar.nomor_surat,
+							DATE_FORMAT(delegasi_keluar.tgl_surat,'%d/%m/%Y') AS tgl_surat,
+							DATE_FORMAT(delegasi_keluar.tgl_sidang,'%d/%m/%Y') AS tgl_sidang,
+							DATE_FORMAT(delegasi_proses_keluar.tgl_surat_diterima,'%d/%m/%Y') AS tgl_surat_diterima,
+							DATE_FORMAT(delegasi_proses_keluar.tgl_penunjukan_jurusita,'%d/%m/%Y') AS tgl_disposisi,
+							DATE_FORMAT(delegasi_proses_keluar.tgl_relaas,'%d/%m/%Y') AS tgl_relaas,
+							DATE_FORMAT(delegasi_proses_keluar.tgl_pengiriman_relaas,'%d/%m/%Y') AS tgl_pengiriman_relaas,
+							TRIM(REPLACE(REPLACE(perkara_penetapan.jurusita_text, 'Jurusita:',''), 'Juru Sita Pengganti:','')) AS jurusita_nama,
+							delegasi_keluar.id_jenis_delegasi 
+						FROM 
+							delegasi_keluar LEFT JOIN delegasi_proses_keluar ON delegasi_proses_keluar.delegasi_id=delegasi_keluar.id
+							LEFT JOIN perkara_penetapan ON perkara_penetapan.`perkara_id` = delegasi_keluar.`perkara_id`
+						WHERE 
+							DATE_FORMAT(delegasi_keluar.tgl_delegasi,'%Y-%m')='2023-01'
+							AND
+							(DATE_FORMAT(delegasi_proses_keluar.tgl_pengiriman_relaas,'%Y-%m')>='2023-01'
+							OR  
+							delegasi_proses_keluar.`tgl_pengiriman_relaas` IS NULL) 
+						";
+
+		$hasil_masuk = $this->db->query($sql_masuk);
+		$hasil_keluar = $this->db->query($sql_keluar);
+		$response = array(
+			'delegasi_masuk' => $hasil_masuk->result(),
+			'delegasi_keluar' => $hasil_keluar->result()
+		);
+
+		return $response;
+	}
 }
 
 /* End of file Laporan_model.php */
