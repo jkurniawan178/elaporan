@@ -26,7 +26,7 @@ class Laporan_perkara extends CI_Controller
     parent::__construct();
     $this->load->model('laporan_model');
     $this->load->library('Config_library');
-    $this->load->model('sidkel_model');
+    // $this->load->model('sidkel_model');
   }
   //-----------------------------------------------------------------------------------------------
   public function index()
@@ -205,6 +205,56 @@ class Laporan_perkara extends CI_Controller
     return $response;
   }
   //----------------------------------------------------------------------------------------------
+  //--------------------------------Function Write Kolom Ttd--------------------------------------
+  protected function write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan)
+  {
+    $styleFont = array(
+      'font' => array(
+        'name' => 'Arial Narrow',
+        'size' => '12'
+      ),
+    );
+
+    $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
+
+    $KetuaPNNama = $settingSIPP['KetuaPNNama'];
+    $PanSekNama = $settingSIPP['PanSekNama'];
+    $KetuaPNNIP = $settingSIPP['KetuaPNNIP'];
+    $PanSekNIP = $settingSIPP['PanSekNIP'];
+
+
+    //fungsi tanda tangan
+    $objPHPExcel->getActiveSheet()
+      ->setCellValue($kolom_kpa . $row, "Mengetahui")
+      ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
+      ->getRowDimension($row)->setRowHeight(20);
+
+    $row++;
+    $objPHPExcel->getActiveSheet()
+      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN']) . ','))
+      ->setCellValue($kolom_pansek . $row, "Panitera, ")
+      ->getRowDimension($row)->setRowHeight(20);
+    $row = $row + 5;
+    $objPHPExcel->getActiveSheet()
+      ->setCellValue($kolom_kpa . $row, $KetuaPNNama)
+      ->setCellValue($kolom_pansek . $row, $PanSekNama)
+      ->getRowDimension($row)->setRowHeight(20);
+    $row++;
+    $objPHPExcel->getActiveSheet()
+      ->setCellValue($kolom_kpa . $row, "NIP. " . $KetuaPNNIP)
+      ->setCellValue($kolom_pansek . $row, "NIP. " . $PanSekNIP)
+      ->getRowDimension($row)->setRowHeight(20);
+    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setWrapText(false);
+    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->applyFromArray($styleFont);
+    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+
+    //fungsi tanda tangan 
+    //tanda tangan
+
+    return $row;
+  }
+
+  //----------------------------------------------------------------------------------------------
   //--------------------------------Export Data Lipa 1 ke Excel-----------------------------------
   protected function export_excel_lipa1($data, $rekap, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan)
   {
@@ -224,14 +274,14 @@ class Laporan_perkara extends CI_Controller
       'borders' => array(
         'allborders' => array(
           'style' => PHPExcel_Style_Border::BORDER_THIN,
-        ),
-        'font' => array(
-          'name' => 'Arial Narrow'
-        ),
-        'alignment' => array(
-          'wrap' => true,
         )
       ),
+      'font' => array(
+        'name' => 'Arial Narrow'
+      ),
+      'alignment' => array(
+        'wrap' => true,
+      )
     );
 
     // $obj = json_decode($data, true);
@@ -281,42 +331,11 @@ class Laporan_perkara extends CI_Controller
     //tanda tangan 
     $kolom_kpa = "C";
     $kolom_pansek = "I";
-    $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
-
-    $KetuaPNNama = $settingSIPP['KetuaPNNama'];
-    $PanSekNama = $settingSIPP['PanSekNama'];
-    $KetuaPNNIP = $settingSIPP['KetuaPNNIP'];
-    $PanSekNIP = $settingSIPP['PanSekNIP'];
     $row = $row + 3;
     $row_awal_ttd = $row;
 
-    //fungsi tanda tangan
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Mengetahui")
-      ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
-      ->getRowDimension($row)->setRowHeight(20);
-
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN']) . ','))
-      ->setCellValue($kolom_pansek . $row, "Panitera, ")
-      ->getRowDimension($row)->setRowHeight(20);
-    $row = $row + 5;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, $KetuaPNNama)
-      ->setCellValue($kolom_pansek . $row, $PanSekNama)
-      ->getRowDimension($row)->setRowHeight(20);
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "NIP. " . $KetuaPNNIP)
-      ->setCellValue($kolom_pansek . $row, "NIP. " . $PanSekNIP)
-      ->getRowDimension($row)->setRowHeight(20);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setWrapText(false);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    //fungsi tanda tangan 
-    //tanda tangan
-
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
 
     //rekap 
     $baris_rekap = $row + 3;
@@ -439,14 +458,14 @@ class Laporan_perkara extends CI_Controller
       'borders' => array(
         'allborders' => array(
           'style' => PHPExcel_Style_Border::BORDER_THIN,
-        ),
-        'font' => array(
-          'name' => 'Arial Narrow'
-        ),
-        'alignment' => array(
-          'wrap' => true,
         )
       ),
+      'font' => array(
+        'name' => 'Arial Narrow'
+      ),
+      'alignment' => array(
+        'wrap' => true,
+      )
     );
 
     $obj = json_decode($data, true);
@@ -484,41 +503,13 @@ class Laporan_perkara extends CI_Controller
     //tanda tangan 
     $kolom_kpa = "C";
     $kolom_pansek = "I";
-    $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
-
-    $KetuaPNNama = $settingSIPP['KetuaPNNama'];
-    $PanSekNama = $settingSIPP['PanSekNama'];
-    $KetuaPNNIP = $settingSIPP['KetuaPNNIP'];
-    $PanSekNIP = $settingSIPP['PanSekNIP'];
     $row = $row + 3;
     $row_awal_ttd = $row;
     //fungsi tanda tangan
 
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Mengetahui")
-      ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
-      ->getRowDimension($row)->setRowHeight(20);
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
 
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN']) . ','))
-      ->setCellValue($kolom_pansek . $row, "Panitera, ")
-      ->getRowDimension($row)->setRowHeight(20);
-    $row = $row + 5;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, $KetuaPNNama)
-      ->setCellValue($kolom_pansek . $row, $PanSekNama)
-      ->getRowDimension($row)->setRowHeight(20);
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "NIP. " . $KetuaPNNIP)
-      ->setCellValue($kolom_pansek . $row, "NIP. " . $PanSekNIP)
-      ->getRowDimension($row)->setRowHeight(20);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setWrapText(false);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    //fungsi tanda tangan 
-    //tanda tangan 
     $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
 
     return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
@@ -543,14 +534,15 @@ class Laporan_perkara extends CI_Controller
       'borders' => array(
         'allborders' => array(
           'style' => PHPExcel_Style_Border::BORDER_THIN,
-        ),
-        'font' => array(
-          'name' => 'Arial Narrow'
-        ),
-        'alignment' => array(
-          'wrap' => true,
         )
       ),
+      'font' => array(
+        'name' => 'Arial Narrow',
+        'size' => '12'
+      ),
+      'alignment' => array(
+        'wrap' => true,
+      )
     );
 
     $obj = json_decode($data, true);
@@ -585,43 +577,14 @@ class Laporan_perkara extends CI_Controller
     $objPHPExcel->getActiveSheet()->getStyle('A10:K' . $row)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
     //tanda tangan 
-    $kolom_kpa = "C";
-    $kolom_pansek = "I";
-    $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
-
-    $KetuaPNNama = $settingSIPP['KetuaPNNama'];
-    $PanSekNama = $settingSIPP['PanSekNama'];
-    $KetuaPNNIP = $settingSIPP['KetuaPNNIP'];
-    $PanSekNIP = $settingSIPP['PanSekNIP'];
+    $kolom_kpa = "B";
+    $kolom_pansek = "H";
     $row = $row + 3;
     $row_awal_ttd = $row;
-    //fungsi tanda tangan
 
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Mengetahui")
-      ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
-      ->getRowDimension($row)->setRowHeight(20);
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
 
-
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN'] . ',')))
-      ->setCellValue($kolom_pansek . $row, "Panitera,")
-      ->getRowDimension($row)->setRowHeight(20);
-    $row = $row + 5;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, $KetuaPNNama)
-      ->setCellValue($kolom_pansek . $row, $PanSekNama)
-      ->getRowDimension($row)->setRowHeight(20);
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "NIP. " . $KetuaPNNIP)
-      ->setCellValue($kolom_pansek . $row, "NIP. " . $PanSekNIP)
-      ->getRowDimension($row)->setRowHeight(20);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setWrapText(false);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    //fungsi tanda tangan 
     //tanda tangan 
     $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
 
@@ -647,14 +610,15 @@ class Laporan_perkara extends CI_Controller
       'borders' => array(
         'allborders' => array(
           'style' => PHPExcel_Style_Border::BORDER_THIN,
-        ),
-        'font' => array(
-          'name' => 'Arial Narrow'
-        ),
-        'alignment' => array(
-          'wrap' => true,
         )
       ),
+      'font' => array(
+        'name' => 'Arial Narrow',
+        'size' => '12'
+      ),
+      'alignment' => array(
+        'wrap' => true,
+      )
     );
 
     $obj = json_decode($data, true);
@@ -690,42 +654,13 @@ class Laporan_perkara extends CI_Controller
     //tanda tangan 
     $kolom_kpa = "C";
     $kolom_pansek = "H";
-    $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
-
-    $KetuaPNNama = $settingSIPP['KetuaPNNama'];
-    $PanSekNama = $settingSIPP['PanSekNama'];
-    $KetuaPNNIP = $settingSIPP['KetuaPNNIP'];
-    $PanSekNIP = $settingSIPP['PanSekNIP'];
     $row = $row + 3;
     $row_awal_ttd = $row;
     //fungsi tanda tangan
 
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Mengetahui")
-      ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
-      ->getRowDimension($row)->setRowHeight(20);
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
 
-
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN'] . ',')))
-      ->setCellValue($kolom_pansek . $row, "Panitera,")
-      ->getRowDimension($row)->setRowHeight(20);
-    $row = $row + 5;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, $KetuaPNNama)
-      ->setCellValue($kolom_pansek . $row, $PanSekNama)
-      ->getRowDimension($row)->setRowHeight(20);
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "NIP. " . $KetuaPNNIP)
-      ->setCellValue($kolom_pansek . $row, "NIP. " . $PanSekNIP)
-      ->getRowDimension($row)->setRowHeight(20);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setWrapText(false);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    //fungsi tanda tangan 
-    //tanda tangan 
     $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
 
     return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
@@ -750,14 +685,15 @@ class Laporan_perkara extends CI_Controller
       'borders' => array(
         'allborders' => array(
           'style' => PHPExcel_Style_Border::BORDER_THIN,
-        ),
-        'font' => array(
-          'name' => 'Arial Narrow'
-        ),
-        'alignment' => array(
-          'wrap' => true,
         )
       ),
+      'font' => array(
+        'name' => 'Arial Narrow',
+        'size' => '12'
+      ),
+      'alignment' => array(
+        'wrap' => true,
+      )
     );
 
     $obj = json_decode($data, true);
@@ -797,42 +733,13 @@ class Laporan_perkara extends CI_Controller
     //tanda tangan 
     $kolom_kpa = "C";
     $kolom_pansek = "J";
-    $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
 
-    $KetuaPNNama = $settingSIPP['KetuaPNNama'];
-    $PanSekNama = $settingSIPP['PanSekNama'];
-    $KetuaPNNIP = $settingSIPP['KetuaPNNIP'];
-    $PanSekNIP = $settingSIPP['PanSekNIP'];
     $row = $row + 3;
     $row_awal_ttd = $row;
-    //fungsi tanda tangan
 
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Mengetahui")
-      ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
-      ->getRowDimension($row)->setRowHeight(20);
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
 
-
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN'] . ',')))
-      ->setCellValue($kolom_pansek . $row, "Panitera,")
-      ->getRowDimension($row)->setRowHeight(20);
-    $row = $row + 5;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, $KetuaPNNama)
-      ->setCellValue($kolom_pansek . $row, $PanSekNama)
-      ->getRowDimension($row)->setRowHeight(20);
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "NIP. " . $KetuaPNNIP)
-      ->setCellValue($kolom_pansek . $row, "NIP. " . $PanSekNIP)
-      ->getRowDimension($row)->setRowHeight(20);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setWrapText(false);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    //fungsi tanda tangan 
-    //tanda tangan 
     $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
 
     return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
@@ -857,14 +764,15 @@ class Laporan_perkara extends CI_Controller
       'borders' => array(
         'allborders' => array(
           'style' => PHPExcel_Style_Border::BORDER_THIN,
-        ),
-        'font' => array(
-          'name' => 'Arial Narrow'
-        ),
-        'alignment' => array(
-          'wrap' => true,
         )
       ),
+      'font' => array(
+        'name' => 'Arial Narrow',
+        'size' => '12'
+      ),
+      'alignment' => array(
+        'wrap' => true,
+      )
     );
 
     $obj = json_decode($data, true);
@@ -906,42 +814,11 @@ class Laporan_perkara extends CI_Controller
     //tanda tangan 
     $kolom_kpa = "C";
     $kolom_pansek = "M";
-    $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
-
-    $KetuaPNNama = $settingSIPP['KetuaPNNama'];
-    $PanSekNama = $settingSIPP['PanSekNama'];
-    $KetuaPNNIP = $settingSIPP['KetuaPNNIP'];
-    $PanSekNIP = $settingSIPP['PanSekNIP'];
     $row = $row + 3;
     $row_awal_ttd = $row;
-    //fungsi tanda tangan
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
 
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Mengetahui")
-      ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
-      ->getRowDimension($row)->setRowHeight(20);
-
-
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN'] . ',')))
-      ->setCellValue($kolom_pansek . $row, "Panitera,")
-      ->getRowDimension($row)->setRowHeight(20);
-    $row = $row + 5;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, $KetuaPNNama)
-      ->setCellValue($kolom_pansek . $row, $PanSekNama)
-      ->getRowDimension($row)->setRowHeight(20);
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "NIP. " . $KetuaPNNIP)
-      ->setCellValue($kolom_pansek . $row, "NIP. " . $PanSekNIP)
-      ->getRowDimension($row)->setRowHeight(20);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setWrapText(false);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    //fungsi tanda tangan 
-    //tanda tangan 
     $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
 
     return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
@@ -966,14 +843,15 @@ class Laporan_perkara extends CI_Controller
       'borders' => array(
         'allborders' => array(
           'style' => PHPExcel_Style_Border::BORDER_THIN,
-        ),
-        'font' => array(
-          'name' => 'Arial Narrow'
-        ),
-        'alignment' => array(
-          'wrap' => true,
         )
       ),
+      'font' => array(
+        'name' => 'Arial Narrow',
+        'size' => '12'
+      ),
+      'alignment' => array(
+        'wrap' => true,
+      )
     );
 
     $obj = json_decode($data, true);
@@ -1031,42 +909,11 @@ class Laporan_perkara extends CI_Controller
     //tanda tangan 
     $kolom_kpa = "C";
     $kolom_pansek = "M";
-    $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
-
-    $KetuaPNNama = $settingSIPP['KetuaPNNama'];
-    $PanSekNama = $settingSIPP['PanSekNama'];
-    $KetuaPNNIP = $settingSIPP['KetuaPNNIP'];
-    $PanSekNIP = $settingSIPP['PanSekNIP'];
     $row = $row + 3;
     $row_awal_ttd = $row;
-    //fungsi tanda tangan
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
 
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Mengetahui")
-      ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
-      ->getRowDimension($row)->setRowHeight(20);
-
-
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN'] . ',')))
-      ->setCellValue($kolom_pansek . $row, "Panitera,")
-      ->getRowDimension($row)->setRowHeight(20);
-    $row = $row + 4;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, $KetuaPNNama)
-      ->setCellValue($kolom_pansek . $row, $PanSekNama)
-      ->getRowDimension($row)->setRowHeight(20);
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "NIP. " . $KetuaPNNIP)
-      ->setCellValue($kolom_pansek . $row, "NIP. " . $PanSekNIP)
-      ->getRowDimension($row)->setRowHeight(20);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setWrapText(false);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    //fungsi tanda tangan 
-    //tanda tangan 
     $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
 
     return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
@@ -1088,17 +935,18 @@ class Laporan_perkara extends CI_Controller
     $objPHPExcel = $objReader->load(FCPATH . "new_templates/" . $jenis_laporan . ".xls");
 
     $styleArray = array(
-      'borders' => array(
-        // 'allborders' => array(
-        //   'style' => PHPExcel_Style_Border::BORDER_THIN,
-        // ),
-        'font' => array(
-          'name' => 'Arial Narrow'
-        ),
-        'alignment' => array(
-          'wrap' => true,
-        )
+      // 'borders' => array(
+      //   'allborders' => array(
+      //     'style' => PHPExcel_Style_Border::BORDER_THIN,
+      //   )
+      // ),
+      'font' => array(
+        'name' => 'Arial Narrow',
+        'size' => '12'
       ),
+      'alignment' => array(
+        'wrap' => true,
+      )
     );
 
     $obj = json_decode($data, true);
@@ -1145,42 +993,11 @@ class Laporan_perkara extends CI_Controller
     //tanda tangan 
     $kolom_kpa = "D";
     $kolom_pansek = "P";
-    $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
-
-    $KetuaPNNama = $settingSIPP['KetuaPNNama'];
-    $PanSekNama = $settingSIPP['PanSekNama'];
-    $KetuaPNNIP = $settingSIPP['KetuaPNNIP'];
-    $PanSekNIP = $settingSIPP['PanSekNIP'];
     $row = $row + 3;
     $row_awal_ttd = $row;
-    //fungsi tanda tangan
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
 
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Mengetahui")
-      ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
-      ->getRowDimension($row)->setRowHeight(20);
-
-
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN'] . ',')))
-      ->setCellValue($kolom_pansek . $row, "Panitera,")
-      ->getRowDimension($row)->setRowHeight(20);
-    $row = $row + 5;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, $KetuaPNNama)
-      ->setCellValue($kolom_pansek . $row, $PanSekNama)
-      ->getRowDimension($row)->setRowHeight(20);
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "NIP. " . $KetuaPNNIP)
-      ->setCellValue($kolom_pansek . $row, "NIP. " . $PanSekNIP)
-      ->getRowDimension($row)->setRowHeight(20);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setWrapText(false);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    //fungsi tanda tangan 
-    //tanda tangan 
     $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
 
     return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
@@ -1202,17 +1019,18 @@ class Laporan_perkara extends CI_Controller
     $objPHPExcel = $objReader->load(FCPATH . "new_templates/" . $jenis_laporan . ".xls");
 
     $styleArray = array(
-      'borders' => array(
-        // 'allborders' => array(
-        //   'style' => PHPExcel_Style_Border::BORDER_THIN,
-        // ),
-        'font' => array(
-          'name' => 'Arial Narrow'
-        ),
-        'alignment' => array(
-          'wrap' => true,
-        )
+      // 'borders' => array(
+      //   'allborders' => array(
+      //     'style' => PHPExcel_Style_Border::BORDER_THIN,
+      //   )
+      // ),
+      'font' => array(
+        'name' => 'Arial Narrow',
+        'size' => '12'
       ),
+      'alignment' => array(
+        'wrap' => true,
+      )
     );
 
     $obj = json_decode($data, true);
@@ -1253,42 +1071,11 @@ class Laporan_perkara extends CI_Controller
     //tanda tangan 
     $kolom_kpa = "C";
     $kolom_pansek = "M";
-    $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
-
-    $KetuaPNNama = $settingSIPP['KetuaPNNama'];
-    $PanSekNama = $settingSIPP['PanSekNama'];
-    $KetuaPNNIP = $settingSIPP['KetuaPNNIP'];
-    $PanSekNIP = $settingSIPP['PanSekNIP'];
     $row = $row + 3;
     $row_awal_ttd = $row;
-    //fungsi tanda tangan
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
 
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Mengetahui")
-      ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
-      ->getRowDimension($row)->setRowHeight(20);
-
-
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN'] . ',')))
-      ->setCellValue($kolom_pansek . $row, "Panitera,")
-      ->getRowDimension($row)->setRowHeight(20);
-    $row = $row + 5;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, $KetuaPNNama)
-      ->setCellValue($kolom_pansek . $row, $PanSekNama)
-      ->getRowDimension($row)->setRowHeight(20);
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "NIP. " . $KetuaPNNIP)
-      ->setCellValue($kolom_pansek . $row, "NIP. " . $PanSekNIP)
-      ->getRowDimension($row)->setRowHeight(20);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setWrapText(false);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    //fungsi tanda tangan 
-    //tanda tangan 
     $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
 
     return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
@@ -1310,17 +1097,18 @@ class Laporan_perkara extends CI_Controller
     $objPHPExcel = $objReader->load(FCPATH . "new_templates/" . $jenis_laporan . ".xls");
 
     $styleArray = array(
-      'borders' => array(
-        // 'allborders' => array(
-        //   'style' => PHPExcel_Style_Border::BORDER_THIN,
-        // ),
-        'font' => array(
-          'name' => 'Arial Narrow'
-        ),
-        'alignment' => array(
-          'wrap' => true,
-        )
+      // 'borders' => array(
+      //   'allborders' => array(
+      //     'style' => PHPExcel_Style_Border::BORDER_THIN,
+      //   )
+      // ),
+      'font' => array(
+        'name' => 'Arial Narrow',
+        'size' => '12'
       ),
+      'alignment' => array(
+        'wrap' => true,
+      )
     );
 
     $obj = json_decode($data, true);
@@ -1357,42 +1145,11 @@ class Laporan_perkara extends CI_Controller
     //tanda tangan 
     $kolom_kpa = "B";
     $kolom_pansek = "H";
-    $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
-
-    $KetuaPNNama = $settingSIPP['KetuaPNNama'];
-    $PanSekNama = $settingSIPP['PanSekNama'];
-    $KetuaPNNIP = $settingSIPP['KetuaPNNIP'];
-    $PanSekNIP = $settingSIPP['PanSekNIP'];
     $row = $row + 3;
     $row_awal_ttd = $row;
-    //fungsi tanda tangan
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
 
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Mengetahui")
-      ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
-      ->getRowDimension($row)->setRowHeight(20);
-
-
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN'] . ',')))
-      ->setCellValue($kolom_pansek . $row, "Panitera,")
-      ->getRowDimension($row)->setRowHeight(20);
-    $row = $row + 5;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, $KetuaPNNama)
-      ->setCellValue($kolom_pansek . $row, $PanSekNama)
-      ->getRowDimension($row)->setRowHeight(20);
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "NIP. " . $KetuaPNNIP)
-      ->setCellValue($kolom_pansek . $row, "NIP. " . $PanSekNIP)
-      ->getRowDimension($row)->setRowHeight(20);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setWrapText(false);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    //fungsi tanda tangan 
-    //tanda tangan 
     $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
 
     return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
@@ -1417,14 +1174,15 @@ class Laporan_perkara extends CI_Controller
       'borders' => array(
         'allborders' => array(
           'style' => PHPExcel_Style_Border::BORDER_THIN,
-        ),
-        'font' => array(
-          'name' => 'Arial Narrow'
-        ),
-        'alignment' => array(
-          'wrap' => true,
         )
       ),
+      'font' => array(
+        'name' => 'Arial Narrow',
+        'size' => '12'
+      ),
+      'alignment' => array(
+        'wrap' => true,
+      )
     );
 
     $obj = json_decode($data, true);
@@ -1458,42 +1216,11 @@ class Laporan_perkara extends CI_Controller
     //tanda tangan 
     $kolom_kpa = "B";
     $kolom_pansek = "G";
-    $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
-
-    $KetuaPNNama = $settingSIPP['KetuaPNNama'];
-    $PanSekNama = $settingSIPP['PanSekNama'];
-    $KetuaPNNIP = $settingSIPP['KetuaPNNIP'];
-    $PanSekNIP = $settingSIPP['PanSekNIP'];
     $row = $row + 3;
     $row_awal_ttd = $row;
-    //fungsi tanda tangan
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
 
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Mengetahui")
-      ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
-      ->getRowDimension($row)->setRowHeight(20);
-
-
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN'] . ',')))
-      ->setCellValue($kolom_pansek . $row, "Panitera,")
-      ->getRowDimension($row)->setRowHeight(20);
-    $row = $row + 5;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, $KetuaPNNama)
-      ->setCellValue($kolom_pansek . $row, $PanSekNama)
-      ->getRowDimension($row)->setRowHeight(20);
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "NIP. " . $KetuaPNNIP)
-      ->setCellValue($kolom_pansek . $row, "NIP. " . $PanSekNIP)
-      ->getRowDimension($row)->setRowHeight(20);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setWrapText(false);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    //fungsi tanda tangan 
-    //tanda tangan 
     $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
 
     return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
@@ -1518,14 +1245,15 @@ class Laporan_perkara extends CI_Controller
       'borders' => array(
         'allborders' => array(
           'style' => PHPExcel_Style_Border::BORDER_THIN,
-        ),
-        'font' => array(
-          'name' => 'Arial Narrow'
-        ),
-        'alignment' => array(
-          'wrap' => true,
         )
       ),
+      'font' => array(
+        'name' => 'Arial Narrow',
+        'size' => '12'
+      ),
+      'alignment' => array(
+        'wrap' => true,
+      )
     );
 
     $obj = json_decode($data, true);
@@ -1562,42 +1290,11 @@ class Laporan_perkara extends CI_Controller
     //tanda tangan 
     $kolom_kpa = "C";
     $kolom_pansek = "H";
-    $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
-
-    $KetuaPNNama = $settingSIPP['KetuaPNNama'];
-    $PanSekNama = $settingSIPP['PanSekNama'];
-    $KetuaPNNIP = $settingSIPP['KetuaPNNIP'];
-    $PanSekNIP = $settingSIPP['PanSekNIP'];
     $row = $row + 3;
     $row_awal_ttd = $row;
-    //fungsi tanda tangan
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
 
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Mengetahui")
-      ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
-      ->getRowDimension($row)->setRowHeight(20);
-
-
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN'] . ',')))
-      ->setCellValue($kolom_pansek . $row, "Panitera,")
-      ->getRowDimension($row)->setRowHeight(20);
-    $row = $row + 5;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, $KetuaPNNama)
-      ->setCellValue($kolom_pansek . $row, $PanSekNama)
-      ->getRowDimension($row)->setRowHeight(20);
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "NIP. " . $KetuaPNNIP)
-      ->setCellValue($kolom_pansek . $row, "NIP. " . $PanSekNIP)
-      ->getRowDimension($row)->setRowHeight(20);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setWrapText(false);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    //fungsi tanda tangan 
-    //tanda tangan 
     $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
 
     return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
@@ -1622,14 +1319,15 @@ class Laporan_perkara extends CI_Controller
       'borders' => array(
         'allborders' => array(
           'style' => PHPExcel_Style_Border::BORDER_THIN,
-        ),
-        'font' => array(
-          'name' => 'Arial Narrow'
-        ),
-        'alignment' => array(
-          'wrap' => true,
         )
       ),
+      'font' => array(
+        'name' => 'Arial Narrow',
+        'size' => '12'
+      ),
+      'alignment' => array(
+        'wrap' => true,
+      )
     );
 
     $obj = json_decode($data, true);
@@ -1662,42 +1360,11 @@ class Laporan_perkara extends CI_Controller
     //tanda tangan 
     $kolom_kpa = "B";
     $kolom_pansek = "F";
-    $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
-
-    $KetuaPNNama = $settingSIPP['KetuaPNNama'];
-    $PanSekNama = $settingSIPP['PanSekNama'];
-    $KetuaPNNIP = $settingSIPP['KetuaPNNIP'];
-    $PanSekNIP = $settingSIPP['PanSekNIP'];
     $row = $row + 5;
     $row_awal_ttd = $row;
-    //fungsi tanda tangan
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
 
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Mengetahui")
-      ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
-      ->getRowDimension($row)->setRowHeight(20);
-
-
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN'] . ',')))
-      ->setCellValue($kolom_pansek . $row, "Panitera,")
-      ->getRowDimension($row)->setRowHeight(20);
-    $row = $row + 5;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, $KetuaPNNama)
-      ->setCellValue($kolom_pansek . $row, $PanSekNama)
-      ->getRowDimension($row)->setRowHeight(20);
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "NIP. " . $KetuaPNNIP)
-      ->setCellValue($kolom_pansek . $row, "NIP. " . $PanSekNIP)
-      ->getRowDimension($row)->setRowHeight(20);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setWrapText(false);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    //fungsi tanda tangan 
-    //tanda tangan 
     $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
 
     return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
@@ -1719,17 +1386,18 @@ class Laporan_perkara extends CI_Controller
     $objPHPExcel = $objReader->load(FCPATH . "new_templates/" . $jenis_laporan . ".xls");
 
     $styleArray = array(
-      'borders' => array(
-        // 'allborders' => array(
-        //   'style' => PHPExcel_Style_Border::BORDER_THIN,
-        // ),
-        'font' => array(
-          'name' => 'Arial Narrow'
-        ),
-        'alignment' => array(
-          'wrap' => true,
-        )
+      // 'borders' => array(
+      //   'allborders' => array(
+      //     'style' => PHPExcel_Style_Border::BORDER_THIN,
+      //   )
+      // ),
+      'font' => array(
+        'name' => 'Arial Narrow',
+        'size' => '10'
       ),
+      'alignment' => array(
+        'wrap' => true,
+      )
     );
 
     $obj = json_decode($data, true);
@@ -1772,42 +1440,11 @@ class Laporan_perkara extends CI_Controller
     //tanda tangan 
     $kolom_kpa = "C";
     $kolom_pansek = "N";
-    $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
-
-    $KetuaPNNama = $settingSIPP['KetuaPNNama'];
-    $PanSekNama = $settingSIPP['PanSekNama'];
-    $KetuaPNNIP = $settingSIPP['KetuaPNNIP'];
-    $PanSekNIP = $settingSIPP['PanSekNIP'];
     $row = $row + 3;
     $row_awal_ttd = $row;
-    //fungsi tanda tangan
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
 
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Mengetahui")
-      ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
-      ->getRowDimension($row)->setRowHeight(20);
-
-
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN'] . ',')))
-      ->setCellValue($kolom_pansek . $row, "Panitera,")
-      ->getRowDimension($row)->setRowHeight(20);
-    $row = $row + 5;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, $KetuaPNNama)
-      ->setCellValue($kolom_pansek . $row, $PanSekNama)
-      ->getRowDimension($row)->setRowHeight(20);
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "NIP. " . $KetuaPNNIP)
-      ->setCellValue($kolom_pansek . $row, "NIP. " . $PanSekNIP)
-      ->getRowDimension($row)->setRowHeight(20);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setWrapText(false);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    //fungsi tanda tangan 
-    //tanda tangan 
     $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
 
     return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
@@ -1832,15 +1469,17 @@ class Laporan_perkara extends CI_Controller
       'borders' => array(
         'allborders' => array(
           'style' => PHPExcel_Style_Border::BORDER_THIN,
-        ),
-        'font' => array(
-          'name' => 'Arial Narrow'
-        ),
-        'alignment' => array(
-          'wrap' => true,
         )
       ),
+      'font' => array(
+        'name' => 'Arial Narrow',
+        'size' => '12'
+      ),
+      'alignment' => array(
+        'wrap' => true,
+      )
     );
+
 
     $obj = json_decode($data, true);
     $no = 1;
@@ -1869,42 +1508,11 @@ class Laporan_perkara extends CI_Controller
     //tanda tangan 
     $kolom_kpa = "B";
     $kolom_pansek = "G";
-    $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
-
-    $KetuaPNNama = $settingSIPP['KetuaPNNama'];
-    $PanSekNama = $settingSIPP['PanSekNama'];
-    $KetuaPNNIP = $settingSIPP['KetuaPNNIP'];
-    $PanSekNIP = $settingSIPP['PanSekNIP'];
     $row = $row + 3;
     $row_awal_ttd = $row;
-    //fungsi tanda tangan
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
 
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Mengetahui")
-      ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
-      ->getRowDimension($row)->setRowHeight(20);
-
-
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN'] . ',')))
-      ->setCellValue($kolom_pansek . $row, "Panitera,")
-      ->getRowDimension($row)->setRowHeight(20);
-    $row = $row + 5;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, $KetuaPNNama)
-      ->setCellValue($kolom_pansek . $row, $PanSekNama)
-      ->getRowDimension($row)->setRowHeight(20);
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "NIP. " . $KetuaPNNIP)
-      ->setCellValue($kolom_pansek . $row, "NIP. " . $PanSekNIP)
-      ->getRowDimension($row)->setRowHeight(20);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setWrapText(false);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    //fungsi tanda tangan 
-    //tanda tangan 
     $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
 
     return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
@@ -1929,14 +1537,15 @@ class Laporan_perkara extends CI_Controller
       'borders' => array(
         'allborders' => array(
           'style' => PHPExcel_Style_Border::BORDER_THIN,
-        ),
-        'font' => array(
-          'name' => 'Arial Narrow'
-        ),
-        'alignment' => array(
-          'wrap' => true,
         )
       ),
+      'font' => array(
+        'name' => 'Arial Narrow',
+        'size' => '12'
+      ),
+      'alignment' => array(
+        'wrap' => true,
+      )
     );
 
     $obj = json_decode($data, true);
@@ -1964,42 +1573,11 @@ class Laporan_perkara extends CI_Controller
     //tanda tangan 
     $kolom_kpa = "B";
     $kolom_pansek = "E";
-    $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
-
-    $KetuaPNNama = $settingSIPP['KetuaPNNama'];
-    $PanSekNama = $settingSIPP['PanSekNama'];
-    $KetuaPNNIP = $settingSIPP['KetuaPNNIP'];
-    $PanSekNIP = $settingSIPP['PanSekNIP'];
     $row = $row + 3;
     $row_awal_ttd = $row;
-    //fungsi tanda tangan
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
 
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Mengetahui")
-      ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
-      ->getRowDimension($row)->setRowHeight(20);
-
-
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN'] . ',')))
-      ->setCellValue($kolom_pansek . $row, "Panitera,")
-      ->getRowDimension($row)->setRowHeight(20);
-    $row = $row + 5;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, $KetuaPNNama)
-      ->setCellValue($kolom_pansek . $row, $PanSekNama)
-      ->getRowDimension($row)->setRowHeight(20);
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "NIP. " . $KetuaPNNIP)
-      ->setCellValue($kolom_pansek . $row, "NIP. " . $PanSekNIP)
-      ->getRowDimension($row)->setRowHeight(20);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setWrapText(false);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    //fungsi tanda tangan 
-    //tanda tangan 
     $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
 
     return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
@@ -2024,14 +1602,15 @@ class Laporan_perkara extends CI_Controller
       'borders' => array(
         'allborders' => array(
           'style' => PHPExcel_Style_Border::BORDER_THIN,
-        ),
-        'font' => array(
-          'name' => 'Arial Narrow'
-        ),
-        'alignment' => array(
-          'wrap' => true,
         )
       ),
+      'font' => array(
+        'name' => 'Arial Narrow',
+        'size' => '12'
+      ),
+      'alignment' => array(
+        'wrap' => true,
+      )
     );
 
     $obj = json_decode($data, true);
@@ -2068,42 +1647,11 @@ class Laporan_perkara extends CI_Controller
     //tanda tangan 
     $kolom_kpa = "C";
     $kolom_pansek = "L";
-    $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
-
-    $KetuaPNNama = $settingSIPP['KetuaPNNama'];
-    $PanSekNama = $settingSIPP['PanSekNama'];
-    $KetuaPNNIP = $settingSIPP['KetuaPNNIP'];
-    $PanSekNIP = $settingSIPP['PanSekNIP'];
     $row = $row + 3;
     $row_awal_ttd = $row;
-    //fungsi tanda tangan
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
 
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Mengetahui")
-      ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
-      ->getRowDimension($row)->setRowHeight(20);
-
-
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN'] . ',')))
-      ->setCellValue($kolom_pansek . $row, "Panitera,")
-      ->getRowDimension($row)->setRowHeight(20);
-    $row = $row + 5;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, $KetuaPNNama)
-      ->setCellValue($kolom_pansek . $row, $PanSekNama)
-      ->getRowDimension($row)->setRowHeight(20);
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "NIP. " . $KetuaPNNIP)
-      ->setCellValue($kolom_pansek . $row, "NIP. " . $PanSekNIP)
-      ->getRowDimension($row)->setRowHeight(20);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setWrapText(false);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    //fungsi tanda tangan 
-    //tanda tangan 
     $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
 
     return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
@@ -2295,41 +1843,11 @@ class Laporan_perkara extends CI_Controller
     //tanda tangan 
     $kolom_kpa = "C";
     $kolom_pansek = "J";
-    $kota_pa = ucwords(strtolower(str_replace("PENGADILAN AGAMA ", "", str_replace("MAHKAMAH SYAR'IYAH ", "", $settingSIPP['NamaPN']))));
-
-    $KetuaPNNama = $settingSIPP['KetuaPNNama'];
-    $PanSekNama = $settingSIPP['PanSekNama'];
-    $KetuaPNNIP = $settingSIPP['KetuaPNNIP'];
-    $PanSekNIP = $settingSIPP['PanSekNIP'];
     $row = $row + 3;
     $row_awal_ttd = $row;
 
-    //fungsi tanda tangan
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Mengetahui")
-      ->setCellValue($kolom_pansek . $row, $kota_pa . ", " . tgl_panjang_dari_mysql($tanggal_laporan))
-      ->getRowDimension($row)->setRowHeight(20);
-
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "Ketua " . ucwords(strtolower($settingSIPP['NamaPN']) . ','))
-      ->setCellValue($kolom_pansek . $row, "Panitera, ")
-      ->getRowDimension($row)->setRowHeight(20);
-    $row = $row + 5;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, $KetuaPNNama)
-      ->setCellValue($kolom_pansek . $row, $PanSekNama)
-      ->getRowDimension($row)->setRowHeight(20);
-    $row++;
-    $objPHPExcel->getActiveSheet()
-      ->setCellValue($kolom_kpa . $row, "NIP. " . $KetuaPNNIP)
-      ->setCellValue($kolom_pansek . $row, "NIP. " . $PanSekNIP)
-      ->getRowDimension($row)->setRowHeight(20);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setWrapText(false);
-    $objPHPExcel->getActiveSheet()->getStyle($kolom_kpa . $row_awal_ttd . ':' . $kolom_pansek . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-    //fungsi tanda tangan 
-    //tanda tangan
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
     $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
 
     return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
