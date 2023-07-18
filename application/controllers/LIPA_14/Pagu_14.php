@@ -24,14 +24,14 @@ class Pagu_14 extends CI_Controller
   public function __construct()
   {
     parent::__construct();
-    $this->load->model('pagu_14_model');
+    $this->load->model('sidkel_model');
     $this->load->library('config_library');
   }
 
   public function index()
   {
     $data['contents'] = 'pagu_14/v_pagu_14';
-    $data['pagu_14'] = $this->pagu_14_model->get_pagu_14_all();
+    $data['pagu_14'] = $this->sidkel_model->get_pagu_14_all();
     $data['settings'] = $this->config_library->get_config_SIPP();
     $this->load->view('templates/index', $data);
   }
@@ -55,13 +55,13 @@ class Pagu_14 extends CI_Controller
     );
 
     //validasi
-    $ada = $this->pagu_14_model->searchby_year($tahun);
+    $ada = $this->sidkel_model->searchby_year($tahun);
 
     if (count($ada) == 0) {
-      $this->pagu_14_model->input_data($data);
-      redirect('pagu_14/index');
+      $this->sidkel_model->input_pagu14($data);
+      redirect('LIPA_14/pagu_14/index');
     }
-    redirect('pagu_14/index');
+    // redirect('LIPA_14/pagu_14/index');
   }
 }
 

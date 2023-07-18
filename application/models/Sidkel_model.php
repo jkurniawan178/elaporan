@@ -18,29 +18,23 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Sidkel_model extends CI_Model
 {
-
-  // ------------------------------------------------------------------------
-
   public function __construct()
   {
     parent::__construct();
   }
 
-  // ------------------------------------------------------------------------
-
-
-  // ------------------------------------------------------------------------
   public function index()
   {
     // 
   }
-  //------------------------------------------------------------------------
+  //-------------------INPUT Manual Laporan Sidang Keliling (LIPA 14)--------------------
+  //-------------------------------------------------------------------------------------
   public function input_data($data)
   {
     $db2 = $this->load->database('dbelaporan', true);
     $db2->insert('elaporan_lipa_14', $data);
   }
-  // ------------------------------------------------------------------------
+
   public function get_All()
   {
     $db2 = $this->load->database('dbelaporan', true);
@@ -84,6 +78,30 @@ class Sidkel_model extends CI_Model
     $sql = "SELECT COUNT(r.id) as id_count
             FROM elaporan_lipa_14 r
             WHERE r.bulan = $bulan AND r.tahun = $tahun";
+    $hasil = $db2->query($sql);
+    return $hasil->result();
+  }
+
+  //--------------------------------------PAGU LIPA 14-----------------------------------
+  //-------------------------------------------------------------------------------------
+  public function get_pagu_14_all()
+  {
+    $db2 = $this->load->database('dbelaporan', true);
+    $query  = $db2->get('elaporan_pagu_14');
+    // var_dump($query);
+    return $query->result();
+  }
+  // ------------------------------------------------------------------------
+  public function input_pagu14($data)
+  {
+    $db2 = $this->load->database('dbelaporan', true);
+    $db2->insert('elaporan_pagu_14', $data);
+  }
+  //-------------------------------------------------------------------------
+  public function searchby_year($year)
+  {
+    $db2 = $this->load->database('dbelaporan', true);
+    $sql = "SELECT tahun_anggaran FROM elaporan_pagu_14 WHERE tahun_anggaran = $year";
     $hasil = $db2->query($sql);
     return $hasil->result();
   }

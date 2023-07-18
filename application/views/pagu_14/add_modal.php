@@ -8,7 +8,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?php echo base_url() . 'pagu_14/tambah_aksi'; ?>" method="post" class="form-horizontal form-label-left">
+            <form action="<?php echo base_url() . 'LIPA_14/pagu_14/tambah_aksi'; ?>" method="post" class="form-horizontal form-label-left">
                 <div class="modal-body">
                     <div class="item form-group">
                         <label class="col-form-label col-md-4 col-sm-4 label-align" for="tahun">Tahun Anggaran <span class="required">*</span>
