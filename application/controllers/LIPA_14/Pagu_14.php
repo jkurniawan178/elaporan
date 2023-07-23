@@ -54,13 +54,14 @@ class Pagu_14 extends CI_Controller
       'target_perkara' => $perkara
     );
 
+    var_dump($data);
     //validasi
-    $ada = $this->sidkel_model->searchby_year($tahun);
+    // $ada = $this->sidkel_model->searchby_year($tahun);
 
-    if (count($ada) == 0) {
-      $this->sidkel_model->input_pagu14($data);
-      redirect('LIPA_14/pagu_14/index');
-    }
+    // if (count($ada) == 0) {
+    //   $this->sidkel_model->input_pagu14($data);
+    //   redirect('LIPA_14/pagu_14/index');
+    // }
     // redirect('LIPA_14/pagu_14/index');
   }
 }
