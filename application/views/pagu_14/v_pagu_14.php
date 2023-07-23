@@ -1,9 +1,4 @@
 <!-- page content -->
-<?php if ($this->session->flashdata('alert')) : ?>
-    <div class="alert alert-danger" role="alert">
-        <?php echo $this->session->flashdata('alert'); ?>
-    </div>
-<?php endif; ?>
 <div class="right_col" role="main">
     <div class="">
         <div class="page-title">
@@ -14,7 +9,24 @@
         <div class="clearfix"></div>
         <div class="row">
             <div class="col-md-12 col-sm-12 ">
-                <div class="x_panel">
+                <!-- Alert Atau pesan sukses -->
+                <?php if ($this->session->flashdata('success')) : ?>
+                    <div class="alert alert-success alert-dismissible fade in show mt-2" role="alert">
+                        <?php echo $this->session->flashdata('success') ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <?php elseif ($this->session->flashdata('error')) : ?>
+                    <div class="alert alert-danger alert-dismissible fade in show mt-2" role="alert">
+                        <?php echo $this->session->flashdata('error') ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <?php endif; ?>
+                <!-- --- -->
+                <div class="x_panel mt-2">
                     <div class="x_title">
                         <div class="ml-2">
                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#add-modal">
