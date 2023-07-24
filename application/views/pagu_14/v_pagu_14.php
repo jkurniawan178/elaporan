@@ -39,7 +39,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="card-box table-responsive">
-                                    <table id="datatable-responsive" class=" text-center table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                                    <table id="table-pagu" class=" text-center table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                                         <thead>
                                             <tr>
                                                 <th class="align-middle" scope="col" rowspan="2">No</th>
@@ -67,18 +67,16 @@
                                                     <td><?= $value->target_kegiatan ?></td>
                                                     <td><?= $value->target_perkara ?></td>
                                                     <td>
-                                                        <!-- <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update">
-                                                            <span class="icon text-white-50">
+                                                        <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update" title="Revisi pagu" data-toggle="tooltip">
+                                                            <span class="icon text-white">
                                                                 <i class="fa fa-edit"></i>
                                                             </span>
-                                                            <span class="text">Edit</span>
-                                                        </a> -->
-                                                        <!-- <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<%= jabatan[i].id %>">
-                                                            <span class="icon text-white-50">
-                                                                <i class="fas fa-trash"></i>
+                                                        </a>
+                                                        <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<%= $value->id %>" title="Hapus data pagu" data-toggle="tooltip">
+                                                            <span class="icon text-white">
+                                                                <i class="fa fa-trash"></i>
                                                             </span>
-                                                            <span class="text">Hapus</span>
-                                                        </a> -->
+                                                        </a>
                                                     </td>
                                                 </tr>
                                             <?php } ?>
@@ -98,8 +96,37 @@
         </div>
     </div>
     <?php include('add_modal.php') ?>
+    <?php include('edit_modal.php') ?>
+    <?php include('delete_modal.php') ?>
 </div>
 <!-- /page content -->
 
 <!-- jQuery -->
 <script src="<?php echo base_url() ?>resources/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+
+        var table = $('#table-pagu').DataTable({
+            order: [
+                [0, 'asc']
+            ]
+        });
+
+        table.on('click', '.button-update', function() {
+            // let id = $(this).data('id');
+            // let jabatan = $(this).data('jabatan');
+            $('#edit-modal').modal('show');
+
+            // $('.id').val(id);
+            // $('.jabatan').val(jabatan);
+        });
+
+        table.on('click', '.button-delete', function() {
+            // let id = $(this).data('id');
+            $('#delete-modal').modal('show');
+
+            // $('.id').val(id);
+        })
+    });
+</script>

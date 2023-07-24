@@ -105,6 +105,12 @@ class Sidkel_model extends CI_Model
     $hasil = $db2->query($sql);
     return $hasil->result();
   }
+  //-------------------------------------------------------------------------
+  public function delete_pagu14($id)
+  {
+    $db2 = $this->load->database('dbelaporan', true);
+    $sql = "DELETE FROM elaporan_pagu_14 WHERE id = $id";
+  }
 }
 
 /* End of file Sidkel_model.php */
