@@ -118,6 +118,25 @@ class Sidkel_model extends CI_Model
     $db2->where($where);
     $db2->delete('elaporan_pagu_14');
   }
+  //-------------------------------------------------------------------------
+  public function update_pagu14($id, $data)
+  {
+    $db2 = $this->load->database('dbelaporan', true);
+    $db2->where('id', $id);
+    $db2->update('elaporan_pagu_14', $data);
+  }
+  //-------------------------------------------------------------------------
+  public function get_pagu14_by_id($id)
+  {
+    $db2 = $this->load->database('dbelaporan', true);
+    $data = $db2->get_where('elaporan_pagu_14', array('id' => $id));
+
+    if ($data->num_rows() > 0) {
+      return $data->row(); //REturn the first row as an object
+    } else {
+      return null;
+    }
+  }
 }
 
 /* End of file Sidkel_model.php */

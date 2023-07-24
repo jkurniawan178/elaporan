@@ -36,9 +36,12 @@ class Pagu_14 extends CI_Controller
     $this->load->view('templates/index', $data);
   }
 
-  public function _rules()
+  public function _rules($aksi)
   {
-    $this->form_validation->set_rules('tahun', 'tahun', 'required|numeric');
+    // var_dump($aksi);
+    if ($aksi === 'tambah') {
+      $this->form_validation->set_rules('tahun', 'tahun', 'required|numeric');
+    }
     $this->form_validation->set_rules('pagu_awal', 'pagu awal', 'required|numeric');
     $this->form_validation->set_rules('lokasi', 'taget lokasi', 'required|numeric');
     $this->form_validation->set_rules('kegiatan', 'target kegiatan', 'required|numeric');
@@ -47,11 +50,10 @@ class Pagu_14 extends CI_Controller
 
   public function tambah_aksi()
   {
-    $this->_rules();
+    $this->_rules('tambah');
     if ($this->form_validation->run() == false) {
       $this->session->set_flashdata('error', '<strong>Data pagu tidak berhasil ditambahkan!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
       redirect('LIPA_14/pagu_14');
-      $this->index();
     } else {
       $tahun = $this->input->post('tahun');
       $pagu_awal = $this->input->post('pagu_awal');
@@ -93,6 +95,53 @@ class Pagu_14 extends CI_Controller
     $this->sidkel_model->delete_pagu14($where);
     $this->session->set_flashdata('error', '<strong>Data pagu berhasil dihapus!</strong>');
     redirect('LIPA_14/pagu_14');
+  }
+
+  public function ubah_aksi()
+  {
+    $this->_rules('edit');
+    if ($this->form_validation->run() == false) {
+      $this->session->set_flashdata('error', '<strong>Data pagu tidak berhasil diubah!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
+      redirect('LIPA_14/pagu_14');
+    } else {
+      $idEncrypted = $this->input->post('id');
+      $id = $this->encryption->decrypt($idEncrypted);
+
+      // $tahun = $this->input->post('tahun');
+      $pagu_awal = $this->input->post('pagu_awal');
+      $pagu_revisi = $this->input->post('pagu_revisi');
+      $lokasi = $this->input->post('lokasi');
+      $kegiatan = $this->input->post('kegiatan');
+      $perkara = $this->input->post('perkara');
+
+      $data = array(
+        // 'tahun_anggaran' => $tahun,
+        'pagu_awal' => $pagu_awal,
+        'pagu_revisi' => $pagu_revisi,
+        'target_lokasi' => $lokasi,
+        'target_kegiatan' => $kegiatan,
+        'target_perkara' => $perkara
+      );
+
+      // var_dump($data);
+      $this->sidkel_model->update_pagu14($id, $data);
+      $this->session->set_flashdata('success', '<strong>Data pagu berhasil diubah!</strong>');
+      redirect('LIPA_14/pagu_14');
+    }
+  }
+
+  public function get_pagu14()
+  {
+    $encodedId = $this->input->post('id');
+    $id = $this->encryption->decrypt($encodedId);
+    $data = $this->sidkel_model->get_pagu14_by_id($id);
+
+    $data->id = $this->encryption->encrypt($data->id);
+    $data->pagu_awal = number_format($data->pagu_awal, 0, ',', '.');
+    $data->pagu_revisi = number_format($data->pagu_revisi, 0, ',', '.');
+
+    header('Content-Type: application/json');
+    echo json_encode($data);
   }
 }
 

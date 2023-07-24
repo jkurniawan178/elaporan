@@ -67,11 +67,12 @@
                                                     <td><?= $value->target_kegiatan ?></td>
                                                     <td><?= $value->target_perkara ?></td>
                                                     <td>
-                                                        <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update" title="Revisi pagu" data-toggle="tooltip">
+                                                        <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update" data-id="<?= $value->id ?>" title="Revisi pagu" data-toggle="tooltip">
                                                             <span class="icon text-white">
                                                                 <i class="fa fa-edit"></i>
                                                             </span>
                                                         </a>
+
                                                         <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<?= $value->id ?>" title="Hapus data pagu" data-toggle="tooltip">
                                                             <span class="icon text-white">
                                                                 <i class="fa fa-trash"></i>
@@ -114,12 +115,27 @@
         });
 
         table.on('click', '.button-update', function() {
-            // let id = $(this).data('id');
-            // let jabatan = $(this).data('jabatan');
-            $('#edit-modal').modal('show');
+            let id = $(this).data('id');
 
-            // $('.id').val(id);
-            // $('.jabatan').val(jabatan);
+            $.ajax({
+                url: '<?php echo base_url('LIPA_14/Pagu_14/get_pagu14') ?>',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    'id': id
+                },
+                success: function(response) {
+                    // console.log(response)
+                    $('#edit_id').val(response['id'])
+                    $('#edit_tahun').val(response['tahun_anggaran'])
+                    $('#edit_pagu_awal').val(response['pagu_awal'])
+                    $('#edit_pagu_revisi').val(response['pagu_revisi'])
+                    $('#edit_lokasi').val(response['target_lokasi'])
+                    $('#edit_kegiatan').val(response['target_kegiatan'])
+                    $('#edit_perkara').val(response['target_perkara'])
+                    $('#edit-modal').modal('show');
+                }
+            })
         });
 
         table.on('click', '.button-delete', function() {
@@ -128,8 +144,6 @@
             idInput.value = id;
 
             $('#delete-modal').modal('show');
-
-            // $('.id').val(id);
         })
     });
 </script>
