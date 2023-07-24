@@ -88,8 +88,14 @@ class Sidkel_model extends CI_Model
   {
     $db2 = $this->load->database('dbelaporan', true);
     $query  = $db2->get('elaporan_pagu_14');
-    // var_dump($query);
-    return $query->result();
+    $data = $query->result();
+
+    //Encrypt the ID before sending it into client-side
+    foreach ($data as $row) {
+      $row->id = $this->encryption->encrypt($row->id);
+    }
+
+    return $data;
   }
   // ------------------------------------------------------------------------
   public function input_pagu14($data)
@@ -106,10 +112,11 @@ class Sidkel_model extends CI_Model
     return $hasil->result();
   }
   //-------------------------------------------------------------------------
-  public function delete_pagu14($id)
+  public function delete_pagu14($where)
   {
     $db2 = $this->load->database('dbelaporan', true);
-    $sql = "DELETE FROM elaporan_pagu_14 WHERE id = $id";
+    $db2->where($where);
+    $db2->delete('elaporan_pagu_14');
   }
 }
 

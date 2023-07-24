@@ -36,6 +36,15 @@ class Pagu_14 extends CI_Controller
     $this->load->view('templates/index', $data);
   }
 
+  public function _rules()
+  {
+    $this->form_validation->set_rules('tahun', 'tahun', 'required|numeric');
+    $this->form_validation->set_rules('pagu_awal', 'pagu awal', 'required|numeric');
+    $this->form_validation->set_rules('lokasi', 'taget lokasi', 'required|numeric');
+    $this->form_validation->set_rules('kegiatan', 'target kegiatan', 'required|numeric');
+    $this->form_validation->set_rules('perkara', 'target perkara', 'required|numeric');
+  }
+
   public function tambah_aksi()
   {
     $this->_rules();
@@ -60,7 +69,6 @@ class Pagu_14 extends CI_Controller
         'target_perkara' => $perkara
       );
 
-<<<<<<< HEAD
       //validasi
       //cek apabila data pagu di tahun yang sama sudah diinput
       $ada_tahun = $this->sidkel_model->searchby_year($tahun);
@@ -77,24 +85,14 @@ class Pagu_14 extends CI_Controller
     }
   }
 
-  public function _rules()
+  public function delete_aksi()
   {
-    $this->form_validation->set_rules('tahun', 'tahun', 'required|numeric');
-    $this->form_validation->set_rules('pagu_awal', 'pagu awal', 'required|numeric');
-    $this->form_validation->set_rules('lokasi', 'taget lokasi', 'required|numeric');
-    $this->form_validation->set_rules('kegiatan', 'target kegiatan', 'required|numeric');
-    $this->form_validation->set_rules('perkara', 'target perkara', 'required|numeric');
-=======
-    var_dump($data);
-    //validasi
-    // $ada = $this->sidkel_model->searchby_year($tahun);
-
-    // if (count($ada) == 0) {
-    //   $this->sidkel_model->input_pagu14($data);
-    //   redirect('LIPA_14/pagu_14/index');
-    // }
-    // redirect('LIPA_14/pagu_14/index');
->>>>>>> f1192e9f2a282727181a9e12f836bd80b15ffc73
+    $idEncrypted = $this->input->post('id');
+    $id = $this->encryption->decrypt($idEncrypted);
+    $where = array('id' => $id);
+    $this->sidkel_model->delete_pagu14($where);
+    $this->session->set_flashdata('error', '<strong>Data pagu berhasil dihapus!</strong>');
+    redirect('LIPA_14/pagu_14');
   }
 }
 

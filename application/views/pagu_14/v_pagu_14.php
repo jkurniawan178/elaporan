@@ -72,7 +72,7 @@
                                                                 <i class="fa fa-edit"></i>
                                                             </span>
                                                         </a>
-                                                        <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<%= $value->id %>" title="Hapus data pagu" data-toggle="tooltip">
+                                                        <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<?= $value->id ?>" title="Hapus data pagu" data-toggle="tooltip">
                                                             <span class="icon text-white">
                                                                 <i class="fa fa-trash"></i>
                                                             </span>
@@ -123,7 +123,10 @@
         });
 
         table.on('click', '.button-delete', function() {
-            // let id = $(this).data('id');
+            let id = $(this).data('id');
+            const idInput = document.getElementById('id');
+            idInput.value = id;
+
             $('#delete-modal').modal('show');
 
             // $('.id').val(id);
