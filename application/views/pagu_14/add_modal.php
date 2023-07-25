@@ -8,7 +8,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?php echo base_url() . 'LIPA_14/pagu_14/tambah_aksi'; ?>" method="post" class="form-horizontal form-label-left needs-validation" novalidate>
+            <form id="add_form" action="<?php echo base_url() . 'LIPA_14/pagu_14/tambah_aksi'; ?>" method="post" class="form-horizontal form-label-left needs-validation" novalidate>
                 <div class="modal-body">
                     <div class="item form-group">
                         <label class="col-form-label col-md-4 col-sm-4 label-align" for="tahun">Tahun Anggaran <span class="required text-danger">*</span>
@@ -86,81 +86,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    //Function that using bootstrap validator
-    (function() {
-        'use strict';
-        window.addEventListener('load', function() {
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            var forms = document.getElementsByClassName('needs-validation');
-            // Loop over them and prevent submission
-            var validation = Array.prototype.filter.call(forms, function(form) {
-                form.addEventListener('submit', function(event) {
-                    if (form.checkValidity() === false) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                }, false);
-            });
-        }, false);
-    })();
-
-    //------------------------------------------------------------------------------------------
-    //--------------------------function that handle thosand separator--------------------------
-
-    // Function to remove Indonesian thousand separators
-    function removeThousandSeparator(formattedNumber) {
-        return formattedNumber.replace(/\./g, "");
-    }
-
-    // Function to add Indonesian thousand separators
-    function addThousandSeparator(number) {
-        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    }
-
-    // Function to format the input value
-    function formatInputValue(inputElement) {
-        // Get the current input value without dots
-        let inputValue = removeThousandSeparator(inputElement.value);
-
-        // Convert the value to a number (removes leading zeros, etc.)
-        let number = parseFloat(inputValue);
-
-        // Check if the value is a valid number
-        if (!isNaN(number)) {
-            // Format the number with Indonesian thousand separators and display it
-            inputElement.value = addThousandSeparator(number);
-        }
-    }
-
-    // Get the input element
-    const paguAwal = document.getElementById("pagu_awal");
-    const paguRevisi = document.getElementById("pagu_revisi");
-
-    // Add event listener for keyup event
-    paguAwal.addEventListener("keyup", function(event) {
-        formatInputValue(event.target);
-    });
-
-    paguRevisi.addEventListener("keyup", function(event) {
-        formatInputValue(event.target);
-    });
-
-
-    //function to remove thousand separator before send it to controller
-    document.querySelector("form").addEventListener("submit", function(event) {
-        // Get the current input value without dots (thousand separators)
-        let inputPaguAwal = removeThousandSeparator(paguAwal.value);
-        let inputPaguRevisi = removeThousandSeparator(paguRevisi.value);
-
-        // Convert the value to a number
-        let numPaguAwal = parseFloat(inputPaguAwal);
-        let numPaguRevisi = parseFloat(inputPaguRevisi);
-
-        // Set the numeric value as the new value of the input field
-        paguAwal.value = numPaguAwal;
-        paguRevisi.value = numPaguRevisi;
-    })
-</script>

@@ -31,12 +31,12 @@ class Pagu_14 extends CI_Controller
   public function index()
   {
     $data['contents'] = 'pagu_14/v_pagu_14';
-    $data['pagu_14'] = $this->sidkel_model->get_pagu_14_all();
+    $data['pagu_14'] = $this->sidkel_model->getPagu14All();
     $data['settings'] = $this->config_library->get_config_SIPP();
     $this->load->view('templates/index', $data);
   }
 
-  public function _rules($aksi)
+  protected function _rules($aksi)
   {
     // var_dump($aksi);
     if ($aksi === 'tambah') {
@@ -73,10 +73,10 @@ class Pagu_14 extends CI_Controller
 
       //validasi
       //cek apabila data pagu di tahun yang sama sudah diinput
-      $ada_tahun = $this->sidkel_model->searchby_year($tahun);
+      $ada_tahun = $this->sidkel_model->searchPagu14byYear($tahun);
 
       if (count($ada_tahun) == 0) {
-        $this->sidkel_model->input_pagu14($data);
+        $this->sidkel_model->inputPagu14($data);
         $this->session->set_flashdata('success', '<strong>Data pagu berhasil ditambahkan!</strong>');
         redirect('LIPA_14/pagu_14');
       }
@@ -92,7 +92,7 @@ class Pagu_14 extends CI_Controller
     $idEncrypted = $this->input->post('id');
     $id = $this->encryption->decrypt($idEncrypted);
     $where = array('id' => $id);
-    $this->sidkel_model->delete_pagu14($where);
+    $this->sidkel_model->deletePagu14($where);
     $this->session->set_flashdata('error', '<strong>Data pagu berhasil dihapus!</strong>');
     redirect('LIPA_14/pagu_14');
   }
@@ -124,7 +124,7 @@ class Pagu_14 extends CI_Controller
       );
 
       // var_dump($data);
-      $this->sidkel_model->update_pagu14($id, $data);
+      $this->sidkel_model->updatePagu14($id, $data);
       $this->session->set_flashdata('success', '<strong>Data pagu berhasil diubah!</strong>');
       redirect('LIPA_14/pagu_14');
     }
@@ -134,7 +134,7 @@ class Pagu_14 extends CI_Controller
   {
     $encodedId = $this->input->post('id');
     $id = $this->encryption->decrypt($encodedId);
-    $data = $this->sidkel_model->get_pagu14_by_id($id);
+    $data = $this->sidkel_model->getPagu14byId($id);
 
     $data->id = $this->encryption->encrypt($data->id);
     $data->pagu_awal = number_format($data->pagu_awal, 0, ',', '.');

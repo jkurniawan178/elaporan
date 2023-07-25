@@ -18,9 +18,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Sidkel_model extends CI_Model
 {
+  protected $db2;
   public function __construct()
   {
     parent::__construct();
+    //initialize db2
+    $this->db2 = $this->load->database('dbelaporan', true);
   }
 
   public function index()
@@ -37,7 +40,6 @@ class Sidkel_model extends CI_Model
 
   public function get_All()
   {
-    $db2 = $this->load->database('dbelaporan', true);
     $sql = "SELECT r.id, r.bulan, r.tahun, p.pagu_awal, p.pagu_revisi,
             COALESCE(SUM(r2.realisasi), 0) AS realisasi_sampai_bulan_lalu,
             r.realisasi,
@@ -49,13 +51,12 @@ class Sidkel_model extends CI_Model
             LEFT JOIN elaporan_lipa_14 r2 ON r.bulan > r2.bulan AND r2.tahun = r.tahun
             GROUP BY r.id,r.bulan, r.tahun, p.pagu_awal, r.realisasi
             ORDER BY r.tahun desc, r.bulan DESC";
-    $hasil = $db2->query($sql);
+    $hasil = $this->db2->query($sql);
     return $hasil->result();
   }
 
   public function getLIPA14($bulan, $tahun)
   {
-    $db2 = $this->load->database('dbelaporan', true);
     $sql = "SELECT r.id, r.bulan, r.tahun,p.pagu_awal, p.pagu_revisi,
             COALESCE(SUM(r2.realisasi), 0) AS realisasi_sampai_bulan_lalu,
             r.realisasi,
@@ -68,26 +69,24 @@ class Sidkel_model extends CI_Model
             WHERE r.bulan = $bulan AND r.tahun = $tahun
             GROUP BY r.id,r.bulan, r.tahun, p.pagu_awal, r.realisasi
             ORDER BY r.tahun, r.bulan DESC";
-    $hasil = $db2->query($sql);
+    $hasil = $this->db2->query($sql);
     return $hasil->result();
   }
 
   public function cekby_periode($bulan, $tahun)
   {
-    $db2 = $this->load->database('dbelaporan', true);
     $sql = "SELECT COUNT(r.id) as id_count
             FROM elaporan_lipa_14 r
             WHERE r.bulan = $bulan AND r.tahun = $tahun";
-    $hasil = $db2->query($sql);
+    $hasil = $this->db2->query($sql);
     return $hasil->result();
   }
 
   //--------------------------------------PAGU LIPA 14-----------------------------------
   //-------------------------------------------------------------------------------------
-  public function get_pagu_14_all()
+  public function getPagu14All()
   {
-    $db2 = $this->load->database('dbelaporan', true);
-    $query  = $db2->get('elaporan_pagu_14');
+    $query  = $this->db2->get('elaporan_pagu_14');
     $data = $query->result();
 
     //Encrypt the ID before sending it into client-side
@@ -98,38 +97,33 @@ class Sidkel_model extends CI_Model
     return $data;
   }
   // ------------------------------------------------------------------------
-  public function input_pagu14($data)
+  public function inputPagu14($data)
   {
-    $db2 = $this->load->database('dbelaporan', true);
-    $db2->insert('elaporan_pagu_14', $data);
+    $this->db2->insert('elaporan_pagu_14', $data);
   }
   //-------------------------------------------------------------------------
-  public function searchby_year($year)
+  public function searchPagu14byYear($year)
   {
-    $db2 = $this->load->database('dbelaporan', true);
     $sql = "SELECT tahun_anggaran FROM elaporan_pagu_14 WHERE tahun_anggaran = $year";
-    $hasil = $db2->query($sql);
+    $hasil = $this->db2->query($sql);
     return $hasil->result();
   }
   //-------------------------------------------------------------------------
-  public function delete_pagu14($where)
+  public function deletePagu14($where)
   {
-    $db2 = $this->load->database('dbelaporan', true);
-    $db2->where($where);
-    $db2->delete('elaporan_pagu_14');
+    $this->db2->where($where);
+    $this->db2->delete('elaporan_pagu_14');
   }
   //-------------------------------------------------------------------------
-  public function update_pagu14($id, $data)
+  public function updatePagu14($id, $data)
   {
-    $db2 = $this->load->database('dbelaporan', true);
-    $db2->where('id', $id);
-    $db2->update('elaporan_pagu_14', $data);
+    $this->db2->where('id', $id);
+    $this->db2->update('elaporan_pagu_14', $data);
   }
   //-------------------------------------------------------------------------
-  public function get_pagu14_by_id($id)
+  public function getPagu14byId($id)
   {
-    $db2 = $this->load->database('dbelaporan', true);
-    $data = $db2->get_where('elaporan_pagu_14', array('id' => $id));
+    $data = $this->db2->get_where('elaporan_pagu_14', array('id' => $id));
 
     if ($data->num_rows() > 0) {
       return $data->row(); //REturn the first row as an object
