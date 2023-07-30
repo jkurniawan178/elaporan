@@ -9,6 +9,22 @@
         <div class="clearfix"></div>
         <div class="row">
             <div class="col-md-12 col-sm-12 ">
+                <!-- Alert Atau pesan sukses -->
+                <?php if ($this->session->flashdata('success')) : ?>
+                    <div class="alert alert-success alert-dismissible fade in show mt-2" role="alert">
+                        <?php echo $this->session->flashdata('success') ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <?php elseif ($this->session->flashdata('error')) : ?>
+                    <div class="alert alert-danger alert-dismissible fade in show mt-2" role="alert">
+                        <?php echo $this->session->flashdata('error') ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <?php endif; ?>
                 <div class="x_panel">
                     <div class="x_title">
                         <div class="item form-group">
@@ -49,7 +65,7 @@
                     </div>
                     <div class="x_content">
                         <br />
-                        <table id="datatable-responsive" class=" text-center table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+                        <table id="table-sidkel" class=" text-center table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
                                     <th class="align-middle" scope="col">No</th>
@@ -86,22 +102,16 @@
                                                             </span>
                                                             <span class="text">Edit</span>
                                                         </a> -->
-                                            <!-- <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<%= jabatan[i].id %>">
-                                                            <span class="icon text-white-50">
-                                                                <i class="fas fa-trash"></i>
-                                                            </span>
-                                                            <span class="text">Hapus</span>
-                                                        </a> -->
+                                            <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<?= $value->id ?>" title="Hapus data Sidkel" data-toggle="tooltip">
+                                                <span class="icon text-white">
+                                                    <i class="fa fa-trash"></i>
+                                                </span>
+                                            </a>
                                         </td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
                         </table>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <div class="spinner-border text-info" id="spinner" style="width: 5rem; height: 5rem; display:none;" role="status">
-                        <span class="sr-only">Loading...</span>
                     </div>
                 </div>
             </div>
@@ -116,3 +126,24 @@
 <script src="<?php echo base_url() ?>resources/jquery/dist/jquery.min.js"></script>
 <script src="<?php echo base_url() ?>resources/js/helper.js"></script>
 <?php include('add_modal.php') ?>
+<?php include('delete_modal.php') ?>
+
+<script>
+    $(document).ready(function() {
+        $('[data-toggle="tooltip]').tooltip();
+
+        var table = $('#table-sidkel').DataTable({
+            order: [
+                [0, 'asc']
+            ]
+        });
+
+        table.on('click', '.button-delete', function() {
+            let id = $(this).data('id');
+            const idSidkel = document.getElementById('id');
+            idSidkel.value = id;
+
+            $('#delete-modal').modal('show');
+        })
+    });
+</script>

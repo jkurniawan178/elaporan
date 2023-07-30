@@ -93,7 +93,7 @@ class Pagu_14 extends CI_Controller
     $id = $this->encryption->decrypt($idEncrypted);
     $where = array('id' => $id);
     $this->sidkel_model->deletePagu14($where);
-    $this->session->set_flashdata('error', '<strong>Data pagu berhasil dihapus!</strong>');
+    $this->session->set_flashdata('success', '<strong>Data pagu berhasil dihapus!</strong>');
     redirect('LIPA_14/pagu_14');
   }
 
@@ -130,6 +130,7 @@ class Pagu_14 extends CI_Controller
     }
   }
 
+  //Pencarian data PAGU 14 by id
   public function get_pagu14()
   {
     $encodedId = $this->input->post('id');

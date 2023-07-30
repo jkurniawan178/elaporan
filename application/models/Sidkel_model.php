@@ -52,7 +52,12 @@ class Sidkel_model extends CI_Model
             GROUP BY r.id,r.bulan, r.tahun, p.pagu_awal, r.realisasi
             ORDER BY r.tahun desc, r.bulan DESC";
     $hasil = $this->db2->query($sql);
-    return $hasil->result();
+    $data = $hasil->result();
+
+    foreach ($data as $row) {
+      $row->id = $this->encryption->encrypt($row->id);
+    }
+    return $data;
   }
 
   public function getLIPA14($bulan, $tahun)
@@ -80,6 +85,13 @@ class Sidkel_model extends CI_Model
             WHERE r.bulan = $bulan AND r.tahun = $tahun";
     $hasil = $this->db2->query($sql);
     return $hasil->result();
+  }
+
+  //-------------------------------------------------------------------------
+  public function deleteLipa14($where)
+  {
+    $this->db2->where($where);
+    $this->db2->delete('elaporan_lipa_14');
   }
 
   //--------------------------------------PAGU LIPA 14-----------------------------------

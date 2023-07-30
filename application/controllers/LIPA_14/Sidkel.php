@@ -39,6 +39,7 @@ class Sidkel extends CI_Controller
 
   public function tambah_aksi()
   {
+    //TODO: add validation
     $tahun = $this->input->post('tahun_hidden');
     $bulan = $this->input->post('bulan_hidden');
     $pagu_awal = $this->input->post('pagu_awal');
@@ -105,6 +106,16 @@ class Sidkel extends CI_Controller
       ];
       echo json_encode($response);
     }
+  }
+
+  public function delete_aksi()
+  {
+    $idEncrypted = $this->input->post('id');
+    $id = $this->encryption->decrypt($idEncrypted);
+    $where = array('id' => $id);
+    $this->sidkel_model->deleteLipa14($where);
+    $this->session->set_flashdata('success', '<strong>Data pagu berhasil dihapus!</strong>');
+    redirect('LIPA_14/Sidkel');
   }
 }
 
