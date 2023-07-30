@@ -13,7 +13,7 @@
                     <div class="x_title">
                         <div class="item form-group">
                             <label class="col-form-label" for="tahun">
-                                <h6>Tahun :</h6>
+                                <h6>Filter :</h6>
                             </label>
                             <div style="min-width: 5rem;" class="ml-2">
                                 <select class="form-control" name="tahun" id="tahun" style="padding:8px 0;">
@@ -36,12 +36,12 @@
                             </div>
 
                             <div class="ml-auto">
-                                <a href="<?php echo site_url() ?>pagu_14" type="button" class="btn btn-danger">
+                                <a href="<?php echo site_url() ?>LIPA_14/pagu_14" type="button" class="btn btn-danger">
                                     Setting Pagu Awal
                                 </a>
                                 <a href="<?php echo site_url() ?>laporan_perkara" type="button" class="btn btn-outline-secondary">
                                     <i class="fa fa-print"></i>
-                                    Cetak
+                                    Cetak Laporan
                                 </a>
                             </div>
                         </div>
@@ -108,75 +108,11 @@
         </div>
     </div>
 </div>
-<?php include('add_modal.php') ?>
+
 </div>
 <!-- /page content -->
 
 <!-- jQuery -->
 <script src="<?php echo base_url() ?>resources/jquery/dist/jquery.min.js"></script>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#btn_reset').on('click', function() {
-            $('#form_hide').hide();
-            $('#btn_simpan').prop('disabled', true);
-            $('#btn_cek').show();
-            $('#tahun_modal').prop('disabled', false);
-            $('#bulan_modal').prop('disabled', false);
-            $('#pagu_awal').val('');
-        })
-        // set the initial value of hidden input field
-        var selected_month = $('#bulan_modal').find(':selected').val();
-        $('#bulan_hidden').val(selected_month);
-
-        var selected_year = $('#tahun_modal').find(':selected').val();
-        $('#tahun_hidden').val(selected_year);
-
-        // Set the value of the hidden input field when the selected option changes
-        $('#bulan_modal').on('change', function() {
-            var selected_option = $(this).find(':selected').val();
-            $('#bulan_hidden').val(selected_option);
-        });
-
-        $('#tahun_modal').on('change', function() {
-            var selected_option = $(this).find(':selected').val();
-            $('#tahun_hidden').val(selected_option);
-        });
-
-        $('#btn_cek').on('click', function() {
-            var tahun = $('#tahun_modal').val();
-            var bulan = $('#bulan_modal').val();
-            // $('#panel-verifikasi').hide();
-            $.ajax({
-                type: "POST",
-                url: "<?php echo base_url('index.php/sidkel/cek_pagu') ?>",
-                dataType: "JSON",
-                data: {
-                    tahun: tahun,
-                    bulan,
-                    bulan
-                },
-                beforeSend: function() {
-                    // $('#spinner').show();
-                },
-                success: function(data) {
-                    if (data.kode == "200") {
-                        $('#form_hide').show();
-                        $('#btn_simpan').prop('disabled', false);
-                        $('#btn_cek').hide();
-                        $('#tahun_modal').prop('disabled', true);
-                        $('#bulan_modal').prop('disabled', true);
-                        $('#pagu_awal').val(data.data);
-                    } else if (data.kode == "201") {
-                        //create something here
-                        alert(data.data)
-                    }
-                },
-                complete: function(xhr, status) {
-                    // $('#spinner').hide();
-                }
-            });
-            return false;
-        });
-    })
-</script>
+<script src="<?php echo base_url() ?>resources/js/helper.js"></script>
+<?php include('add_modal.php') ?>

@@ -25,7 +25,6 @@ class Sidkel extends CI_Controller
   {
     parent::__construct();
     $this->load->library('config_library');
-    $this->load->model('pagu_14_model');
     $this->load->model('sidkel_model');
   }
 
@@ -67,31 +66,35 @@ class Sidkel extends CI_Controller
   {
     $year = $this->input->post('tahun');
     $month = $this->input->post('bulan');
-    $hasil_pagu = $this->pagu_14_model->searchby_year($year);
-    $hasil_lipa = $this->sidkel_model->cekby_periode($month, $year);
-    $jml = intval($hasil_pagu[0]->jml, 0);
-    $revisi = intval($hasil_pagu[0]->pagu_revisi);
-    $ada = intval($hasil_lipa[0]->id_count);
+    $hasil_pagu = $this->sidkel_model->searchPagu14byYear($year);
+    $hasil_lipa = $this->sidkel_model->cekLipa14byPeriode($month, $year);
+    // $jml = intval(count($hasil_pagu[0]), 0);
 
-    if ($jml >= 1) {
+
+    if (count($hasil_pagu) >= 1) {
+      $revisi = intval($hasil_pagu[0]->pagu_revisi);
+      $ada = intval($hasil_lipa[0]->id_count);
+
+      $pagu_awal = number_format($hasil_pagu[0]->pagu_awal, 0, ',', '.');
+      $pagu_revisi = number_format($hasil_pagu[0]->pagu_revisi, 0, ',', '.');
       if ($ada == 0) {
         if (is_null($revisi) || $revisi == 0) {
           $response = [
             'kode' => '200',
-            'data' => $hasil_pagu[0]->pagu_awal
+            'data' => $pagu_awal
           ];
           echo json_encode($response);
         } else {
           $response = [
             'kode' => '200',
-            'data' => $hasil_pagu[0]->pagu_revisi
+            'data' => $pagu_revisi
           ];
           echo json_encode($response);
         }
       } else {
         $response = [
           'kode' => '201',
-          'data' => 'Laporan LIPA 14 periode ' . pilihbulan($month) . ' ' . $year . ' sudah pernah diisi, silahkan ganti periode!'
+          'data' => 'Laporan periode ' . pilihbulan($month) . ' ' . $year . ' sudah pernah diisi, silahkan ganti periode!'
         ];
         echo json_encode($response);
       }

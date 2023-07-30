@@ -87,3 +87,36 @@
         </div>
     </div>
 </div>
+<script>
+    //--------------------------- Get the input element Modal edit --------------------
+    const editPaguAwal = document.getElementById("edit_pagu_awal");
+    const editPaguRevisi = document.getElementById("edit_pagu_revisi");
+
+    // Add event listener for keyup event
+    editPaguAwal.addEventListener("keyup", function(event) {
+        formatInputValue(event.target);
+    });
+
+    editPaguRevisi.addEventListener("keyup", function(event) {
+        formatInputValue(event.target);
+    });
+
+    //function to remove thousand separator before send it to controller
+    document.getElementById("edit_form").addEventListener("submit", function(event) {
+        // Get the current input value without dots (thousand separators)
+        let inputPaguAwal = removeThousandSeparator(editPaguAwal.value);
+        let inputPaguRevisi = removeThousandSeparator(editPaguRevisi.value);
+
+        // Convert the value to a number
+        let numPaguAwal = parseFloat(inputPaguAwal);
+        let numPaguRevisi = parseFloat(inputPaguRevisi);
+
+        // Set the numeric value as the new value of the input field
+        if (!isNaN(numPaguAwal)) {
+            editPaguAwal.value = numPaguAwal;
+        }
+        if (!isNaN(numPaguRevisi)) {
+            editPaguRevisi.value = numPaguRevisi;
+        }
+    })
+</script>

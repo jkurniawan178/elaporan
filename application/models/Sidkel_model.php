@@ -73,7 +73,7 @@ class Sidkel_model extends CI_Model
     return $hasil->result();
   }
 
-  public function cekby_periode($bulan, $tahun)
+  public function cekLipa14byPeriode($bulan, $tahun)
   {
     $sql = "SELECT COUNT(r.id) as id_count
             FROM elaporan_lipa_14 r
@@ -104,7 +104,7 @@ class Sidkel_model extends CI_Model
   //-------------------------------------------------------------------------
   public function searchPagu14byYear($year)
   {
-    $sql = "SELECT tahun_anggaran FROM elaporan_pagu_14 WHERE tahun_anggaran = $year";
+    $sql = "SELECT tahun_anggaran, pagu_revisi, pagu_awal FROM elaporan_pagu_14 WHERE tahun_anggaran = $year";
     $hasil = $this->db2->query($sql);
     return $hasil->result();
   }
