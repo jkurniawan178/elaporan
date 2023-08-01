@@ -63,6 +63,15 @@
                             </div>
                         </div>
                         <div class="item form-group">
+                            <label for="sisa_pagu" class="col-form-label col-md-4 col-sm-4 label-align">Sisa Pagu<span class="required text-danger">*</span></label>
+                            <div class="col-md-8 col-md-8 input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Rp.</div>
+                                </div>
+                                <input type="text" id="sisa_pagu" name="sisa_pagu" disabled class="form-control">
+                            </div>
+                        </div>
+                        <div class="item form-group">
                             <label for="realisasi" class="col-form-label col-md-4 col-sm-4 label-align">Realisasi Bulan Ini<span class="required text-danger">*</span></label>
                             <div class="col-md-8 col-md-8 input-group mb-2">
                                 <div class="input-group-prepend">
@@ -167,7 +176,8 @@
                         $('#btn_cek').hide();
                         $('#tahun_modal').prop('disabled', true);
                         $('#bulan_modal').prop('disabled', true);
-                        $('#pagu_awal').val(data.data);
+                        $('#pagu_awal').val(data.pagu_awal);
+                        $('#sisa_pagu').val(data.saldo);
                     } else if (data.kode == "201") {
                         //create something here
                         // alert(data.data)
@@ -184,32 +194,15 @@
     })
 
     //---------------------------Thousand separator (Add Modal) field script-------------
-    const paguAwal = document.getElementById("pagu_awal");
     const realisasi = document.getElementById("realisasi");
-
-    // Add event listener for keyup event
-    paguAwal.addEventListener("keyup", function(event) {
-        formatInputValue(event.target);
-    });
-
     realisasi.addEventListener("keyup", function(event) {
         formatInputValue(event.target);
     });
 
     //function to remove thousand separator before send it to controller
     document.getElementById("add_form").addEventListener("submit", function(event) {
-        // Get the current input value without dots (thousand separators)
-        let inputPaguAwal = removeThousandSeparator(paguAwal.value);
-        let inputRalisasi = removeThousandSeparator(realisasi.value);
-
-        // Convert the value to a number
-        let numPaguAwal = parseFloat(inputPaguAwal);
+        let inputRealisasi = removeThousandSeparator(realisasi.value);
         let numRealisasi = parseFloat(inputRealisasi);
-
-        // Set the numeric value as the new value of the input field
-        if (!isNaN(numPaguAwal)) {
-            paguAwal.value = numPaguAwal;
-        }
         if (!isNaN(numRealisasi)) {
             realisasi.value = numRealisasi;
         }

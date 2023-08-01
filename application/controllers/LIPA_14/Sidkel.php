@@ -37,12 +37,24 @@ class Sidkel extends CI_Controller
     $this->load->view('templates/index', $data);
   }
 
+  protected function _rules($aksi)
+  {
+    // var_dump($aksi);
+    if ($aksi === 'tambah') {
+      $this->form_validation->set_rules('tahun_hidden', 'tahun', 'required|numeric');
+      $this->form_validation->set_rules('bulan_hidden', 'bulan', 'required');
+    }
+    $this->form_validation->set_rules('realisasi', 'realisasi', 'required|numeric');
+    $this->form_validation->set_rules('jml_kegiatan', 'jumlah kegiatan', 'required|numeric');
+    $this->form_validation->set_rules('jml_perkara', 'jumlah perkara', 'required|numeric');
+  }
+
   public function tambah_aksi()
   {
     //TODO: add validation
     $tahun = $this->input->post('tahun_hidden');
     $bulan = $this->input->post('bulan_hidden');
-    $pagu_awal = $this->input->post('pagu_awal');
+    // $pagu_awal = $this->input->post('pagu_awal');
     $realisasi = $this->input->post('realisasi');
     $kegiatan = $this->input->post('jml_kegiatan');
     $perkara = $this->input->post('jml_perkara');
@@ -60,14 +72,14 @@ class Sidkel extends CI_Controller
     // var_dump($data);
 
     $this->sidkel_model->input_data($data);
-    redirect('sidkel/index');
+    redirect('LIPA_14/sidkel/index');
   }
 
   public function cek_pagu()
   {
     $year = $this->input->post('tahun');
     $month = $this->input->post('bulan');
-    $hasil_pagu = $this->sidkel_model->searchPagu14byYear($year);
+    $hasil_pagu = $this->sidkel_model->cekSaldoPagu14($year);
     $hasil_lipa = $this->sidkel_model->cekLipa14byPeriode($month, $year);
     // $jml = intval(count($hasil_pagu[0]), 0);
 
@@ -78,17 +90,20 @@ class Sidkel extends CI_Controller
 
       $pagu_awal = number_format($hasil_pagu[0]->pagu_awal, 0, ',', '.');
       $pagu_revisi = number_format($hasil_pagu[0]->pagu_revisi, 0, ',', '.');
+      $saldo = number_format($hasil_pagu[0]->saldo_sisa, 0, ',', '.');
       if ($ada == 0) {
         if (is_null($revisi) || $revisi == 0) {
           $response = [
             'kode' => '200',
-            'data' => $pagu_awal
+            'pagu_awal' => $pagu_awal,
+            'saldo' => $saldo
           ];
           echo json_encode($response);
         } else {
           $response = [
             'kode' => '200',
-            'data' => $pagu_revisi
+            'pagu_awal' => $pagu_revisi,
+            'saldo' => $saldo
           ];
           echo json_encode($response);
         }

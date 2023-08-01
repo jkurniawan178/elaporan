@@ -26,8 +26,6 @@
         </ul>
       </li>
 
-
-
       <li><a><i class="fa fa-desktop"></i> Laporan <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
           <li><a href="<?php echo site_url() ?>laporan_perkara">Laporan Perkara</a></li>
@@ -39,6 +37,7 @@
           <!-- <li><a href="tables_dynamic.html">Saldo Awal Keuangan Perkara</a></li> -->
         </ul>
       </li>
+    </ul>
   </div>
 
 </div>

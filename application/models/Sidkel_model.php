@@ -121,6 +121,20 @@ class Sidkel_model extends CI_Model
     return $hasil->result();
   }
   //-------------------------------------------------------------------------
+  function cekSaldoPagu14($year)
+  {
+    $sql = "SELECT r.tahun, p.pagu_awal, p.pagu_revisi,
+    COALESCE(SUM(r.realisasi), 0) AS total_realisasi,
+    IF(p.pagu_revisi = 0, p.pagu_awal, p.pagu_revisi) - COALESCE(SUM(r.realisasi), 0) AS saldo_sisa
+    FROM elaporan_lipa_14 r
+    INNER JOIN elaporan_pagu_14 p ON r.tahun = p.tahun_anggaran
+    WHERE r.tahun = $year
+    ORDER BY r.tahun DESC";
+
+    $hasil = $this->db2->query($sql);
+    return $hasil->result();
+  }
+  //-------------------------------------------------------------------------
   public function deletePagu14($where)
   {
     $this->db2->where($where);
