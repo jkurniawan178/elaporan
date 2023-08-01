@@ -82,7 +82,7 @@ class Pagu_14 extends CI_Controller
       }
 
       $this->session->set_flashdata('error', '
-        <strong>Data pagu tidak berhasil ditambahkan!</strong> Pagu pada ' . $tahun . ' telah ada!');
+        <strong>Data pagu Gagal ditambahkan!</strong> Pagu pada ' . $tahun . ' telah ada!');
       redirect('LIPA_14/pagu_14');
     }
   }

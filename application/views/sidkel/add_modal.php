@@ -79,7 +79,7 @@
                                 </div>
                                 <input type="text" id="realisasi" name="realisasi" required="required" class="form-control">
                                 <div class="invalid-feedback">
-                                    Silahkan input data Realisasi Bulan ini yang Benar
+                                    Silahkan input data Realisasi Bulan ini dengan Benar
                                 </div>
                             </div>
                         </div>
@@ -195,6 +195,7 @@
 
     //---------------------------Thousand separator (Add Modal) field script-------------
     const realisasi = document.getElementById("realisasi");
+    const saldo = document.getElementById("sisa_pagu");
     realisasi.addEventListener("keyup", function(event) {
         formatInputValue(event.target);
     });
@@ -205,6 +206,12 @@
         let numRealisasi = parseFloat(inputRealisasi);
         if (!isNaN(numRealisasi)) {
             realisasi.value = numRealisasi;
+        }
+
+        let inputSisaPagu = removeThousandSeparator(saldo.value);
+        let numSisaPagu = parseFloat(inputSisaPagu);
+        if (!isNaN(numSisaPagu)) {
+            saldo.value = numSisaPagu;
         }
 
     })

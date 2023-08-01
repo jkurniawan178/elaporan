@@ -84,7 +84,7 @@ class Sidkel_model extends CI_Model
             FROM elaporan_lipa_14 r
             WHERE r.bulan = $bulan AND r.tahun = $tahun";
     $hasil = $this->db2->query($sql);
-    return $hasil->result();
+    return $hasil->row();
   }
 
   //-------------------------------------------------------------------------
@@ -129,10 +129,10 @@ class Sidkel_model extends CI_Model
     FROM elaporan_lipa_14 r
     INNER JOIN elaporan_pagu_14 p ON r.tahun = p.tahun_anggaran
     WHERE r.tahun = $year
-    ORDER BY r.tahun DESC";
+    ORDER BY r.tahun DESC Limit 1";
 
     $hasil = $this->db2->query($sql);
-    return $hasil->result();
+    return $hasil->row();
   }
   //-------------------------------------------------------------------------
   public function deletePagu14($where)

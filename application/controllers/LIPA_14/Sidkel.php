@@ -39,11 +39,11 @@ class Sidkel extends CI_Controller
 
   protected function _rules($aksi)
   {
-    // var_dump($aksi);
     if ($aksi === 'tambah') {
       $this->form_validation->set_rules('tahun_hidden', 'tahun', 'required|numeric');
       $this->form_validation->set_rules('bulan_hidden', 'bulan', 'required');
     }
+
     $this->form_validation->set_rules('realisasi', 'realisasi', 'required|numeric');
     $this->form_validation->set_rules('jml_kegiatan', 'jumlah kegiatan', 'required|numeric');
     $this->form_validation->set_rules('jml_perkara', 'jumlah perkara', 'required|numeric');
@@ -51,28 +51,41 @@ class Sidkel extends CI_Controller
 
   public function tambah_aksi()
   {
-    //TODO: add validation
-    $tahun = $this->input->post('tahun_hidden');
-    $bulan = $this->input->post('bulan_hidden');
-    // $pagu_awal = $this->input->post('pagu_awal');
-    $realisasi = $this->input->post('realisasi');
-    $kegiatan = $this->input->post('jml_kegiatan');
-    $perkara = $this->input->post('jml_perkara');
-    $keterangan = $this->input->post('keterangan');
+    $this->_rules('tambah');
+    if ($this->form_validation->run() == false) {
+      $this->session->set_flashdata('error', '<strong>Data pagu tidak berhasil ditambahkan!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
+      redirect('LIPA_14/sidkel');
+    } else {
+      $tahun = $this->input->post('tahun_hidden');
+      $bulan = $this->input->post('bulan_hidden');
+      $realisasi = $this->input->post('realisasi');
+      $kegiatan = $this->input->post('jml_kegiatan');
+      $perkara = $this->input->post('jml_perkara');
+      $keterangan = $this->input->post('keterangan');
 
-    $data = array(
-      'bulan' => $bulan,
-      'tahun' => $tahun,
-      'realisasi' => $realisasi,
-      'jml_kegiatan' => $kegiatan,
-      'jml_perkara' => $perkara,
-      'keterangan' => $keterangan,
-    );
+      $data = array(
+        'bulan' => $bulan,
+        'tahun' => $tahun,
+        'realisasi' => $realisasi,
+        'jml_kegiatan' => $kegiatan,
+        'jml_perkara' => $perkara,
+        'keterangan' => $keterangan,
+      );
 
-    // var_dump($data);
+      $data_saldo = $this->sidkel_model->cekSaldoPagu14($tahun);
+      $saldo = $data_saldo->saldo_sisa;
+      // var_dump($saldo);
 
-    $this->sidkel_model->input_data($data);
-    redirect('LIPA_14/sidkel/index');
+      if (floatval($realisasi) < floatval($saldo)) {
+        $this->sidkel_model->input_data($data);
+        $this->session->set_flashdata('success', '<strong>Data Sidang Keliling berhasil ditambahkan!</strong>');
+        redirect('LIPA_14/sidkel');
+      }
+
+      $this->session->set_flashdata('error', '
+        <strong>Data Sidang Keliling Gagal ditambahkan!</strong> Realisasi lebih besar daripada Saldo Pagu saat ini!');
+      redirect('LIPA_14/sidkel');
+    }
   }
 
   public function cek_pagu()
@@ -81,16 +94,15 @@ class Sidkel extends CI_Controller
     $month = $this->input->post('bulan');
     $hasil_pagu = $this->sidkel_model->cekSaldoPagu14($year);
     $hasil_lipa = $this->sidkel_model->cekLipa14byPeriode($month, $year);
-    // $jml = intval(count($hasil_pagu[0]), 0);
 
 
     if (count($hasil_pagu) >= 1) {
-      $revisi = intval($hasil_pagu[0]->pagu_revisi);
-      $ada = intval($hasil_lipa[0]->id_count);
+      $revisi = intval($hasil_pagu->pagu_revisi);
+      $ada = intval($hasil_lipa->id_count);
 
-      $pagu_awal = number_format($hasil_pagu[0]->pagu_awal, 0, ',', '.');
-      $pagu_revisi = number_format($hasil_pagu[0]->pagu_revisi, 0, ',', '.');
-      $saldo = number_format($hasil_pagu[0]->saldo_sisa, 0, ',', '.');
+      $pagu_awal = number_format($hasil_pagu->pagu_awal, 0, ',', '.');
+      $pagu_revisi = number_format($hasil_pagu->pagu_revisi, 0, ',', '.');
+      $saldo = number_format($hasil_pagu->saldo_sisa, 0, ',', '.');
       if ($ada == 0) {
         if (is_null($revisi) || $revisi == 0) {
           $response = [
@@ -132,6 +144,8 @@ class Sidkel extends CI_Controller
     $this->session->set_flashdata('success', '<strong>Data pagu berhasil dihapus!</strong>');
     redirect('LIPA_14/Sidkel');
   }
+
+  //TODO Tambah edit
 }
 
 
