@@ -207,12 +207,5 @@
         if (!isNaN(numRealisasi)) {
             realisasi.value = numRealisasi;
         }
-
-        let inputSisaPagu = removeThousandSeparator(saldo.value);
-        let numSisaPagu = parseFloat(inputSisaPagu);
-        if (!isNaN(numSisaPagu)) {
-            saldo.value = numSisaPagu;
-        }
-
     })
 </script>

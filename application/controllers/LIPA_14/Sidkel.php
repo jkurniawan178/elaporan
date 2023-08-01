@@ -146,6 +146,22 @@ class Sidkel extends CI_Controller
   }
 
   //TODO Tambah edit
+  function get_lipa14_id()
+  {
+    $encodedId = $this->input->post('id');
+    $id = $this->encryption->decrypt($encodedId);
+    $data = $this->sidkel_model->getLipa14byId($id);
+    $raw_saldo = $this->sidkel_model->cekSaldoPagu14($data->tahun);
+    $saldo = floatval($raw_saldo->saldo_sisa) + floatval($data->realisasi);
+
+    $data->id = $this->encryption->encrypt($data->id);
+    $data->pagu_awal = number_format($data->pagu_awal, 0, ',', '.');
+    $data->realisasi = number_format($data->realisasi, 0, ',', '.');
+    $data->saldo = number_format($saldo, 0, ',', '.');
+
+    header('Content-Type: application/json');
+    echo json_encode($data);
+  }
 }
 
 

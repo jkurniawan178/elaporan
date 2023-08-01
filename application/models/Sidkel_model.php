@@ -87,6 +87,21 @@ class Sidkel_model extends CI_Model
     return $hasil->row();
   }
 
+  function getLipa14byId($id)
+  {
+    $sql = " SELECT
+              r.id, r.bulan, r.tahun,
+              IF(p.pagu_revisi = 0, p.pagu_awal, p.pagu_revisi) AS pagu_awal,
+              r.realisasi,
+              r.jml_kegiatan,
+              r.jml_perkara,
+              r.keterangan
+              FROM elaporan_lipa_14 r
+              INNER JOIN elaporan_pagu_14 p ON r.tahun = p.tahun_anggaran
+              WHERE r.id = '$id'";
+    $hasil = $this->db2->query($sql);
+    return $hasil->row();
+  }
   //-------------------------------------------------------------------------
   public function deleteLipa14($where)
   {

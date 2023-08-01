@@ -47,7 +47,7 @@
                             <div class="ml-2">
                                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#add-modal">
                                     <i class="fa fa-plus"></i>
-                                    Tambah
+                                    Tambah Laporan
                                 </button>
                             </div>
 
@@ -96,12 +96,11 @@
                                         <td><?= number_format($value->jml_kegiatan, 0, ',', '.') ?></td>
                                         <td><?= number_format($value->jml_perkara, 0, ',', '.') ?></td>
                                         <td>
-                                            <!-- <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update">
-                                                            <span class="icon text-white-50">
-                                                                <i class="fa fa-edit"></i>
-                                                            </span>
-                                                            <span class="text">Edit</span>
-                                                        </a> -->
+                                            <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update" data-id="<?= $value->id ?>" title="Ubah data Sidkel" data-toggle="tooltip">
+                                                <span class="icon text-white">
+                                                    <i class="fa fa-edit"></i>
+                                                </span>
+                                            </a>
                                             <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<?= $value->id ?>" title="Hapus data Sidkel" data-toggle="tooltip">
                                                 <span class="icon text-white">
                                                     <i class="fa fa-trash"></i>
@@ -126,6 +125,7 @@
 <script src="<?php echo base_url() ?>resources/js/thousandSeparator.js"></script>
 <?php include('add_modal.php') ?>
 <?php include('delete_modal.php') ?>
+<?php include('edit_modal.php') ?>
 <script>
     $(document).ready(function() {
         $('[data-toggle="tooltip]').tooltip();
@@ -142,6 +142,35 @@
             idSidkel.value = id;
 
             $('#delete-modal').modal('show');
-        })
+        });
+
+        table.on('click', '.button-update', function() {
+            let id = $(this).data('id');
+            $.ajax({
+                url: '<?php echo base_url('LIPA_14/sidkel/get_lipa14_id') ?>',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    'id': id
+                },
+                success: function(response) {
+                    // console.log(response)
+                    $('#edit_id').val(response['id'])
+                    $('#edit_bulan_modal').val(response['bulan'])
+                    $('#edit_tahun_modal').val(response['tahun'])
+                    $('#edit_tahun_hidden').val(response['tahun'])
+                    $('#edit_bulan_hidden').val(response['bulan'])
+                    $('#edit_pagu_awal').val(response['pagu_awal'])
+                    $('#edit_sisa_pagu').val(response['saldo'])
+                    $('#edit_realisasi').val(response['realisasi'])
+                    $('#edit_jml_kegiatan').val(response['jml_kegiatan'])
+                    $('#edit_jml_perkara').val(response['jml_perkara'])
+                    $('#edit_keterangan').val(response['keterangan'])
+                    $('#edit-modal').modal('show');
+                }
+            })
+
+
+        });
     });
 </script>
