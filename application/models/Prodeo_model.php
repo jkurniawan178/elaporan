@@ -44,7 +44,17 @@ class Prodeo_model extends CI_Model
     return $data;
   }
   // ------------------------------------------------------------------------
-
+  public function searchPagu15byYear($year)
+  {
+    $sql = "SELECT tahun_anggaran, pagu_revisi, pagu_awal FROM elaporan_pagu_15 WHERE tahun_anggaran = $year";
+    $hasil = $this->db2->query($sql);
+    return $hasil->result();
+  }
+  // ------------------------------------------------------------------------
+  public function inputPagu15($data)
+  {
+    $this->db2->insert('elaporan_pagu_15', $data);
+  }
 }
 
 /* End of file Prodeo_model_model.php */

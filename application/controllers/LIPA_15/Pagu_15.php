@@ -35,6 +35,51 @@ class Pagu_15 extends CI_Controller
     $data['settings'] = $this->config_library->get_config_SIPP();
     $this->load->view('templates/index', $data);
   }
+
+  protected function _rules($aksi)
+  {
+    // var_dump($aksi);
+    if ($aksi === 'tambah') {
+      $this->form_validation->set_rules('tahun', 'tahun', 'required|numeric');
+    }
+    $this->form_validation->set_rules('pagu_awal', 'pagu awal', 'required|numeric');
+    $this->form_validation->set_rules('perkara', 'target perkara', 'required|numeric');
+  }
+
+  public function tambah_aksi()
+  {
+    $this->_rules('tambah');
+    if ($this->form_validation->run() == false) {
+      $this->session->set_flashdata('error', '<strong>Data pagu tidak berhasil ditambahkan!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
+      redirect('LIPA_14/pagu_14');
+    } else {
+      $tahun = $this->input->post('tahun');
+      $pagu_awal = $this->input->post('pagu_awal');
+      $pagu_revisi = $this->input->post('pagu_revisi');
+      $perkara = $this->input->post('perkara');
+
+      $data = array(
+        'tahun_anggaran' => $tahun,
+        'pagu_awal' => $pagu_awal,
+        'pagu_revisi' => $pagu_revisi,
+        'target_perkara' => $perkara
+      );
+
+      //validasi
+      //cek apabila data pagu di tahun yang sama sudah diinput
+      $ada_tahun = $this->prodeo_model->searchPagu15byYear($tahun);
+
+      if (count($ada_tahun) == 0) {
+        $this->prodeo_model->inputPagu15($data);
+        $this->session->set_flashdata('success', '<strong>Data pagu berhasil ditambahkan!</strong>');
+        redirect('LIPA_15/pagu_15');
+      }
+
+      $this->session->set_flashdata('error', '
+        <strong>Data pagu Gagal ditambahkan!</strong> Pagu pada Tahun' . $tahun . ' telah ada!');
+      redirect('LIPA_15/pagu_15');
+    }
+  }
 }
 
 
