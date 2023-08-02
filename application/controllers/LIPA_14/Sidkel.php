@@ -53,7 +53,7 @@ class Sidkel extends CI_Controller
   {
     $this->_rules('tambah');
     if ($this->form_validation->run() == false) {
-      $this->session->set_flashdata('error', '<strong>Data pagu tidak berhasil ditambahkan!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
+      $this->session->set_flashdata('error', '<strong>Data LIPA 14 Gagal ditambahkan!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
       redirect('LIPA_14/sidkel');
     } else {
       $tahun = $this->input->post('tahun_hidden');
@@ -76,7 +76,7 @@ class Sidkel extends CI_Controller
       $saldo = $data_saldo->saldo_sisa;
       // var_dump($saldo);
 
-      if (floatval($realisasi) < floatval($saldo)) {
+      if (floatval($realisasi) <= floatval($saldo)) {
         $this->sidkel_model->input_data($data);
         $this->session->set_flashdata('success', '<strong>Data Sidang Keliling berhasil ditambahkan!</strong>');
         redirect('LIPA_14/sidkel');
@@ -161,6 +161,49 @@ class Sidkel extends CI_Controller
 
     header('Content-Type: application/json');
     echo json_encode($data);
+  }
+
+  function ubah_aksi()
+  {
+    $this->_rules('ubah');
+    if ($this->form_validation->run() == false) {
+      $this->session->set_flashdata('error', '<strong>Data LIPA 14 Gagal ditambahkan!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
+      redirect('LIPA_14/sidkel');
+    } else {
+      $encodedId = $this->input->post('edit_id');
+      $id = $this->encryption->decrypt($encodedId);
+      $tahun = $this->input->post('tahun_hidden');
+      // $bulan = $this->input->post('bulan_hidden');
+      $realisasi = $this->input->post('realisasi');
+      $kegiatan = $this->input->post('jml_kegiatan');
+      $perkara = $this->input->post('jml_perkara');
+      $keterangan = $this->input->post('keterangan');
+
+      $data = array(
+        // 'bulan' => $bulan,
+        // 'tahun' => $tahun,
+        'realisasi' => $realisasi,
+        'jml_kegiatan' => $kegiatan,
+        'jml_perkara' => $perkara,
+        'keterangan' => $keterangan,
+      );
+
+      $data_saldo = $this->sidkel_model->cekSaldoPagu14($tahun);
+      $datarealisasi_sebelumnya = $this->sidkel_model->getLipa14byId($id);
+      $realisasi_sebelumnya = floatval($datarealisasi_sebelumnya->realisasi);
+      $saldo = floatval($data_saldo->saldo_sisa) + floatval($realisasi_sebelumnya);
+      // var_dump($saldo, $realisasi);
+
+      if (floatval($realisasi) <= $saldo) {
+        $this->sidkel_model->updateLipa14($id, $data);
+        $this->session->set_flashdata('success', '<strong>Data Sidang Keliling berhasil diubah!</strong>');
+        redirect('LIPA_14/sidkel');
+      }
+
+      $this->session->set_flashdata('error', '
+        <strong>Data Sidang Keliling Gagal ditambahkan!</strong> Realisasi lebih besar daripada Saldo Pagu saat ini!');
+      redirect('LIPA_14/sidkel');
+    }
   }
 }
 

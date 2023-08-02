@@ -16,7 +16,7 @@
                         <div class="col-md-8 col-sm-8">
                             <div class="row">
                                 <div class="col-md-5 col-sm-5 ">
-                                    <select class="form-control" name="edit_bulan_modal" id="bulan_modal" style="padding:8px 0;" disabled>
+                                    <select class="form-control" name="bulan_modal" id="edit_bulan_modal" style="padding:8px 0;" disabled>
                                         <?php for ($i = 1; $i <= 12; $i++) { ?>
                                             <option value="<?php if (strlen($i) == 2) {
                                                                 echo $i;
@@ -30,10 +30,10 @@
                                     <div class="invalid-feedback">
                                         Please enter a valid period.
                                     </div>
-                                    <input type="hidden" name="edit_bulan_hidden" id="edit_bulan_hidden" value="">
+                                    <input type="hidden" name="bulan_hidden" id="edit_bulan_hidden" value="">
                                 </div>
                                 <div class="col-md-3 col-sm-3">
-                                    <select class="form-control" name="edit_tahun_modal" id="edit_tahun_modal" style="padding:8px 0;" disabled>
+                                    <select class="form-control" name="tahun_modal" id="edit_tahun_modal" style="padding:8px 0;" disabled>
                                         <?php $thn1 = date("Y");
                                         $thn2 = 2015;
                                         for ($i = $thn1; $i >= $thn2; $i = $i - 1) {  ?>
@@ -43,7 +43,7 @@
                                         <?php }
                                         ?>
                                     </select>
-                                    <input type="hidden" name="edit_tahun_hidden" id="edit_tahun_hidden" value="">
+                                    <input type="hidden" name="tahun_hidden" id="edit_tahun_hidden" value="">
                                 </div>
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Rp.</div>
                             </div>
-                            <input type="text" id="edit_pagu_awal" name="edit_pagu_awal" disabled class="form-control">
+                            <input type="text" id="edit_pagu_awal" name="pagu_awal" disabled class="form-control">
                         </div>
                     </div>
                     <div class="item form-group">
@@ -63,7 +63,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Rp.</div>
                             </div>
-                            <input type="text" id="edit_sisa_pagu" name="edit_sisa_pagu" disabled class="form-control">
+                            <input type="text" id="edit_sisa_pagu" name="sisa_pagu" disabled class="form-control">
                         </div>
                     </div>
                     <div class="item form-group">
@@ -72,7 +72,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Rp.</div>
                             </div>
-                            <input type="text" id="edit_realisasi" name="edit_realisasi" required="required" class="form-control">
+                            <input type="text" id="edit_realisasi" name="realisasi" required="required" class="form-control">
                             <div class="invalid-feedback">
                                 Silahkan input data Realisasi Bulan ini dengan Benar
                             </div>
@@ -81,7 +81,7 @@
                     <div class="item form-group">
                         <label for="jml_kegiatan" class="col-form-label col-md-4 col-sm-4 label-align">Jumlah Kegiatan<span class="required text-danger">*</span></label>
                         <div class="col-md-8 col-md-8">
-                            <input type="number" id="edit_jml_kegiatan" name="edit_jml_kegiatan" required="required" class="form-control">
+                            <input type="number" id="edit_jml_kegiatan" name="jml_kegiatan" required="required" class="form-control">
                             <div class="invalid-feedback">
                                 Silahkan input data Jumlah Kegiatan ini yang Benar
                             </div>
@@ -90,7 +90,7 @@
                     <div class="item form-group">
                         <label for="jml_perkara" class="col-form-label col-md-4 col-sm-4 label-align">Jumlah Perkara<span class="required text-danger">*</span></label>
                         <div class="col-md-8 col-md-8">
-                            <input type="number" id="edit_jml_perkara" name="edit_jml_perkara" required="required" class="form-control">
+                            <input type="number" id="edit_jml_perkara" name="jml_perkara" required="required" class="form-control">
                             <div class="invalid-feedback">
                                 Silahkan input Jumlah Perkara yang Benar
                             </div>
@@ -99,7 +99,7 @@
                     <div class="item form-group">
                         <label for="keterangan" class="col-form-label col-md-4 col-sm-4 label-align">Keterangan</label>
                         <div class="col-md-8 col-md-8">
-                            <input type="text" id="edit_keterangan" name="edit_keterangan" class="form-control">
+                            <input type="text" id="edit_keterangan" name="keterangan" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
     });
 
     //function to remove thousand separator before send it to controller
-    document.getElementById("add_form").addEventListener("submit", function(event) {
+    document.getElementById("edit_form").addEventListener("submit", function(event) {
         let inputRealisasi = removeThousandSeparator(edit_realisasi.value);
         let numRealisasi = parseFloat(inputRealisasi);
         if (!isNaN(numRealisasi)) {

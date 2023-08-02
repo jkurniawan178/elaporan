@@ -108,6 +108,12 @@ class Sidkel_model extends CI_Model
     $this->db2->where($where);
     $this->db2->delete('elaporan_lipa_14');
   }
+  //-------------------------------------------------------------------------
+  public function updateLipa14($id, $data)
+  {
+    $this->db2->where('id', $id);
+    $this->db2->update('elaporan_lipa_14', $data);
+  }
 
   //--------------------------------------PAGU LIPA 14-----------------------------------
   //-------------------------------------------------------------------------------------
