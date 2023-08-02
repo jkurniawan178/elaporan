@@ -89,6 +89,7 @@ class Pagu_14 extends CI_Controller
 
   public function delete_aksi()
   {
+    //TODO Add validation for data laporan lipa di tahun yang sama tidak boleh hapus pagu
     $idEncrypted = $this->input->post('id');
     $id = $this->encryption->decrypt($idEncrypted);
     $where = array('id' => $id);

@@ -9,10 +9,8 @@
         <ul class="nav child_menu" style="display: none;">
           <li class="sub_menu"><a href="<?php echo site_url() ?>LIPA_14/pagu_14">Pagu Sidkel (LIPA 14)</a>
           </li>
-          <!-- <li><a href="#level2_1">Pagu Anggaran LIPA 15</a>
-              </li>
-              <li><a href="#level2_2">Pagu Anggaran LIPA 16</a>
-              </li> -->
+          <li class="sub_menu"><a href="<?php echo site_url() ?>LIPA_15/pagu_15">Pagu Prodeo (LIPA 15)</a>
+          </li>
         </ul>
       </li>
 
