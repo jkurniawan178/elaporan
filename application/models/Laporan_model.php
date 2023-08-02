@@ -20,10 +20,12 @@ class Laporan_model extends CI_Model
 {
 
 	// ------------------------------------------------------------------------
-
+	protected $db2;
 	public function __construct()
 	{
 		parent::__construct();
+		//initialize db2
+		$this->db2 = $this->load->database('dbelaporan', true);
 	}
 
 	// ------------------------------------------------------------------------
@@ -523,6 +525,26 @@ class Laporan_model extends CI_Model
 				vpk.jenis_pengadilan=4 AND DATE_FORMAT(pac.tgl_akta_cerai,'%Y-%m') = '$periode' ORDER BY pac.tgl_akta_cerai,pac.nomor_akta_cerai
 				";
 		$hasil = $this->db->query($sql);
+		return $hasil->result();
+	}
+	// ------------------------------------------------------------------------
+	// -----------------------------Ambil Data Lipa 14--------------------------
+	public function getLIPA14($bulan, $tahun)
+	{
+		$sql = "SELECT r.id, r.bulan, r.tahun,p.pagu_awal, p.pagu_revisi,
+				COALESCE(SUM(r2.realisasi), 0) AS realisasi_sampai_bulan_lalu,
+				r.realisasi,
+				COALESCE(SUM(r2.realisasi), 0) + r.realisasi AS jumlah_realisasi,
+				IF(p.pagu_revisi = 0, p.pagu_awal, p.pagu_revisi) - (COALESCE(SUM(r2.realisasi), 0) + r.realisasi) AS saldo,
+				r.jml_kegiatan, r.jml_perkara, r.keterangan
+				FROM elaporan_lipa_14 r
+				INNER JOIN elaporan_pagu_14 p ON r.tahun = p.tahun_anggaran
+				LEFT JOIN elaporan_lipa_14 r2 ON r.bulan > r2.bulan AND r2.tahun = r.tahun
+				WHERE r.bulan = $bulan AND r.tahun = $tahun
+				GROUP BY r.id,r.bulan, r.tahun, p.pagu_awal, r.realisasi
+				ORDER BY r.tahun, r.bulan DESC
+				";
+		$hasil = $this->db2->query($sql);
 		return $hasil->result();
 	}
 	// ------------------------------------------------------------------------
