@@ -1,9 +1,4 @@
 <!-- page content -->
-<?php if ($this->session->flashdata('alert')) : ?>
-    <div class="alert alert-danger" role="alert">
-        <?php echo $this->session->flashdata('alert'); ?>
-    </div>
-<?php endif; ?>
 <div class="right_col" role="main">
     <div class="">
         <div class="page-title">
@@ -14,7 +9,24 @@
         <div class="clearfix"></div>
         <div class="row">
             <div class="col-md-12 col-sm-12 ">
-                <div class="x_panel">
+                <!-- Alert Atau pesan sukses -->
+                <?php if ($this->session->flashdata('success')) : ?>
+                    <div class="alert alert-success alert-dismissible fade in show mt-2" role="alert">
+                        <?php echo $this->session->flashdata('success') ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <?php elseif ($this->session->flashdata('error')) : ?>
+                    <div class="alert alert-danger alert-dismissible fade in show mt-2" role="alert">
+                        <?php echo $this->session->flashdata('error') ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <?php endif; ?>
+                <!-- --- -->
+                <div class="x_panel mt-2">
                     <div class="x_title">
                         <div class="ml-2">
                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#add-modal">
@@ -27,7 +39,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="card-box table-responsive">
-                                    <table id="datatable-responsive" class=" text-center table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                                    <table id="table-pagu" class=" text-center table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                                         <thead>
                                             <tr>
                                                 <th class="align-middle" scope="col" rowspan="2">No</th>
@@ -55,18 +67,17 @@
                                                     <td><?= $value->target_kegiatan ?></td>
                                                     <td><?= $value->target_perkara ?></td>
                                                     <td>
-                                                        <!-- <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update">
-                                                            <span class="icon text-white-50">
+                                                        <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update" data-id="<?= $value->id ?>" title="Revisi pagu" data-toggle="tooltip">
+                                                            <span class="icon text-white">
                                                                 <i class="fa fa-edit"></i>
                                                             </span>
-                                                            <span class="text">Edit</span>
-                                                        </a> -->
-                                                        <!-- <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<%= jabatan[i].id %>">
-                                                            <span class="icon text-white-50">
-                                                                <i class="fas fa-trash"></i>
+                                                        </a>
+
+                                                        <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<?= $value->id ?>" title="Hapus data pagu" data-toggle="tooltip">
+                                                            <span class="icon text-white">
+                                                                <i class="fa fa-trash"></i>
                                                             </span>
-                                                            <span class="text">Hapus</span>
-                                                        </a> -->
+                                                        </a>
                                                     </td>
                                                 </tr>
                                             <?php } ?>
@@ -78,16 +89,59 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-center">
-                <div class="spinner-border text-info" id="spinner" style="width: 5rem; height: 5rem; display:none;" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
-            </div>
         </div>
     </div>
-    <?php include('add_modal.php') ?>
 </div>
 <!-- /page content -->
 
 <!-- jQuery -->
 <script src="<?php echo base_url() ?>resources/jquery/dist/jquery.min.js"></script>
+<script src="<?php echo base_url() ?>resources/js/thousandSeparator.js"></script>
+<?php include('add_modal.php') ?>
+<?php include('edit_modal.php') ?>
+<?php include('delete_modal.php') ?>
+<script>
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+
+        var table = $('#table-pagu').DataTable({
+            order: [
+                [0, 'asc']
+            ]
+        });
+
+        table.on('click', '.button-update', function() {
+            let id = $(this).data('id');
+
+            $.ajax({
+                url: '<?php echo base_url('LIPA_14/Pagu_14/get_pagu14') ?>',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    'id': id
+                },
+                success: function(response) {
+                    // console.log(response)
+                    $('#edit_id').val(response['id'])
+                    $('#edit_tahun').val(response['tahun_anggaran'])
+                    $('#edit_pagu_awal').val(response['pagu_awal'])
+                    $('#edit_pagu_revisi').val(response['pagu_revisi'])
+                    $('#edit_lokasi').val(response['target_lokasi'])
+                    $('#edit_kegiatan').val(response['target_kegiatan'])
+                    $('#edit_perkara').val(response['target_perkara'])
+                    $('#edit-modal').modal('show');
+                }
+            })
+        });
+
+        table.on('click', '.button-delete', function() {
+            let id = $(this).data('id');
+            const idInput = document.getElementById('id');
+            idInput.value = id;
+
+            $('#delete-modal').modal('show');
+        })
+    });
+
+    //------------------------------------------------------------------------------------------
+</script>

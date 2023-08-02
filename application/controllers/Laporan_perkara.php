@@ -128,12 +128,20 @@ class Laporan_perkara extends CI_Controller
           break;
 
         case 'lipa_14':
-          $data = $this->sidkel_model->getLIPA14($bulan, $tahun);
-          $encoded = json_encode($data);
-          $hasil = $this->export_excel_lipa14($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-          echo json_encode($hasil);
-          break;
+          $data = $this->laporan_model->getLIPA14($bulan, $tahun);
 
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $hasil = $this->export_excel_lipa14($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            echo json_encode($hasil);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Lipa 14 Periode Tersebut belum ada!'
+            ];
+            echo json_encode($response);
+          }
+          break;
         case 'lipa_17':
           $data = $this->laporan_model->getLIPA17($bulan, $tahun);
           $encoded = json_encode($data);

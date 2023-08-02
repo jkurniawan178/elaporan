@@ -9,11 +9,27 @@
         <div class="clearfix"></div>
         <div class="row">
             <div class="col-md-12 col-sm-12 ">
+                <!-- Alert Atau pesan sukses -->
+                <?php if ($this->session->flashdata('success')) : ?>
+                    <div class="alert alert-success alert-dismissible fade in show mt-2" role="alert">
+                        <?php echo $this->session->flashdata('success') ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <?php elseif ($this->session->flashdata('error')) : ?>
+                    <div class="alert alert-danger alert-dismissible fade in show mt-2" role="alert">
+                        <?php echo $this->session->flashdata('error') ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <?php endif; ?>
                 <div class="x_panel">
                     <div class="x_title">
                         <div class="item form-group">
                             <label class="col-form-label" for="tahun">
-                                <h6>Tahun :</h6>
+                                <h6>Filter :</h6>
                             </label>
                             <div style="min-width: 5rem;" class="ml-2">
                                 <select class="form-control" name="tahun" id="tahun" style="padding:8px 0;">
@@ -31,17 +47,17 @@
                             <div class="ml-2">
                                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#add-modal">
                                     <i class="fa fa-plus"></i>
-                                    Tambah
+                                    Tambah Laporan
                                 </button>
                             </div>
 
                             <div class="ml-auto">
-                                <a href="<?php echo site_url() ?>pagu_14" type="button" class="btn btn-danger">
+                                <a href="<?php echo site_url() ?>LIPA_14/pagu_14" type="button" class="btn btn-danger">
                                     Setting Pagu Awal
                                 </a>
                                 <a href="<?php echo site_url() ?>laporan_perkara" type="button" class="btn btn-outline-secondary">
                                     <i class="fa fa-print"></i>
-                                    Cetak
+                                    Cetak Laporan
                                 </a>
                             </div>
                         </div>
@@ -49,7 +65,7 @@
                     </div>
                     <div class="x_content">
                         <br />
-                        <table id="datatable-responsive" class=" text-center table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+                        <table id="table-sidkel" class=" text-center table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
                                     <th class="align-middle" scope="col">No</th>
@@ -80,18 +96,16 @@
                                         <td><?= number_format($value->jml_kegiatan, 0, ',', '.') ?></td>
                                         <td><?= number_format($value->jml_perkara, 0, ',', '.') ?></td>
                                         <td>
-                                            <!-- <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update">
-                                                            <span class="icon text-white-50">
-                                                                <i class="fa fa-edit"></i>
-                                                            </span>
-                                                            <span class="text">Edit</span>
-                                                        </a> -->
-                                            <!-- <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<%= jabatan[i].id %>">
-                                                            <span class="icon text-white-50">
-                                                                <i class="fas fa-trash"></i>
-                                                            </span>
-                                                            <span class="text">Hapus</span>
-                                                        </a> -->
+                                            <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update" data-id="<?= $value->id ?>" title="Ubah data Sidkel" data-toggle="tooltip">
+                                                <span class="icon text-white">
+                                                    <i class="fa fa-edit"></i>
+                                                </span>
+                                            </a>
+                                            <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<?= $value->id ?>" title="Hapus data Sidkel" data-toggle="tooltip">
+                                                <span class="icon text-white">
+                                                    <i class="fa fa-trash"></i>
+                                                </span>
+                                            </a>
                                         </td>
                                     </tr>
                                 <?php } ?>
@@ -99,84 +113,64 @@
                         </table>
                     </div>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <div class="spinner-border text-info" id="spinner" style="width: 5rem; height: 5rem; display:none;" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 </div>
-<?php include('add_modal.php') ?>
 </div>
 <!-- /page content -->
 
 <!-- jQuery -->
 <script src="<?php echo base_url() ?>resources/jquery/dist/jquery.min.js"></script>
-
-<script type="text/javascript">
+<script src="<?php echo base_url() ?>resources/js/thousandSeparator.js"></script>
+<?php include('add_modal.php') ?>
+<?php include('delete_modal.php') ?>
+<?php include('edit_modal.php') ?>
+<script>
     $(document).ready(function() {
-        $('#btn_reset').on('click', function() {
-            $('#form_hide').hide();
-            $('#btn_simpan').prop('disabled', true);
-            $('#btn_cek').show();
-            $('#tahun_modal').prop('disabled', false);
-            $('#bulan_modal').prop('disabled', false);
-            $('#pagu_awal').val('');
-        })
-        // set the initial value of hidden input field
-        var selected_month = $('#bulan_modal').find(':selected').val();
-        $('#bulan_hidden').val(selected_month);
+        $('[data-toggle="tooltip]').tooltip();
 
-        var selected_year = $('#tahun_modal').find(':selected').val();
-        $('#tahun_hidden').val(selected_year);
-
-        // Set the value of the hidden input field when the selected option changes
-        $('#bulan_modal').on('change', function() {
-            var selected_option = $(this).find(':selected').val();
-            $('#bulan_hidden').val(selected_option);
+        var table = $('#table-sidkel').DataTable({
+            order: [
+                [0, 'asc']
+            ]
         });
 
-        $('#tahun_modal').on('change', function() {
-            var selected_option = $(this).find(':selected').val();
-            $('#tahun_hidden').val(selected_option);
+        table.on('click', '.button-delete', function() {
+            let id = $(this).data('id');
+            const idSidkel = document.getElementById('id');
+            idSidkel.value = id;
+
+            $('#delete-modal').modal('show');
         });
 
-        $('#btn_cek').on('click', function() {
-            var tahun = $('#tahun_modal').val();
-            var bulan = $('#bulan_modal').val();
-            // $('#panel-verifikasi').hide();
+        table.on('click', '.button-update', function() {
+            let id = $(this).data('id');
             $.ajax({
-                type: "POST",
-                url: "<?php echo base_url('index.php/sidkel/cek_pagu') ?>",
-                dataType: "JSON",
+                url: '<?php echo base_url('LIPA_14/sidkel/get_lipa14_id') ?>',
+                type: 'POST',
+                dataType: 'json',
                 data: {
-                    tahun: tahun,
-                    bulan,
-                    bulan
+                    'id': id
                 },
-                beforeSend: function() {
-                    // $('#spinner').show();
-                },
-                success: function(data) {
-                    if (data.kode == "200") {
-                        $('#form_hide').show();
-                        $('#btn_simpan').prop('disabled', false);
-                        $('#btn_cek').hide();
-                        $('#tahun_modal').prop('disabled', true);
-                        $('#bulan_modal').prop('disabled', true);
-                        $('#pagu_awal').val(data.data);
-                    } else if (data.kode == "201") {
-                        //create something here
-                        alert(data.data)
-                    }
-                },
-                complete: function(xhr, status) {
-                    // $('#spinner').hide();
+                success: function(response) {
+                    // console.log(response)
+                    $('#edit_id').val(response['id'])
+                    $('#edit_bulan_modal').val(response['bulan'])
+                    $('#edit_tahun_modal').val(response['tahun'])
+                    $('#edit_tahun_hidden').val(response['tahun'])
+                    $('#edit_bulan_hidden').val(response['bulan'])
+                    $('#edit_pagu_awal').val(response['pagu_awal'])
+                    $('#edit_sisa_pagu').val(response['saldo'])
+                    $('#edit_realisasi').val(response['realisasi'])
+                    $('#edit_jml_kegiatan').val(response['jml_kegiatan'])
+                    $('#edit_jml_perkara').val(response['jml_perkara'])
+                    $('#edit_keterangan').val(response['keterangan'])
+                    $('#edit-modal').modal('show');
                 }
-            });
-            return false;
+            })
+
+
         });
-    })
+    });
 </script>
