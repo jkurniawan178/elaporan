@@ -55,6 +55,23 @@ class Prodeo_model extends CI_Model
   {
     $this->db2->insert('elaporan_pagu_15', $data);
   }
+  //-------------------------------------------------------------------------
+  public function getPagu15byId($id)
+  {
+    $data = $this->db2->get_where('elaporan_pagu_15', array('id' => $id));
+
+    if ($data->num_rows() > 0) {
+      return $data->row(); //REturn the first row as an object
+    } else {
+      return null;
+    }
+  }
+  //-------------------------------------------------------------------------
+  public function updatePagu15($id, $data)
+  {
+    $this->db2->where('id', $id);
+    $this->db2->update('elaporan_pagu_15', $data);
+  }
 }
 
 /* End of file Prodeo_model_model.php */

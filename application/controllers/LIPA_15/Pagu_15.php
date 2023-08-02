@@ -27,7 +27,7 @@ class Pagu_15 extends CI_Controller
     $this->load->model('prodeo_model');
     $this->load->library('config_library');
   }
-
+  //----------------------------------------------------------------------------------------------------
   public function index()
   {
     $data['contents'] = 'pagu_15/v_pagu_15';
@@ -35,7 +35,7 @@ class Pagu_15 extends CI_Controller
     $data['settings'] = $this->config_library->get_config_SIPP();
     $this->load->view('templates/index', $data);
   }
-
+  //----------------------------------------------------------------------------------------------------
   protected function _rules($aksi)
   {
     // var_dump($aksi);
@@ -45,7 +45,7 @@ class Pagu_15 extends CI_Controller
     $this->form_validation->set_rules('pagu_awal', 'pagu awal', 'required|numeric');
     $this->form_validation->set_rules('perkara', 'target perkara', 'required|numeric');
   }
-
+  //----------------------------------------------------------------------------------------------------
   public function tambah_aksi()
   {
     $this->_rules('tambah');
@@ -77,6 +77,50 @@ class Pagu_15 extends CI_Controller
 
       $this->session->set_flashdata('error', '
         <strong>Data pagu Gagal ditambahkan!</strong> Pagu pada Tahun' . $tahun . ' telah ada!');
+      redirect('LIPA_15/pagu_15');
+    }
+  }
+  //----------------------------------------------------------------------------------------------------
+  //Pencarian data PAGU 15 by id
+  public function get_pagu15()
+  {
+    $encodedId = $this->input->post('id');
+    $id = $this->encryption->decrypt($encodedId);
+    $data = $this->prodeo_model->getPagu15byId($id);
+
+    $data->id = $this->encryption->encrypt($data->id);
+    $data->pagu_awal = number_format($data->pagu_awal, 0, ',', '.');
+    $data->pagu_revisi = number_format($data->pagu_revisi, 0, ',', '.');
+
+    header('Content-Type: application/json');
+    echo json_encode($data);
+  }
+  //----------------------------------------------------------------------------------------------------
+  public function ubah_aksi()
+  {
+    $this->_rules('edit');
+    if ($this->form_validation->run() == false) {
+      $this->session->set_flashdata('error', '<strong>Data pagu tidak berhasil diubah!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
+      redirect('LIPA_15/pagu_15');
+    } else {
+      $idEncrypted = $this->input->post('id');
+      $id = $this->encryption->decrypt($idEncrypted);
+
+      // $tahun = $this->input->post('tahun');
+      $pagu_awal = $this->input->post('pagu_awal');
+      $pagu_revisi = $this->input->post('pagu_revisi');
+      $perkara = $this->input->post('perkara');
+
+      $data = array(
+        // 'tahun_anggaran' => $tahun,
+        'pagu_awal' => $pagu_awal,
+        'pagu_revisi' => $pagu_revisi,
+        'target_perkara' => $perkara
+      );
+
+      // var_dump($data);
+      $this->prodeo_model->updatePagu15($id, $data);
+      $this->session->set_flashdata('success', '<strong>Data pagu berhasil diubah!</strong>');
       redirect('LIPA_15/pagu_15');
     }
   }
