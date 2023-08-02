@@ -50,81 +50,186 @@ class Laporan_perkara extends CI_Controller
       switch ($jenis_laporan) {
         case 'lipa_1':
           $data = $this->laporan_model->getLIPA1($bulan, $tahun);
-          $encoded = json_encode($data);
-          $datahasil = $data['hasil'];
-          $rekap = $data['rekapitulasi'];
-          $hasil = $this->export_excel_lipa1($datahasil, $rekap, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-          echo json_encode($hasil);
-          break;
 
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $datahasil = $data['hasil'];
+            $rekap = $data['rekapitulasi'];
+            $hasil = $this->export_excel_lipa1($datahasil, $rekap, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            echo json_encode($hasil);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Lipa 1 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+            ];
+            echo json_encode($response);
+          }
+          break;
         case 'lipa_2':
           $data = $this->laporan_model->getLIPA2($bulan, $tahun);
-          $encoded = json_encode($data);
-          $hasil = $this->export_excel_lipa2($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-          echo json_encode($hasil);
+
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $hasil = $this->export_excel_lipa2($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            echo json_encode($hasil);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Lipa 2 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+            ];
+            echo json_encode($response);
+          }
+
           break;
 
         case 'lipa_3':
           $data = $this->laporan_model->getLIPA3($bulan, $tahun);
-          $encoded = json_encode($data);
-          $hasil = $this->export_excel_lipa3($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-          echo json_encode($hasil);
+
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $hasil = $this->export_excel_lipa3($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            echo json_encode($hasil);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Lipa 3 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+            ];
+            echo json_encode($response);
+          }
+
           break;
 
         case 'lipa_4':
           $data = $this->laporan_model->getLIPA4($bulan, $tahun);
-          $encoded = json_encode($data);
-          $hasil = $this->export_excel_lipa4($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-          echo json_encode($hasil);
+
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $hasil = $this->export_excel_lipa4($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            echo json_encode($hasil);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Lipa 4 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+            ];
+            echo json_encode($response);
+          }
+
           break;
 
         case 'lipa_5':
           $data = $this->laporan_model->getLIPA5($bulan, $tahun);
-          $encoded = json_encode($data);
-          $hasil = $this->export_excel_lipa5($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-          echo json_encode($hasil);
+
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $hasil = $this->export_excel_lipa5($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            echo json_encode($hasil);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Lipa 5 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+            ];
+            echo json_encode($response);
+          }
+
           break;
 
         case 'lipa_6':
           $data = $this->laporan_model->getLIPA6($bulan, $tahun);
-          $encoded = json_encode($data);
-          $hasil = $this->export_excel_lipa6($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-          echo json_encode($hasil);
+
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $hasil = $this->export_excel_lipa6($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            echo json_encode($hasil);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Lipa 6 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+            ];
+            echo json_encode($response);
+          }
           break;
 
         case 'lipa_8':
           $data = $this->laporan_model->getLIPA8($bulan, $tahun);
-          $encoded = json_encode($data);
-          $hasil = $this->export_excel_lipa8($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-          echo json_encode($hasil);
+
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $hasil = $this->export_excel_lipa8($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            echo json_encode($hasil);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Lipa 8 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+            ];
+            echo json_encode($response);
+          }
           break;
 
         case 'lipa_9':
           $data = $this->laporan_model->getLIPA9($bulan, $tahun);
-          $encoded = json_encode($data);
-          $hasil = $this->export_excel_lipa9($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-          echo json_encode($hasil);
+
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $hasil = $this->export_excel_lipa9($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            echo json_encode($hasil);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Lipa 9 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+            ];
+            echo json_encode($response);
+          }
           break;
 
         case 'lipa_10':
           $data = $this->laporan_model->getLIPA10($bulan, $tahun);
-          $encoded = json_encode($data);
-          $hasil = $this->export_excel_lipa10($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-          echo json_encode($hasil);
+
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $hasil = $this->export_excel_lipa10($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            echo json_encode($hasil);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Lipa 10 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+            ];
+            echo json_encode($response);
+          }
+
           break;
 
         case 'lipa_12':
           $data = $this->laporan_model->getLIPA12($bulan, $tahun);
-          $encoded = json_encode($data);
-          $hasil = $this->export_excel_lipa12($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-          echo json_encode($hasil);
+
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $hasil = $this->export_excel_lipa12($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            echo json_encode($hasil);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Lipa 12 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+            ];
+            echo json_encode($response);
+          }
+
           break;
 
         case 'lipa_13':
           $data = $this->laporan_model->getLIPA13($bulan, $tahun);
-          $encoded = json_encode($data);
-          $hasil = $this->export_excel_lipa13($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-          echo json_encode($hasil);
+
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $hasil = $this->export_excel_lipa13($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            echo json_encode($hasil);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Lipa 13 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+            ];
+            echo json_encode($response);
+          }
+
           break;
 
         case 'lipa_14':
@@ -137,53 +242,110 @@ class Laporan_perkara extends CI_Controller
           } else {
             $response = [
               'kode' => '201',
-              'data' => 'Laporan Lipa 14 Periode Tersebut belum ada!'
+              'data' => 'Laporan Lipa 14 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+            ];
+            echo json_encode($response);
+          }
+
+          break;
+        case 'lipa_17':
+          $data = $this->laporan_model->getLIPA17($bulan, $tahun);
+
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $hasil = $this->export_excel_lipa17($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            echo json_encode($hasil);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Lipa 17 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
             ];
             echo json_encode($response);
           }
           break;
-        case 'lipa_17':
-          $data = $this->laporan_model->getLIPA17($bulan, $tahun);
-          $encoded = json_encode($data);
-          $hasil = $this->export_excel_lipa17($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-          echo json_encode($hasil);
-          break;
 
         case 'lipa_18':
           $data = $this->laporan_model->getLIPA18($bulan, $tahun);
-          $encoded = json_encode($data);
-          $hasil = $this->export_excel_lipa18($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-          echo json_encode($hasil);
+
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $hasil = $this->export_excel_lipa18($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            echo json_encode($hasil);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Lipa 18 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+            ];
+            echo json_encode($response);
+          }
+
           break;
 
         case 'lipa_19':
           $data = $this->laporan_model->getLIPA19($bulan, $tahun);
-          $encoded = json_encode($data);
-          $hasil = $this->export_excel_lipa19($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-          echo json_encode($hasil);
+
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $hasil = $this->export_excel_lipa19($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            echo json_encode($hasil);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Lipa 19 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+            ];
+            echo json_encode($response);
+          }
+
           break;
 
         case 'lipa_20':
           $data = $this->laporan_model->getLIPA20($bulan, $tahun);
-          $encoded = json_encode($data);
-          $hasil = $this->export_excel_lipa20($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-          echo json_encode($hasil);
+
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $hasil = $this->export_excel_lipa20($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            echo json_encode($hasil);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Lipa 20 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+            ];
+            echo json_encode($response);
+          }
           break;
 
         case 'lipa_21':
           $data = $this->laporan_model->getLIPA21($bulan, $tahun);
-          $encoded = json_encode($data);
-          $hasil = $this->export_excel_lipa21($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-          echo json_encode($hasil);
+
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $hasil = $this->export_excel_lipa21($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            echo json_encode($hasil);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Lipa 21 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+            ];
+            echo json_encode($response);
+          }
           break;
 
         case 'lipa_22':
           $data = $this->laporan_model->getLIPA22($bulan, $tahun);
-          $encoded = json_encode($data);
-          $masuk = $data['delegasi_masuk'];
-          $keluar = $data['delegasi_keluar'];
-          $hasil = $this->export_excel_lipa22($masuk, $keluar, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-          echo json_encode($hasil);
+
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $masuk = $data['delegasi_masuk'];
+            $keluar = $data['delegasi_keluar'];
+            $hasil = $this->export_excel_lipa22($masuk, $keluar, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            echo json_encode($hasil);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Lipa 22 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+            ];
+            echo json_encode($response);
+          }
           break;
         default:
 

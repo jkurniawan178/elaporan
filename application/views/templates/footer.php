@@ -15,10 +15,14 @@
 <script src="<?php echo base_url() ?>resources/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Chart.js -->
 <!-- <script src="<?php echo base_url() ?>resources/Chart.js/dist/Chart.min.js"></script> -->
-
+<!-- iziToast -->
+<script src="<?php echo base_url() ?>resources/iziToast/dist/js/iziToast.min.js"></script>
 <!-- Page level plugins -->
 <script src="<?php echo base_url() ?>resources/datatables/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url() ?>resources/datatables/dataTables.bootstrap4.min.js"></script>
+<!-- bootstrap-daterangepicker -->
+<script src="<?php echo base_url() ?>resources/moment/min/moment.min.js"></script>
+<script src="<?php echo base_url() ?>resources/bootstrap-daterangepicker/daterangepicker.js"></script>
 
 <!-- Custom Theme Scripts -->
 <script src="<?php echo base_url() ?>resources/js/custom.js"></script>

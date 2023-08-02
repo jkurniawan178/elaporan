@@ -215,7 +215,12 @@
 						$('#preview_laporan').html('Preview Laporan ' + jenis + '<small>Periksa Laporan Terlebih Dahulu Sebelum anda verifikasi</small>');
 					} else if (data.kode == "201" || data.kode == '202') {
 						//create something here
-						alert(data.data)
+						// alert(data.data)
+						iziToast.error({
+							title: 'Error!',
+							message: data.data,
+							position: 'topCenter'
+						});
 					}
 				},
 				error: function(xhr, status, error) {
