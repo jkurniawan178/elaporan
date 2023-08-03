@@ -142,6 +142,60 @@ class Prodeo extends CI_Controller
     $this->session->set_flashdata('success', '<strong>Data Prodeo berhasil dihapus!</strong>');
     redirect('LIPA_15/prodeo');
   }
+  //---------------------------------------------------------------------------------------
+  function get_lipa15_id()
+  {
+    $encodedId = $this->input->post('id');
+    $id = $this->encryption->decrypt($encodedId);
+    $data = $this->prodeo_model->getLipa15byId($id);
+    $raw_saldo = $this->prodeo_model->cekSaldoPagu15($data->tahun);
+    $saldo = floatval($raw_saldo->saldo_sisa) + floatval($data->realisasi);
+
+    $data->id = $this->encryption->encrypt($data->id);
+    $data->pagu_awal = number_format($data->pagu_awal, 0, ',', '.');
+    $data->realisasi = number_format($data->realisasi, 0, ',', '.');
+    $data->saldo = number_format($saldo, 0, ',', '.');
+
+    header('Content-Type: application/json');
+    echo json_encode($data);
+  }
+  //----------------------------------------------------------------------
+  function ubah_aksi()
+  {
+    $this->_rules('ubah');
+    if ($this->form_validation->run() == false) {
+      $this->session->set_flashdata('error', '<strong>Data LIPA 15 Gagal ditambahkan!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
+      redirect('LIPA_15/prodeo');
+    } else {
+      $encodedId = $this->input->post('edit_id');
+      $id = $this->encryption->decrypt($encodedId);
+      $tahun = $this->input->post('tahun_hidden');
+      $realisasi = $this->input->post('realisasi');
+      $perkara = $this->input->post('jml_perkara');
+      $keterangan = $this->input->post('keterangan');
+
+      $data = array(
+        'realisasi' => $realisasi,
+        'jml_perkara' => $perkara,
+        'keterangan' => $keterangan,
+      );
+
+      $data_saldo = $this->prodeo_model->cekSaldoPagu15($tahun);
+      $datarealisasi_sebelumnya = $this->prodeo_model->getLipa15byId($id);
+      $realisasi_sebelumnya = floatval($datarealisasi_sebelumnya->realisasi);
+      $saldo = floatval($data_saldo->saldo_sisa) + floatval($realisasi_sebelumnya);
+
+      if (floatval($realisasi) <= $saldo) {
+        $this->prodeo_model->updateLipa15($id, $data);
+        $this->session->set_flashdata('success', '<strong>Data Prodeo berhasil diubah!</strong>');
+        redirect('LIPA_15/prodeo');
+      }
+
+      $this->session->set_flashdata('error', '
+        <strong>Data Prodeo Gagal ditambahkan!</strong> Realisasi lebih besar daripada Saldo Pagu saat ini!');
+      redirect('LIPA_15/prodeo');
+    }
+  }
 }
 
 

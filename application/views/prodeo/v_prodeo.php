@@ -152,7 +152,7 @@
         table.on('click', '.button-update', function() {
             let id = $(this).data('id');
             $.ajax({
-                url: '<?php echo base_url('LIPA_14/sidkel/get_lipa14_id') ?>',
+                url: '<?php echo base_url('LIPA_15/prodeo/get_lipa15_id') ?>',
                 type: 'POST',
                 dataType: 'json',
                 data: {
@@ -168,7 +168,6 @@
                     $('#edit_pagu_awal').val(response['pagu_awal'])
                     $('#edit_sisa_pagu').val(response['saldo'])
                     $('#edit_realisasi').val(response['realisasi'])
-                    $('#edit_jml_kegiatan').val(response['jml_kegiatan'])
                     $('#edit_jml_perkara').val(response['jml_perkara'])
                     $('#edit_keterangan').val(response['keterangan'])
                     $('#edit-modal').modal('show');

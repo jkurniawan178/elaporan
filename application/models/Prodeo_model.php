@@ -158,6 +158,27 @@ class Prodeo_model extends CI_Model
     $this->db2->where($where);
     $this->db2->delete('elaporan_lipa_15');
   }
+  //-------------------------------------------------------------------------
+  function getLipa15byId($id)
+  {
+    $sql = " SELECT
+              r.id, r.bulan, r.tahun,
+              IF(p.pagu_revisi = 0, p.pagu_awal, p.pagu_revisi) AS pagu_awal,
+              r.realisasi,
+              r.jml_perkara,
+              r.keterangan
+              FROM elaporan_lipa_15 r
+              INNER JOIN elaporan_pagu_15 p ON r.tahun = p.tahun_anggaran
+              WHERE r.id = '$id'";
+    $hasil = $this->db2->query($sql);
+    return $hasil->row();
+  }
+  //-------------------------------------------------------------------------
+  public function updateLipa15($id, $data)
+  {
+    $this->db2->where('id', $id);
+    $this->db2->update('elaporan_lipa_15', $data);
+  }
 }
 
 /* End of file Prodeo_model_model.php */
