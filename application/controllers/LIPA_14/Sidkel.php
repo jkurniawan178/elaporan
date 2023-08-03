@@ -142,11 +142,10 @@ class Sidkel extends CI_Controller
     $id = $this->encryption->decrypt($idEncrypted);
     $where = array('id' => $id);
     $this->sidkel_model->deleteLipa14($where);
-    $this->session->set_flashdata('success', '<strong>Data pagu berhasil dihapus!</strong>');
+    $this->session->set_flashdata('success', '<strong>Data Sidkel berhasil dihapus!</strong>');
     redirect('LIPA_14/Sidkel');
   }
 
-  //TODO Tambah edit
   function get_lipa14_id()
   {
     $encodedId = $this->input->post('id');

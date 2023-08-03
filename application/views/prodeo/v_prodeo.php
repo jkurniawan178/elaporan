@@ -99,12 +99,12 @@
                                         <td><?= number_format($value->jml_perkara, 0, ',', '.') ?></td>
                                         <td><?= $value->keterangan ?></td>
                                         <td>
-                                            <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update" data-id="<?= $value->id ?>" title="Ubah data Sidkel" data-toggle="tooltip">
+                                            <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update" data-id="<?= $value->id ?>" title="Ubah data Prodeo" data-toggle="tooltip">
                                                 <span class="icon text-white">
                                                     <i class="fa fa-edit"></i>
                                                 </span>
                                             </a>
-                                            <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<?= $value->id ?>" title="Hapus data Sidkel" data-toggle="tooltip">
+                                            <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<?= $value->id ?>" title="Hapus data Prodeo" data-toggle="tooltip">
                                                 <span class="icon text-white">
                                                     <i class="fa fa-trash"></i>
                                                 </span>

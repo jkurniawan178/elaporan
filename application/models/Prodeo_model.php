@@ -140,13 +140,23 @@ class Prodeo_model extends CI_Model
             GROUP BY r.id,r.bulan, r.tahun, p.pagu_awal, r.realisasi
             ORDER BY r.tahun desc, r.bulan DESC";
     $hasil = $this->db2->query($sql);
-    return $hasil->result();
+    $data = $hasil->result();
+    foreach ($data as $row) {
+      $row->id = $this->encryption->encrypt($row->id);
+    }
+    return $data;
   }
   //--------------------------------------------------------------------------
   public function inputLipa15($data)
   {
     $db2 = $this->load->database('dbelaporan', true);
     $db2->insert('elaporan_lipa_15', $data);
+  }
+  //-------------------------------------------------------------------------
+  public function deleteLipa15($where)
+  {
+    $this->db2->where($where);
+    $this->db2->delete('elaporan_lipa_15');
   }
 }
 

@@ -132,6 +132,16 @@ class Prodeo extends CI_Controller
       redirect('LIPA_15/prodeo');
     }
   }
+  //--------------------------------------------------------------------------------------
+  public function delete_aksi()
+  {
+    $idEncrypted = $this->input->post('id');
+    $id = $this->encryption->decrypt($idEncrypted);
+    $where = array('id' => $id);
+    $this->prodeo_model->deleteLipa15($where);
+    $this->session->set_flashdata('success', '<strong>Data Prodeo berhasil dihapus!</strong>');
+    redirect('LIPA_15/prodeo');
+  }
 }
 
 
