@@ -187,6 +187,17 @@ class Sidkel_model extends CI_Model
       return null;
     }
   }
+  //-------------------------------------------------------------------------
+  function cekLipa14byPagu($idPagu)
+  {
+    $sql = "SELECT r.id
+    FROM elaporan_lipa_14 r
+    INNER JOIN elaporan_pagu_14 p ON r.tahun = p.tahun_anggaran
+    where p.id = '$idPagu'";
+
+    $hasil = $this->db2->query($sql);
+    return $hasil->result();
+  }
 }
 
 /* End of file Sidkel_model.php */

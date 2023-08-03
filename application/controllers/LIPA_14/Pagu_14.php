@@ -89,12 +89,18 @@ class Pagu_14 extends CI_Controller
 
   public function delete_aksi()
   {
-    //TODO Add validation for data laporan lipa di tahun yang sama tidak boleh hapus pagu
     $idEncrypted = $this->input->post('id');
     $id = $this->encryption->decrypt($idEncrypted);
-    $where = array('id' => $id);
-    $this->sidkel_model->deletePagu14($where);
-    $this->session->set_flashdata('success', '<strong>Data pagu berhasil dihapus!</strong>');
+
+    $dataLipa = $this->sidkel_model->cekLipa14byPagu($id);
+
+    if (count($dataLipa) == 0) {
+      $where = array('id' => $id);
+      $this->sidkel_model->deletePagu14($where);
+      $this->session->set_flashdata('success', '<strong>Data pagu berhasil dihapus!</strong>');
+      redirect('LIPA_14/pagu_14');
+    }
+    $this->session->set_flashdata('error', '<strong>Data pagu tidak bisa dihapus!</strong> Sudah ada Laporan Lipa 14 untuk tahun tersebut');
     redirect('LIPA_14/pagu_14');
   }
 
