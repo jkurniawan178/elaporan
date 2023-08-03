@@ -69,18 +69,18 @@
                         <table id="table-prodeo" class=" text-center table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
-                                    <th class="align-middle" scope="col">No</th>
-                                    <th class="align-middle" scope="col">Periode</th>
+                                    <th class="align-middle" scope="col" data-priority="1">No</th>
+                                    <th class="align-middle" scope="col" data-priority="1">Periode</th>
                                     <th class="align-middle" scope="col">Pagu Awal</th>
                                     <th class="align-middle" scope="col">Pagu Revisi</th>
                                     <th class="align-middle" scope="col">Realisasi s/d Bulan Lalu</th>
-                                    <th class="align-middle" scope="col">Realisasi Bulan Ini</th>
+                                    <th class="align-middle" scope="col" data-priority="1">Realisasi Bulan Ini</th>
                                     <th class="align-middle" scope="col">Jumlah</th>
-                                    <th class="align-middle" scope="col">Sisa</th>
+                                    <th class="align-middle" scope="col" data-priority="2">Sisa</th>
                                     <th class="align-middle" scope="col">Target</th>
                                     <th class="align-middle" scope="col">Jumlah Perkara</th>
                                     <th class="align-middle" scope="col">Ket</th>
-                                    <th class="align-middle" scope="col">Action</th>
+                                    <th class="align-middle" scope="col" data-priority="1">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -136,7 +136,9 @@
         var table = $('#table-prodeo').DataTable({
             order: [
                 [0, 'asc']
-            ]
+            ],
+
+            responsive: true
         });
 
         table.on('click', '.button-delete', function() {

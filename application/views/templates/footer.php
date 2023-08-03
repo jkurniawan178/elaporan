@@ -20,6 +20,7 @@
 <!-- Page level plugins -->
 <script src="<?php echo base_url() ?>resources/datatables/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url() ?>resources/datatables/dataTables.bootstrap4.min.js"></script>
+<script src="<?php echo base_url() ?>resources/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <!-- bootstrap-daterangepicker -->
 <script src="<?php echo base_url() ?>resources/moment/min/moment.min.js"></script>
 <script src="<?php echo base_url() ?>resources/bootstrap-daterangepicker/daterangepicker.js"></script>

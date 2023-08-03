@@ -42,8 +42,8 @@
                                     <table id="table-pagu" class=" text-center table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                                         <thead>
                                             <tr>
-                                                <th class="align-middle" scope="col" rowspan="2">No</th>
-                                                <th class="align-middle" scope="col" rowspan="2">Tahun</th>
+                                                <th class="align-middle" scope="col" rowspan="2" data-priority="1">No</th>
+                                                <th class="align-middle" scope="col" rowspan="2" data-priority="1">Tahun</th>
                                                 <th class="align-middle" scope="col" rowspan="2">Pagu Awal</th>
                                                 <th class="align-middle" scope="col" rowspan="2">Pagu Revisi</th>
                                                 <th class="align-middle" colspan="3" scope="colgroup">Target</th>
@@ -107,7 +107,8 @@
         var table = $('#table-pagu').DataTable({
             order: [
                 [0, 'asc']
-            ]
+            ],
+            responsive: true
         });
 
         table.on('click', '.button-update', function() {

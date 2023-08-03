@@ -20,6 +20,7 @@
   <!-- Datatables -->
   <!-- Custom styles for this page -->
   <link href="<?php echo base_url() ?>resources/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>resources/datatables-responsive/css/responsive.dataTables.min.css">
   <!-- bootstrap-daterangepicker -->
   <link href="<?php echo base_url() ?>resources/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
   <!-- Custom Theme Style -->

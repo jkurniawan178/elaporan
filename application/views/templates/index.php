@@ -38,14 +38,14 @@
       <!-- top navigation -->
       <div class="top_nav">
         <div class="nav_menu pt-3 pb-2" style="min-height: 50px;">
-          <div class="nav toggle">
+          <div class="col-md-1 nav toggle">
             <a id="menu_toggle"><i class="fa fa-bars"></i></a>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-7">
             <h2><?php echo $settings['NamaPT'] ?></h2>
             <h4><?php echo $settings['NamaPN'] ?></h4>
           </div>
-          <nav class="nav navbar-nav">
+          <nav class="col-md-4 col-sm-2 nav navbar-nav">
             <ul class=" navbar-right">
               <li class="nav-item dropdown open" style="padding-left: 15px;">
                 <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">

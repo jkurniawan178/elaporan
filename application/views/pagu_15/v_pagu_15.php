@@ -43,11 +43,11 @@
                                         <thead>
                                             <tr>
                                                 <th class="align-middle" scope="col">No</th>
-                                                <th class="align-middle" scope="col">Tahun</th>
-                                                <th class="align-middle" scope="col">Pagu Awal</th>
+                                                <th class="align-middle" scope="col" data-priority="1">Tahun</th>
+                                                <th class="align-middle" scope="col" data-priority="1">Pagu Awal</th>
                                                 <th class="align-middle" scope="col">Pagu Revisi</th>
                                                 <th class="align-middle" scope="col">Target Perkara</th>
-                                                <th class="align-middle" scope="col">Actions</th>
+                                                <th class="align-middle" scope="col" data-priority="1">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -100,7 +100,8 @@
         var table = $('#table-pagu').DataTable({
             order: [
                 [0, 'asc']
-            ]
+            ],
+            responsive: true
         });
 
         table.on('click', '.button-update', function() {
