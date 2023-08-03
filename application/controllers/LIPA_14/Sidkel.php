@@ -40,13 +40,14 @@ class Sidkel extends CI_Controller
   protected function _rules($aksi)
   {
     if ($aksi === 'tambah') {
-      $this->form_validation->set_rules('tahun_hidden', 'tahun', 'required|numeric');
-      $this->form_validation->set_rules('bulan_hidden', 'bulan', 'required');
+      $this->form_validation->set_rules('tahun_hidden', 'tahun', 'required|trim|numeric');
+      $this->form_validation->set_rules('bulan_hidden', 'bulan', 'required|trim');
     }
 
-    $this->form_validation->set_rules('realisasi', 'realisasi', 'required|numeric');
-    $this->form_validation->set_rules('jml_kegiatan', 'jumlah kegiatan', 'required|numeric');
-    $this->form_validation->set_rules('jml_perkara', 'jumlah perkara', 'required|numeric');
+    $this->form_validation->set_rules('realisasi', 'realisasi', 'required|trim|numeric');
+    $this->form_validation->set_rules('jml_kegiatan', 'jumlah kegiatan', 'required|trim|numeric');
+    $this->form_validation->set_rules('jml_perkara', 'jumlah perkara', 'required|trim|numeric');
+    $this->form_validation->set_rules('keterangan', 'keterangan', 'trim');
   }
 
   public function tambah_aksi()

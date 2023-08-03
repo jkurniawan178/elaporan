@@ -40,10 +40,10 @@ class Pagu_15 extends CI_Controller
   {
     // var_dump($aksi);
     if ($aksi === 'tambah') {
-      $this->form_validation->set_rules('tahun', 'tahun', 'required|numeric');
+      $this->form_validation->set_rules('tahun', 'tahun', 'required|trim|numeric');
     }
-    $this->form_validation->set_rules('pagu_awal', 'pagu awal', 'required|numeric');
-    $this->form_validation->set_rules('perkara', 'target perkara', 'required|numeric');
+    $this->form_validation->set_rules('pagu_awal', 'pagu awal', 'required|trim|numeric');
+    $this->form_validation->set_rules('perkara', 'target perkara', 'required|trim|numeric');
   }
   //----------------------------------------------------------------------------------------------------
   public function tambah_aksi()
