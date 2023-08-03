@@ -89,6 +89,25 @@ class Prodeo_model extends CI_Model
     $this->db2->where($where);
     $this->db2->delete('elaporan_pagu_15');
   }
+
+  //-------------------------PART LAPORAN LIPA PRODEO (15)-------------------
+  //-------------------------------------------------------------------------
+  function getLipa15All()
+  {
+    $sql = "SELECT r.id, r.bulan, r.tahun, p.pagu_awal, p.pagu_revisi,
+            COALESCE(SUM(r2.realisasi), 0) AS realisasi_sampai_bulan_lalu,
+            r.realisasi,
+            COALESCE(SUM(r2.realisasi), 0) + r.realisasi AS jumlah_realisasi,
+            IF(p.pagu_revisi = 0, p.pagu_awal, p.pagu_revisi) - (COALESCE(SUM(r2.realisasi), 0) + r.realisasi) AS saldo,
+            p.target_perkara, r.jml_perkara, r.keterangan
+            FROM elaporan_lipa_15 r
+            INNER JOIN elaporan_pagu_15 p ON r.tahun = p.tahun_anggaran
+            LEFT JOIN elaporan_lipa_15 r2 ON r.bulan > r2.bulan AND r2.tahun = r.tahun
+            GROUP BY r.id,r.bulan, r.tahun, p.pagu_awal, r.realisasi
+            ORDER BY r.tahun desc, r.bulan DESC";
+    $hasil = $this->db2->query($sql);
+    return $hasil->result();
+  }
 }
 
 /* End of file Prodeo_model_model.php */
