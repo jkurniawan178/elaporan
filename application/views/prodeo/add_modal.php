@@ -8,7 +8,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="add_form" action="<?php echo base_url() . 'LIPA_14/sidkel/tambah_aksi' ?>" method="post" class="form-horizontal form-label-left needs-validation" novalidate>
+            <form id="add_form" action="<?php echo base_url() . 'LIPA_15/prodeo/tambah_aksi' ?>" method="post" class="form-horizontal form-label-left needs-validation" novalidate>
                 <div class="modal-body">
                     <div class="item form-group">
                         <label id="periode_label" class="col-form-label col-md-2 col-sm-2 label-align" for="bulan_modal">Periode <span class="required text-danger">*</span>
@@ -84,15 +84,6 @@
                             </div>
                         </div>
                         <div class="item form-group">
-                            <label for="jml_kegiatan" class="col-form-label col-md-4 col-sm-4 label-align">Jumlah Kegiatan<span class="required text-danger">*</span></label>
-                            <div class="col-md-8 col-md-8">
-                                <input type="number" id="jml_kegiatan" name="jml_kegiatan" required="required" class="form-control">
-                                <div class="invalid-feedback">
-                                    Silahkan input data Jumlah Kegiatan ini yang Benar
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item form-group">
                             <label for="jml_perkara" class="col-form-label col-md-4 col-sm-4 label-align">Jumlah Perkara<span class="required text-danger">*</span></label>
                             <div class="col-md-8 col-md-8">
                                 <input type="number" id="jml_perkara" name="jml_perkara" required="required" class="form-control">
@@ -130,7 +121,6 @@
             $('#bulan_modal').prop('disabled', false);
             $('#realisasi').val('');
             $('#jml_perkara').val('');
-            $('#jml_kegiatan').val('');
             $('#keterangan').val('');
             $('#add_form').removeClass('was-validated')
             $('#periode_label').removeClass('col-md-4').removeClass('col-sm-4').addClass('col-md-2').addClass('col-sm-2');
@@ -162,7 +152,7 @@
             // $('#panel-verifikasi').hide();
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url('LIPA_14/sidkel/cek_pagu') ?>",
+                url: "<?php echo base_url('LIPA_15/prodeo/cek_pagu') ?>",
                 dataType: "JSON",
                 data: {
                     tahun: tahun,

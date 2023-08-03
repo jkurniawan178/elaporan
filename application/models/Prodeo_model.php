@@ -90,7 +90,41 @@ class Prodeo_model extends CI_Model
     $this->db2->delete('elaporan_pagu_15');
   }
 
+  //-------------------------------------------------------------------------
+  function cekSaldoPagu15($year)
+  {
+    $sql = "SELECT p.tahun_anggaran AS tahun,  p.pagu_awal,
+            p.pagu_revisi,
+            COALESCE(SUM(r.realisasi), 0) AS total_realisasi,
+            CASE
+                WHEN SUM(r.realisasi) IS NULL THEN
+                    CASE
+                        WHEN p.pagu_revisi = 0 THEN p.pagu_awal
+                        ELSE p.pagu_revisi
+                    END
+                ELSE
+                    IF(p.pagu_revisi = 0, p.pagu_awal, p.pagu_revisi) - COALESCE(SUM(r.realisasi), 0)
+            END AS saldo_sisa
+            FROM elaporan_pagu_15 p
+            LEFT JOIN elaporan_lipa_15 r ON p.tahun_anggaran = r.tahun
+            WHERE p.tahun_anggaran = '$year'
+            GROUP BY p.tahun_anggaran, p.pagu_awal, p.pagu_revisi
+            ORDER BY p.tahun_anggaran DESC";
+
+    $hasil = $this->db2->query($sql);
+    return $hasil->row();
+  }
+
   //-------------------------PART LAPORAN LIPA PRODEO (15)-------------------
+  //-------------------------------------------------------------------------
+  public function cekLipa15byPeriode($bulan, $tahun)
+  {
+    $sql = "SELECT COUNT(r.id) as id_count
+            FROM elaporan_lipa_15 r
+            WHERE r.bulan = $bulan AND r.tahun = $tahun";
+    $hasil = $this->db2->query($sql);
+    return $hasil->row();
+  }
   //-------------------------------------------------------------------------
   function getLipa15All()
   {
@@ -107,6 +141,12 @@ class Prodeo_model extends CI_Model
             ORDER BY r.tahun desc, r.bulan DESC";
     $hasil = $this->db2->query($sql);
     return $hasil->result();
+  }
+  //--------------------------------------------------------------------------
+  public function inputLipa15($data)
+  {
+    $db2 = $this->load->database('dbelaporan', true);
+    $db2->insert('elaporan_lipa_15', $data);
   }
 }
 
