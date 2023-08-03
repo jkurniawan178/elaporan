@@ -3,7 +3,7 @@
     <div class="">
         <div class="page-title">
             <div class="title_left">
-                <h2>Laporan Pelaksanaan Sidang Keliling (LIPA 14)</h2>
+                <h2>Laporan Pelaksanaan Pembebasan Biaya Perkara (LIPA 15)</h2>
             </div>
         </div>
         <div class="clearfix"></div>
@@ -53,7 +53,7 @@
                             </div>
 
                             <div class="ml-auto">
-                                <a href="<?php echo site_url() ?>LIPA_14/pagu_14" type="button" class="btn btn-danger">
+                                <a href="<?php echo site_url() ?>LIPA_15/pagu_15" type="button" class="btn btn-danger">
                                     Setting Pagu Awal
                                 </a>
                                 <a href="<?php echo site_url() ?>laporan_perkara" type="button" class="btn btn-outline-secondary">
@@ -66,7 +66,7 @@
                     </div>
                     <div class="x_content">
                         <br />
-                        <table id="table-sidkel" class=" text-center table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+                        <table id="table-prodeo" class=" text-center table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
                                     <th class="align-middle" scope="col" data-priority="1">No</th>
@@ -77,14 +77,15 @@
                                     <th class="align-middle" scope="col" data-priority="1">Realisasi Bulan Ini</th>
                                     <th class="align-middle" scope="col">Jumlah</th>
                                     <th class="align-middle" scope="col" data-priority="2">Sisa</th>
-                                    <th class="align-middle" scope="col">Jumlah Kegiatan</th>
+                                    <th class="align-middle" scope="col">Target</th>
                                     <th class="align-middle" scope="col">Jumlah Perkara</th>
+                                    <th class="align-middle" scope="col">Ket</th>
                                     <th class="align-middle" scope="col" data-priority="1">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php $no = 1;
-                                foreach ($sidkel as $value) { ?>
+                                foreach ($prodeo as $value) { ?>
                                     <tr>
                                         <td><?= $no++ ?></td>
                                         <td><?= pilihbulan($value->bulan) . ' ' . $value->tahun ?></td>
@@ -94,15 +95,16 @@
                                         <td><?= number_format($value->realisasi, 0, ',', '.') ?></td>
                                         <td><?= number_format($value->jumlah_realisasi, 0, ',', '.') ?></td>
                                         <td><?= number_format($value->saldo, 0, ',', '.') ?></td>
-                                        <td><?= number_format($value->jml_kegiatan, 0, ',', '.') ?></td>
+                                        <td><?= number_format($value->target_perkara, 0, ',', '.') ?></td>
                                         <td><?= number_format($value->jml_perkara, 0, ',', '.') ?></td>
+                                        <td><?= $value->keterangan ?></td>
                                         <td>
-                                            <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update" data-id="<?= $value->id ?>" title="Ubah data Sidkel" data-toggle="tooltip">
+                                            <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update" data-id="<?= $value->id ?>" title="Ubah data Prodeo" data-toggle="tooltip">
                                                 <span class="icon text-white">
                                                     <i class="fa fa-edit"></i>
                                                 </span>
                                             </a>
-                                            <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<?= $value->id ?>" title="Hapus data Sidkel" data-toggle="tooltip">
+                                            <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<?= $value->id ?>" title="Hapus data Prodeo" data-toggle="tooltip">
                                                 <span class="icon text-white">
                                                     <i class="fa fa-trash"></i>
                                                 </span>
@@ -131,10 +133,11 @@
     $(document).ready(function() {
         $('[data-toggle="tooltip]').tooltip();
 
-        var table = $('#table-sidkel').DataTable({
+        var table = $('#table-prodeo').DataTable({
             order: [
                 [0, 'asc']
             ],
+
             responsive: true
         });
 
@@ -149,7 +152,7 @@
         table.on('click', '.button-update', function() {
             let id = $(this).data('id');
             $.ajax({
-                url: '<?php echo base_url('LIPA_14/sidkel/get_lipa14_id') ?>',
+                url: '<?php echo base_url('LIPA_15/prodeo/get_lipa15_id') ?>',
                 type: 'POST',
                 dataType: 'json',
                 data: {
@@ -165,7 +168,6 @@
                     $('#edit_pagu_awal').val(response['pagu_awal'])
                     $('#edit_sisa_pagu').val(response['saldo'])
                     $('#edit_realisasi').val(response['realisasi'])
-                    $('#edit_jml_kegiatan').val(response['jml_kegiatan'])
                     $('#edit_jml_perkara').val(response['jml_perkara'])
                     $('#edit_keterangan').val(response['keterangan'])
                     $('#edit-modal').modal('show');

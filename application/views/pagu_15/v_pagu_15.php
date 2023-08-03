@@ -3,7 +3,7 @@
     <div class="">
         <div class="page-title">
             <div class="title_left">
-                <h2>Pagu Anggaran - Pelaksanaan Sidang diluar Gedung Pengadilan</h2>
+                <h2>Pagu Anggaran - Pelaksanaan Pembebasan Biaya Perkara</h2>
             </div>
         </div>
         <div class="clearfix"></div>
@@ -42,29 +42,22 @@
                                     <table id="table-pagu" class=" text-center table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                                         <thead>
                                             <tr>
-                                                <th class="align-middle" scope="col" rowspan="2" data-priority="1">No</th>
-                                                <th class="align-middle" scope="col" rowspan="2" data-priority="1">Tahun</th>
-                                                <th class="align-middle" scope="col" rowspan="2">Pagu Awal</th>
-                                                <th class="align-middle" scope="col" rowspan="2">Pagu Revisi</th>
-                                                <th class="align-middle" colspan="3" scope="colgroup">Target</th>
-                                                <th class="align-middle" scope="col" rowspan="2">Actions</th>
-                                            </tr>
-                                            <tr>
-                                                <th class="align-middle" scope="col">Lokasi</th>
-                                                <th class="align-middle" scope="col">Kegiatan</th>
-                                                <th class="align-middle" scope="col">Perkara</th>
+                                                <th class="align-middle" scope="col">No</th>
+                                                <th class="align-middle" scope="col" data-priority="1">Tahun</th>
+                                                <th class="align-middle" scope="col" data-priority="1">Pagu Awal</th>
+                                                <th class="align-middle" scope="col">Pagu Revisi</th>
+                                                <th class="align-middle" scope="col">Target Perkara</th>
+                                                <th class="align-middle" scope="col" data-priority="1">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php $no = 1;
-                                            foreach ($pagu_14 as $value) { ?>
+                                            foreach ($pagu_15 as $value) { ?>
                                                 <tr>
                                                     <td><?= $no++ ?></td>
                                                     <td><?= $value->tahun_anggaran ?></td>
                                                     <td><?= number_format($value->pagu_awal, 0, ',', '.') ?></td>
                                                     <td><?= number_format($value->pagu_revisi, 0, ',', '.') ?></td>
-                                                    <td><?= $value->target_lokasi ?></td>
-                                                    <td><?= $value->target_kegiatan ?></td>
                                                     <td><?= $value->target_perkara ?></td>
                                                     <td>
                                                         <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update" data-id="<?= $value->id ?>" title="Revisi pagu" data-toggle="tooltip">
@@ -115,7 +108,7 @@
             let id = $(this).data('id');
 
             $.ajax({
-                url: '<?php echo base_url('LIPA_14/Pagu_14/get_pagu14') ?>',
+                url: '<?php echo base_url('LIPA_15/Pagu_15/get_pagu15') ?>',
                 type: 'POST',
                 dataType: 'json',
                 data: {
@@ -127,8 +120,6 @@
                     $('#edit_tahun').val(response['tahun_anggaran'])
                     $('#edit_pagu_awal').val(response['pagu_awal'])
                     $('#edit_pagu_revisi').val(response['pagu_revisi'])
-                    $('#edit_lokasi').val(response['target_lokasi'])
-                    $('#edit_kegiatan').val(response['target_kegiatan'])
                     $('#edit_perkara').val(response['target_perkara'])
                     $('#edit-modal').modal('show');
                 }

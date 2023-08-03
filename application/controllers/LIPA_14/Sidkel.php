@@ -40,13 +40,14 @@ class Sidkel extends CI_Controller
   protected function _rules($aksi)
   {
     if ($aksi === 'tambah') {
-      $this->form_validation->set_rules('tahun_hidden', 'tahun', 'required|numeric');
-      $this->form_validation->set_rules('bulan_hidden', 'bulan', 'required');
+      $this->form_validation->set_rules('tahun_hidden', 'tahun', 'required|trim|numeric');
+      $this->form_validation->set_rules('bulan_hidden', 'bulan', 'required|trim');
     }
 
-    $this->form_validation->set_rules('realisasi', 'realisasi', 'required|numeric');
-    $this->form_validation->set_rules('jml_kegiatan', 'jumlah kegiatan', 'required|numeric');
-    $this->form_validation->set_rules('jml_perkara', 'jumlah perkara', 'required|numeric');
+    $this->form_validation->set_rules('realisasi', 'realisasi', 'required|trim|numeric');
+    $this->form_validation->set_rules('jml_kegiatan', 'jumlah kegiatan', 'required|trim|numeric');
+    $this->form_validation->set_rules('jml_perkara', 'jumlah perkara', 'required|trim|numeric');
+    $this->form_validation->set_rules('keterangan', 'keterangan', 'trim');
   }
 
   public function tambah_aksi()
@@ -141,11 +142,10 @@ class Sidkel extends CI_Controller
     $id = $this->encryption->decrypt($idEncrypted);
     $where = array('id' => $id);
     $this->sidkel_model->deleteLipa14($where);
-    $this->session->set_flashdata('success', '<strong>Data pagu berhasil dihapus!</strong>');
+    $this->session->set_flashdata('success', '<strong>Data Sidkel berhasil dihapus!</strong>');
     redirect('LIPA_14/Sidkel');
   }
 
-  //TODO Tambah edit
   function get_lipa14_id()
   {
     $encodedId = $this->input->post('id');

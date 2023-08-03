@@ -9,10 +9,8 @@
         <ul class="nav child_menu" style="display: none;">
           <li class="sub_menu"><a href="<?php echo site_url() ?>LIPA_14/pagu_14">Pagu Sidkel (LIPA 14)</a>
           </li>
-          <!-- <li><a href="#level2_1">Pagu Anggaran LIPA 15</a>
-              </li>
-              <li><a href="#level2_2">Pagu Anggaran LIPA 16</a>
-              </li> -->
+          <li class="sub_menu"><a href="<?php echo site_url() ?>LIPA_15/pagu_15">Pagu Prodeo (LIPA 15)</a>
+          </li>
         </ul>
       </li>
 
@@ -21,7 +19,7 @@
           <!-- <li><a href="form_advanced.html">Laporan Keuangan Perkara Konsignasi (LIPA.7C)</a></li> -->
           <!-- <li><a href="<?php echo site_url() ?>input_iwadl">Laporan Pertanggungjawaban Uang Iwadl (LIPA.11) </a></li> -->
           <li><a href="<?php echo site_url() ?>LIPA_14/sidkel">Laporan Pelaksanaan Sidang Keliling (LIPA.14)</a></li>
-          <!-- <li><a href="form_validation.html">Laporan Pelaksanaan Prodeo (LIPA.15)</a></li> -->
+          <li><a href="<?php echo site_url() ?>LIPA_15/prodeo">Laporan Pelaksanaan Prodeo (LIPA.15)</a></li>
           <!-- <li><a href="form_wizards.html">Laporan Pelaksanaan Posbakum (LIPA.16)</a></li> -->
         </ul>
       </li>
