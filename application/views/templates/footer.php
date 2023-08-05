@@ -27,7 +27,7 @@
 
 <!-- Custom Theme Scripts -->
 <script src="<?php echo base_url() ?>resources/js/custom.js"></script>
-
+<script src="<?php echo base_url() ?>resources/js/helper.js"></script>
 <script>
   //Function that using bootstrap validator
   (function() {
