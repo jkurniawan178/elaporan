@@ -11,6 +11,8 @@
           </li>
           <li class="sub_menu"><a href="<?php echo site_url() ?>LIPA_15/pagu_15">Pagu Prodeo (LIPA 15)</a>
           </li>
+          <li class="sub_menu"><a href="<?php echo site_url() ?>LIPA_16/pagu_16">Pagu Posbakum (LIPA 16)</a>
+          </li>
         </ul>
       </li>
 
