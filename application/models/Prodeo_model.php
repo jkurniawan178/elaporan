@@ -73,7 +73,7 @@ class Prodeo_model extends CI_Model
     $this->db2->update('elaporan_pagu_15', $data);
   }
   //-------------------------------------------------------------------------
-  function cekLipa15byPagu($idPagu)
+  public function cekLipa15byPagu($idPagu)
   {
     $sql = "SELECT r.id
     FROM elaporan_lipa_15 r
@@ -91,7 +91,7 @@ class Prodeo_model extends CI_Model
   }
 
   //-------------------------------------------------------------------------
-  function cekSaldoPagu15($year)
+  public function cekSaldoPagu15($year)
   {
     $sql = "SELECT p.tahun_anggaran AS tahun,  p.pagu_awal,
             p.pagu_revisi,
@@ -126,7 +126,7 @@ class Prodeo_model extends CI_Model
     return $hasil->row();
   }
   //-------------------------------------------------------------------------
-  function getLipa15All()
+  public function getLipa15All()
   {
     $sql = "SELECT r.id, r.bulan, r.tahun, p.pagu_awal, p.pagu_revisi,
             COALESCE(SUM(r2.realisasi), 0) AS realisasi_sampai_bulan_lalu,
@@ -159,7 +159,7 @@ class Prodeo_model extends CI_Model
     $this->db2->delete('elaporan_lipa_15');
   }
   //-------------------------------------------------------------------------
-  function getLipa15byId($id)
+  public function getLipa15byId($id)
   {
     $sql = " SELECT
               r.id, r.bulan, r.tahun,

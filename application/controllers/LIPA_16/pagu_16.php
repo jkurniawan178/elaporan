@@ -36,50 +36,50 @@ class Pagu_16 extends CI_Controller
         $this->load->view('templates/index', $data);
     }
     //----------------------------------------------------------------------------------------------------
-    // protected function _rules($aksi)
-    // {
-    //     // var_dump($aksi);
-    //     if ($aksi === 'tambah') {
-    //         $this->form_validation->set_rules('tahun', 'tahun', 'required|trim|numeric');
-    //     }
-    //     $this->form_validation->set_rules('pagu_awal', 'pagu awal', 'required|trim|numeric');
-    //     $this->form_validation->set_rules('perkara', 'target perkara', 'required|trim|numeric');
-    // }
+    protected function _rules($aksi)
+    {
+        // var_dump($aksi);
+        if ($aksi === 'tambah') {
+            $this->form_validation->set_rules('tahun', 'tahun', 'required|trim|numeric');
+        }
+        $this->form_validation->set_rules('pagu_awal', 'pagu awal', 'required|trim|numeric');
+        $this->form_validation->set_rules('layanan', 'target layanan', 'required|trim|numeric');
+    }
     //----------------------------------------------------------------------------------------------------
-    // public function tambah_aksi()
-    // {
-    //     $this->_rules('tambah');
-    //     if ($this->form_validation->run() == false) {
-    //         $this->session->set_flashdata('error', '<strong>Data pagu tidak berhasil ditambahkan!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
-    //         redirect('LIPA_14/pagu_14');
-    //     } else {
-    //         $tahun = $this->input->post('tahun');
-    //         $pagu_awal = $this->input->post('pagu_awal');
-    //         $pagu_revisi = $this->input->post('pagu_revisi');
-    //         $perkara = $this->input->post('perkara');
+    public function tambah_aksi()
+    {
+        $this->_rules('tambah');
+        if ($this->form_validation->run() == false) {
+            $this->session->set_flashdata('error', '<strong>Data pagu tidak berhasil ditambahkan!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
+            redirect('LIPA_16/pagu_16');
+        } else {
+            $tahun = $this->input->post('tahun');
+            $pagu_awal = $this->input->post('pagu_awal');
+            $pagu_revisi = $this->input->post('pagu_revisi');
+            $layanan = $this->input->post('layanan');
 
-    //         $data = array(
-    //             'tahun_anggaran' => $tahun,
-    //             'pagu_awal' => $pagu_awal,
-    //             'pagu_revisi' => $pagu_revisi,
-    //             'target_perkara' => $perkara
-    //         );
+            $data = array(
+                'tahun_anggaran' => $tahun,
+                'pagu_awal' => $pagu_awal,
+                'pagu_revisi' => $pagu_revisi,
+                'target_layanan' => $layanan
+            );
 
-    //         //validasi
-    //         //cek apabila data pagu di tahun yang sama sudah diinput
-    //         $ada_tahun = $this->prodeo_model->searchPagu15byYear($tahun);
+            //validasi
+            //cek apabila data pagu di tahun yang sama sudah diinput
+            $ada_tahun = $this->posbakum_model->searchPagu16byYear($tahun);
 
-    //         if (count($ada_tahun) == 0) {
-    //             $this->prodeo_model->inputPagu15($data);
-    //             $this->session->set_flashdata('success', '<strong>Data pagu berhasil ditambahkan!</strong>');
-    //             redirect('LIPA_15/pagu_15');
-    //         }
+            if (count($ada_tahun) == 0) {
+                $this->posbakum_model->inputPagu16($data);
+                $this->session->set_flashdata('success', '<strong>Data pagu berhasil ditambahkan!</strong>');
+                redirect('LIPA_16/pagu_16');
+            }
 
-    //         $this->session->set_flashdata('error', '
-    //     <strong>Data pagu Gagal ditambahkan!</strong> Pagu pada Tahun' . $tahun . ' telah ada!');
-    //         redirect('LIPA_15/pagu_15');
-    //     }
-    // }
+            $this->session->set_flashdata('error', '
+        <strong>Data pagu Gagal ditambahkan!</strong> Pagu pada Tahun' . $tahun . ' telah ada!');
+            redirect('LIPA_16/pagu_16');
+        }
+    }
     //----------------------------------------------------------------------------------------------------
     //Pencarian data PAGU 15 by id
     // public function get_pagu15()
