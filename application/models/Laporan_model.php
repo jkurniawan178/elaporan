@@ -548,6 +548,26 @@ class Laporan_model extends CI_Model
 		return $hasil->result();
 	}
 	// ------------------------------------------------------------------------
+	// -----------------------------Ambil Data Lipa 15--------------------------
+	public function getLIPA15($bulan, $tahun)
+	{
+		$sql = "SELECT r.id, r.bulan, r.tahun,p.pagu_awal, p.pagu_revisi,
+				COALESCE(SUM(r2.realisasi), 0) AS realisasi_sampai_bulan_lalu,
+				r.realisasi,
+				COALESCE(SUM(r2.realisasi), 0) + r.realisasi AS jumlah_realisasi,
+				IF(p.pagu_revisi = 0, p.pagu_awal, p.pagu_revisi) - (COALESCE(SUM(r2.realisasi), 0) + r.realisasi) AS saldo,
+				p.target_perkara, r.jml_perkara, r.keterangan
+				FROM elaporan_lipa_15 r
+				INNER JOIN elaporan_pagu_15 p ON r.tahun = p.tahun_anggaran
+				LEFT JOIN elaporan_lipa_15 r2 ON r.bulan > r2.bulan AND r2.tahun = r.tahun
+				WHERE r.bulan = $bulan AND r.tahun = $tahun
+				GROUP BY r.id,r.bulan, r.tahun, p.pagu_awal, r.realisasi
+				ORDER BY r.tahun, r.bulan DESC
+				";
+		$hasil = $this->db2->query($sql);
+		return $hasil->result();
+	}
+	// ------------------------------------------------------------------------
 	// -----------------------------Ambil Data Lipa 17--------------------------
 	public function getLIPA17($bulan, $tahun)
 	{

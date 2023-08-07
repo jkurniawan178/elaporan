@@ -38,7 +38,7 @@
 										<option value="lipa_12">LAPORAN MEDIASI (LIPA.12) </option>
 										<option value="lipa_13">LAPORAN PENERBITAN AKTA CERAI (LIPA.13)</option>
 										<option value="lipa_14">LAPORAN SIDANG DILUAR GEDUNG (LIPA.14)</option>
-										<!-- <option value="lipa_15">LAPORAN PELAKSANAAN PEMBEBASAN BIAYA PERKARA (LIPA.15)</option> -->
+										<option value="lipa_15">LAPORAN PELAKSANAAN PEMBEBASAN BIAYA PERKARA (LIPA.15)</option>
 										<!-- <option value="lipa_16">LAPORAN PELAKSANAAN POSYANKUM (LIPA.16)</option> -->
 										<option value="lipa_17">LAPORAN PENERIMAAN HAK-HAK KEPANITERAAN (HHK) (LIPA.17) </option>
 										<option value="lipa_18">LAPORAN PENERIMAAN HAK-HAK KEPANITERAAN LAINNYA (HHKL) (LIPA.18) </option>

@@ -60,23 +60,34 @@ class Sidkel_model extends CI_Model
     return $data;
   }
 
-  // public function getLIPA14($bulan, $tahun)
-  // {
-  //   $sql = "SELECT r.id, r.bulan, r.tahun,p.pagu_awal, p.pagu_revisi,
-  //           COALESCE(SUM(r2.realisasi), 0) AS realisasi_sampai_bulan_lalu,
-  //           r.realisasi,
-  //           COALESCE(SUM(r2.realisasi), 0) + r.realisasi AS jumlah_realisasi,
-  //           IF(p.pagu_revisi = 0, p.pagu_awal, p.pagu_revisi) - (COALESCE(SUM(r2.realisasi), 0) + r.realisasi) AS saldo,
-  //           r.jml_kegiatan, r.jml_perkara, r.keterangan
-  //           FROM elaporan_lipa_14 r
-  //           INNER JOIN elaporan_pagu_14 p ON r.tahun = p.tahun_anggaran
-  //           LEFT JOIN elaporan_lipa_14 r2 ON r.bulan > r2.bulan AND r2.tahun = r.tahun
-  //           WHERE r.bulan = $bulan AND r.tahun = $tahun
-  //           GROUP BY r.id,r.bulan, r.tahun, p.pagu_awal, r.realisasi
-  //           ORDER BY r.tahun, r.bulan DESC";
-  //   $hasil = $this->db2->query($sql);
-  //   return $hasil->result();
-  // }
+  public function getLipa14YearFilter($tahun)
+  {
+    if ($tahun === 'all') {
+      $where = "";
+    } else {
+      $where = "WHERE r.tahun = $tahun";
+    }
+
+    $sql = "SELECT r.id, r.bulan, r.tahun,p.pagu_awal, p.pagu_revisi,
+            COALESCE(SUM(r2.realisasi), 0) AS realisasi_sampai_bulan_lalu,
+            r.realisasi,
+            COALESCE(SUM(r2.realisasi), 0) + r.realisasi AS jumlah_realisasi,
+            IF(p.pagu_revisi = 0, p.pagu_awal, p.pagu_revisi) - (COALESCE(SUM(r2.realisasi), 0) + r.realisasi) AS saldo,
+            r.jml_kegiatan, r.jml_perkara, r.keterangan
+            FROM elaporan_lipa_14 r
+            INNER JOIN elaporan_pagu_14 p ON r.tahun = p.tahun_anggaran
+            LEFT JOIN elaporan_lipa_14 r2 ON r.bulan > r2.bulan AND r2.tahun = r.tahun
+            $where
+            GROUP BY r.id,r.bulan, r.tahun, p.pagu_awal, r.realisasi
+            ORDER BY r.tahun desc, r.bulan DESC";
+    $hasil = $this->db2->query($sql);
+    $data = $hasil->result();
+
+    foreach ($data as $row) {
+      $row->id = $this->encryption->encrypt($row->id);
+    }
+    return $data;
+  }
 
   public function cekLipa14byPeriode($bulan, $tahun)
   {
@@ -186,6 +197,17 @@ class Sidkel_model extends CI_Model
     } else {
       return null;
     }
+  }
+  //-------------------------------------------------------------------------
+  function cekLipa14byPagu($idPagu)
+  {
+    $sql = "SELECT r.id
+    FROM elaporan_lipa_14 r
+    INNER JOIN elaporan_pagu_14 p ON r.tahun = p.tahun_anggaran
+    where p.id = '$idPagu'";
+
+    $hasil = $this->db2->query($sql);
+    return $hasil->result();
   }
 }
 

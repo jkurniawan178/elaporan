@@ -30,10 +30,10 @@
                         <div class="item form-group">
                             <label class="col-form-label" for="tahun">
                                 <h6>Filter :</h6>
-                                <!-- TODO Aktifkan Filter ini guys yah -->
                             </label>
-                            <div style="min-width: 5rem;" class="ml-2">
-                                <select class="form-control" name="tahun" id="tahun" style="padding:8px 0;">
+                            <div style="min-width: 10rem;" class="ml-2">
+                                <select class="form-control" name="filter" id="filter" style="padding:8px 0;">
+                                    <option value="all"> -- Semua -- </option>
                                     <?php $thn1 = date("Y");
                                     $thn2 = 2015;
                                     for ($i = $thn1; $i >= $thn2; $i = $i - 1) {  ?>
@@ -173,8 +173,59 @@
                     $('#edit-modal').modal('show');
                 }
             })
+        });
 
+        $('#filter').on('change', function(event) {
+            const tahun = $(this).val();
+            // console.log(tahun);
+            $.ajax({
+                url: '<?php echo base_url('LIPA_15/prodeo/filter_lipa15_tahun') ?>',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    'tahun': tahun
+                },
+                success: function(response) {
+                    console.log(response)
+                    // var table = $('#table-sidkel').DataTable();
+                    table.clear(); // Clear existing data from the table
 
+                    for (var i = 0; i < response.length; i++) {
+                        response[i].button = `<a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split 
+                                                  btn-sm button-update" data-id="${response[i].id}" title="Ubah data Sidkel" data-toggle="tooltip">
+                                                <span class="icon text-white">
+                                                    <i class="fa fa-edit"></i>
+                                                </span>
+                                            </a>
+                                            <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split 
+                                            btn-sm button-delete" data-id="${response[i].id}" title="Hapus data Sidkel" data-toggle="tooltip">
+                                                <span class="icon text-white">
+                                                    <i class="fa fa-trash"></i>
+                                                </span>
+                                            </a>`
+                        response[i].periode = `${pilihBulan(response[i].bulan)} ${response[i].tahun}`
+                        table.row.add([
+                            i + 1,
+                            response[i].periode,
+                            addThousandSeparator(response[i].pagu_awal),
+                            addThousandSeparator(response[i].pagu_revisi),
+                            addThousandSeparator(response[i].realisasi_sampai_bulan_lalu),
+                            addThousandSeparator(response[i].realisasi),
+                            addThousandSeparator(response[i].jumlah_realisasi),
+                            addThousandSeparator(response[i].saldo),
+                            response[i].target_perkara,
+                            response[i].jml_perkara,
+                            response[i].keterangan,
+                            response[i].button
+                            // Add other data columns here
+                        ])
+                    }
+                    table.draw();
+                },
+                error: function(xhr, status, error) {
+                    alert('AJAX Error:', error.massage);
+                }
+            })
         });
     });
 </script>

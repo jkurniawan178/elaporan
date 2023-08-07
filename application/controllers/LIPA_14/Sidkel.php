@@ -205,6 +205,15 @@ class Sidkel extends CI_Controller
       redirect('LIPA_14/sidkel');
     }
   }
+
+  function filter_lipa14_tahun()
+  {
+    $tahun = $this->input->post('tahun');
+
+    $data = $this->sidkel_model->getLipa14YearFilter($tahun);
+    header('Content-Type: application/json');
+    echo json_encode($data);
+  }
 }
 
 
