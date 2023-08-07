@@ -196,6 +196,15 @@ class Prodeo extends CI_Controller
       redirect('LIPA_15/prodeo');
     }
   }
+  //----------------------------------------------------------------------
+  function filter_lipa15_tahun()
+  {
+    $tahun = $this->input->post('tahun');
+
+    $data = $this->prodeo_model->getLipa15YearFilter($tahun);
+    header('Content-Type: application/json');
+    echo json_encode($data);
+  }
 }
 
 
