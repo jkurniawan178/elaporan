@@ -198,14 +198,14 @@ class Posbakum extends CI_Controller
     }
   }
   //----------------------------------------------------------------------
-  // function filter_lipa15_tahun()
-  // {
-  //   $tahun = $this->input->post('tahun');
+  function filter_lipa16_tahun()
+  {
+    $tahun = $this->input->post('tahun');
 
-  //   $data = $this->prodeo_model->getLipa15YearFilter($tahun);
-  //   header('Content-Type: application/json');
-  //   echo json_encode($data);
-  // }
+    $data = $this->posbakum_model->getLipa16YearFilter($tahun);
+    header('Content-Type: application/json');
+    echo json_encode($data);
+  }
 }
 
 

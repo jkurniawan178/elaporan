@@ -53,7 +53,7 @@
                             </div>
 
                             <div class="ml-auto">
-                                <a href="<?php echo site_url() ?>LIPA_15/pagu_15" type="button" class="btn btn-danger">
+                                <a href="<?php echo site_url() ?>LIPA_16/pagu_16" type="button" class="btn btn-danger">
                                     Setting Pagu Awal
                                 </a>
                                 <a href="<?php echo site_url() ?>laporan_perkara" type="button" class="btn btn-outline-secondary">
@@ -179,7 +179,7 @@
             const tahun = $(this).val();
             // console.log(tahun);
             $.ajax({
-                url: '<?php echo base_url('LIPA_15/prodeo/filter_lipa15_tahun') ?>',
+                url: '<?php echo base_url('LIPA_16/posbakum/filter_lipa16_tahun') ?>',
                 type: 'POST',
                 dataType: 'json',
                 data: {

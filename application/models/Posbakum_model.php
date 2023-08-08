@@ -179,34 +179,34 @@ class Posbakum_model extends CI_Model
     $this->db2->update('elaporan_lipa_16', $data);
   }
   //-------------------------------------------------------------------------
-  // public function getLipa15YearFilter($tahun)
-  // {
-  //   if ($tahun === 'all') {
-  //     $where = "";
-  //   } else {
-  //     $where = "WHERE r.tahun = $tahun";
-  //   }
+  public function getLipa16YearFilter($tahun)
+  {
+    if ($tahun === 'all') {
+      $where = "";
+    } else {
+      $where = "WHERE r.tahun = $tahun";
+    }
 
-  //   $sql = "SELECT r.id, r.bulan, r.tahun,p.pagu_awal, p.pagu_revisi,
-  //         COALESCE(SUM(r2.realisasi), 0) AS realisasi_sampai_bulan_lalu,
-  //         r.realisasi,
-  //         COALESCE(SUM(r2.realisasi), 0) + r.realisasi AS jumlah_realisasi,
-  //         IF(p.pagu_revisi = 0, p.pagu_awal, p.pagu_revisi) - (COALESCE(SUM(r2.realisasi), 0) + r.realisasi) AS saldo,
-  //         p.target_perkara, r.jml_perkara, r.keterangan
-  //         FROM elaporan_lipa_15 r
-  //         INNER JOIN elaporan_pagu_15 p ON r.tahun = p.tahun_anggaran
-  //         LEFT JOIN elaporan_lipa_15 r2 ON r.bulan > r2.bulan AND r2.tahun = r.tahun
-  //         $where
-  //         GROUP BY r.id,r.bulan, r.tahun, p.pagu_awal, r.realisasi
-  //         ORDER BY r.tahun desc, r.bulan DESC";
-  //   $hasil = $this->db2->query($sql);
-  //   $data = $hasil->result();
+    $sql = "SELECT r.id, r.bulan, r.tahun,p.pagu_awal, p.pagu_revisi,
+          COALESCE(SUM(r2.realisasi), 0) AS realisasi_sampai_bulan_lalu,
+          r.realisasi,
+          COALESCE(SUM(r2.realisasi), 0) + r.realisasi AS jumlah_realisasi,
+          IF(p.pagu_revisi = 0, p.pagu_awal, p.pagu_revisi) - (COALESCE(SUM(r2.realisasi), 0) + r.realisasi) AS saldo,
+          p.target_layanan, r.jml_layanan, r.keterangan
+          FROM elaporan_lipa_16 r
+          INNER JOIN elaporan_pagu_16 p ON r.tahun = p.tahun_anggaran
+          LEFT JOIN elaporan_lipa_16 r2 ON r.bulan > r2.bulan AND r2.tahun = r.tahun
+          $where
+          GROUP BY r.id,r.bulan, r.tahun, p.pagu_awal, r.realisasi
+          ORDER BY r.tahun desc, r.bulan DESC";
+    $hasil = $this->db2->query($sql);
+    $data = $hasil->result();
 
-  //   foreach ($data as $row) {
-  //     $row->id = $this->encryption->encrypt($row->id);
-  //   }
-  //   return $data;
-  // }
+    foreach ($data as $row) {
+      $row->id = $this->encryption->encrypt($row->id);
+    }
+    return $data;
+  }
 }
 
 /* End of file Posbakum_model.php */
