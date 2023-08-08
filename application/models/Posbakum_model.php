@@ -73,21 +73,21 @@ class Posbakum_model extends CI_Model
     $this->db2->update('elaporan_pagu_16', $data);
   }
   //-------------------------------------------------------------------------
-  // public function cekLipa15byPagu($idPagu)
-  // {
-  //   $sql = "SELECT r.id
-  //           FROM elaporan_lipa_15 r
-  //           INNER JOIN elaporan_pagu_15 p ON r.tahun = p.tahun_anggaran
-  //           where p.id = $idPagu";
-  //   $hasil = $this->db2->query($sql);
-  //   return $hasil->result();
-  // }
+  public function cekLipa16byPagu($idPagu)
+  {
+    $sql = "SELECT r.id
+            FROM elaporan_lipa_16 r
+            INNER JOIN elaporan_pagu_16 p ON r.tahun = p.tahun_anggaran
+            where p.id = $idPagu";
+    $hasil = $this->db2->query($sql);
+    return $hasil->result();
+  }
   //-------------------------------------------------------------------------
-  // public function deletePagu15($where)
-  // {
-  //   $this->db2->where($where);
-  //   $this->db2->delete('elaporan_pagu_15');
-  // }
+  public function deletePagu16($where)
+  {
+    $this->db2->where($where);
+    $this->db2->delete('elaporan_pagu_16');
+  }
 
   //-------------------------------------------------------------------------
   // function cekSaldoPagu15($year)

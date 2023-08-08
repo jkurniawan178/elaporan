@@ -125,22 +125,22 @@ class Pagu_16 extends CI_Controller
         }
     }
     //----------------------------------------------------------------------------------------------------
-    // public function delete_aksi()
-    // {
-    //     $idEncrypted = $this->input->post('id');
-    //     $id = $this->encryption->decrypt($idEncrypted);
+    public function delete_aksi()
+    {
+        $idEncrypted = $this->input->post('id');
+        $id = $this->encryption->decrypt($idEncrypted);
 
-    //     $dataLipa = $this->prodeo_model->cekLipa15byPagu($id);
+        $dataLipa = $this->posbakum_model->cekLipa16byPagu($id);
 
-    //     if (count($dataLipa) == 0) {
-    //         $where = array('id' => $id);
-    //         $this->prodeo_model->deletePagu15($where);
-    //         $this->session->set_flashdata('success', '<strong>Data pagu berhasil dihapus!</strong>');
-    //         redirect('LIPA_15/pagu_15');
-    //     }
-    //     $this->session->set_flashdata('error', '<strong>Data pagu tidak bisa dihapus!</strong> Sudah ada Laporan Lipa 15 untuk tahun tersebut');
-    //     redirect('LIPA_15/pagu_15');
-    // }
+        if (count($dataLipa) == 0) {
+            $where = array('id' => $id);
+            $this->posbakum_model->deletePagu16($where);
+            $this->session->set_flashdata('success', '<strong>Data pagu berhasil dihapus!</strong>');
+            redirect('LIPA_16/pagu_16');
+        }
+        $this->session->set_flashdata('error', '<strong>Data pagu tidak bisa dihapus!</strong> Sudah ada Laporan Lipa 16 untuk tahun tersebut');
+        redirect('LIPA_16/pagu_16');
+    }
 }
 
 
