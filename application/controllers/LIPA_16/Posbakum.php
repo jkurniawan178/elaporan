@@ -134,15 +134,15 @@ class Posbakum extends CI_Controller
     }
   }
   //--------------------------------------------------------------------------------------
-  // public function delete_aksi()
-  // {
-  //   $idEncrypted = $this->input->post('id');
-  //   $id = $this->encryption->decrypt($idEncrypted);
-  //   $where = array('id' => $id);
-  //   $this->prodeo_model->deleteLipa15($where);
-  //   $this->session->set_flashdata('success', '<strong>Data Prodeo berhasil dihapus!</strong>');
-  //   redirect('LIPA_15/prodeo');
-  // }
+  public function delete_aksi()
+  {
+    $idEncrypted = $this->input->post('id');
+    $id = $this->encryption->decrypt($idEncrypted);
+    $where = array('id' => $id);
+    $this->posbakum_model->deleteLipa16($where);
+    $this->session->set_flashdata('success', '<strong>Data Posbakum berhasil dihapus!</strong>');
+    redirect('LIPA_16/posbakum');
+  }
   //---------------------------------------------------------------------------------------
   // function get_lipa15_id()
   // {

@@ -152,11 +152,11 @@ class Posbakum_model extends CI_Model
     $db2->insert('elaporan_lipa_16', $data);
   }
   //-------------------------------------------------------------------------
-  // public function deleteLipa15($where)
-  // {
-  //   $this->db2->where($where);
-  //   $this->db2->delete('elaporan_lipa_15');
-  // }
+  public function deleteLipa16($where)
+  {
+    $this->db2->where($where);
+    $this->db2->delete('elaporan_lipa_16');
+  }
   //-------------------------------------------------------------------------
   // public function getLipa15byId($id)
   // {
