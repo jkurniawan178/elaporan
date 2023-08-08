@@ -192,13 +192,13 @@
 
                     for (var i = 0; i < response.length; i++) {
                         response[i].button = `<a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split 
-                                                  btn-sm button-update" data-id="${response[i].id}" title="Ubah data Sidkel" data-toggle="tooltip">
+                                                  btn-sm button-update" data-id="${response[i].id}" title="Ubah data Prodeo" data-toggle="tooltip">
                                                 <span class="icon text-white">
                                                     <i class="fa fa-edit"></i>
                                                 </span>
                                             </a>
                                             <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split 
-                                            btn-sm button-delete" data-id="${response[i].id}" title="Hapus data Sidkel" data-toggle="tooltip">
+                                            btn-sm button-delete" data-id="${response[i].id}" title="Hapus data Prodeo" data-toggle="tooltip">
                                                 <span class="icon text-white">
                                                     <i class="fa fa-trash"></i>
                                                 </span>

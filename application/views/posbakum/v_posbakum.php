@@ -152,7 +152,7 @@
         table.on('click', '.button-update', function() {
             let id = $(this).data('id');
             $.ajax({
-                url: '<?php echo base_url('LIPA_15/prodeo/get_lipa15_id') ?>',
+                url: '<?php echo base_url('LIPA_16/posbakum/get_lipa16_id') ?>',
                 type: 'POST',
                 dataType: 'json',
                 data: {
@@ -168,7 +168,7 @@
                     $('#edit_pagu_awal').val(response['pagu_awal'])
                     $('#edit_sisa_pagu').val(response['saldo'])
                     $('#edit_realisasi').val(response['realisasi'])
-                    $('#edit_jml_perkara').val(response['jml_perkara'])
+                    $('#edit_jml_layanan').val(response['jml_layanan'])
                     $('#edit_keterangan').val(response['keterangan'])
                     $('#edit-modal').modal('show');
                 }
@@ -192,13 +192,13 @@
 
                     for (var i = 0; i < response.length; i++) {
                         response[i].button = `<a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split 
-                                                  btn-sm button-update" data-id="${response[i].id}" title="Ubah data Sidkel" data-toggle="tooltip">
+                                                  btn-sm button-update" data-id="${response[i].id}" title="Ubah data Posbakum" data-toggle="tooltip">
                                                 <span class="icon text-white">
                                                     <i class="fa fa-edit"></i>
                                                 </span>
                                             </a>
                                             <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split 
-                                            btn-sm button-delete" data-id="${response[i].id}" title="Hapus data Sidkel" data-toggle="tooltip">
+                                            btn-sm button-delete" data-id="${response[i].id}" title="Hapus data Posbakum" data-toggle="tooltip">
                                                 <span class="icon text-white">
                                                     <i class="fa fa-trash"></i>
                                                 </span>
@@ -213,8 +213,8 @@
                             addThousandSeparator(response[i].realisasi),
                             addThousandSeparator(response[i].jumlah_realisasi),
                             addThousandSeparator(response[i].saldo),
-                            response[i].target_perkara,
-                            response[i].jml_perkara,
+                            response[i].target_layanan,
+                            response[i].jml_layanan,
                             response[i].keterangan,
                             response[i].button
                             // Add other data columns here
