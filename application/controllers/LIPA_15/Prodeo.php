@@ -128,7 +128,7 @@ class Prodeo extends CI_Controller
       }
 
       $this->session->set_flashdata('error', '
-        <strong>Data Sidang Prodeo ditambahkan!</strong> Realisasi lebih besar daripada Saldo Pagu saat ini!');
+        <strong>Data Prodeo Gagal ditambahkan!</strong> Realisasi lebih besar daripada Saldo Pagu saat ini!');
       redirect('LIPA_15/prodeo');
     }
   }
