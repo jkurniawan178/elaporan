@@ -11,6 +11,8 @@
           </li>
           <li class="sub_menu"><a href="<?php echo site_url() ?>LIPA_15/pagu_15">Pagu Prodeo (LIPA 15)</a>
           </li>
+          <li class="sub_menu"><a href="<?php echo site_url() ?>LIPA_16/pagu_16">Pagu Posbakum (LIPA 16)</a>
+          </li>
         </ul>
       </li>
 
@@ -20,7 +22,7 @@
           <!-- <li><a href="<?php echo site_url() ?>input_iwadl">Laporan Pertanggungjawaban Uang Iwadl (LIPA.11) </a></li> -->
           <li><a href="<?php echo site_url() ?>LIPA_14/sidkel">Laporan Pelaksanaan Sidang Keliling (LIPA.14)</a></li>
           <li><a href="<?php echo site_url() ?>LIPA_15/prodeo">Laporan Pelaksanaan Prodeo (LIPA.15)</a></li>
-          <!-- <li><a href="form_wizards.html">Laporan Pelaksanaan Posbakum (LIPA.16)</a></li> -->
+          <li><a href="<?php echo site_url() ?>LIPA_16/posbakum">Laporan Pelaksanaan Posbakum (LIPA.16)</a></li>
         </ul>
       </li>
 

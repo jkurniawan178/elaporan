@@ -261,6 +261,22 @@ class Laporan_perkara extends CI_Controller
           }
           break;
           //-------------------------------------------------------------------------------------------------------
+        case 'lipa_16':
+          $data = $this->laporan_model->getLIPA16($bulan, $tahun);
+
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $hasil = $this->export_excel_lipa16($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            echo json_encode($hasil);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Lipa 16 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+            ];
+            echo json_encode($response);
+          }
+          break;
+          //-------------------------------------------------------------------------------------------------------
         case 'lipa_17':
           $data = $this->laporan_model->getLIPA17($bulan, $tahun);
 
@@ -1541,6 +1557,80 @@ class Laporan_perkara extends CI_Controller
     $objPHPExcel->getActiveSheet()->getStyle('A10:J' . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
     $objPHPExcel->getActiveSheet()->getStyle('A10:J' . $row)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
     $objPHPExcel->getActiveSheet()->getStyle('B10:G' . $row)->getNumberFormat()->setFormatCode('_(Rp* #,##0_);_(Rp* (#,##0);_(Rp* "-"??_);_(@_)', true);
+
+    //tanda tangan 
+    $kolom_kpa = "C";
+    $kolom_pansek = "H";
+    $row = $row + 3;
+    $row_awal_ttd = $row;
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
+
+    $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
+
+    return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
+  }
+  //-----------------------------------------------------------------------------------------------
+  //--------------------------------Export Data Lipa 16 ke Excel------------------------------------
+  protected function export_excel_lipa16($data, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan)
+  {
+    if (!file_exists(FCPATH . "new_templates/" . $jenis_laporan . ".xls")) {
+      $response = [
+        'kode' => '202',
+        'data' => 'Template Belum Tersedia'
+      ];
+      return $response;
+      exit;
+    }
+
+    $objReader = PHPExcel_IOFactory::createReader('Excel5');
+    $objPHPExcel = $objReader->load(FCPATH . "new_templates/" . $jenis_laporan . ".xls");
+
+    $styleArray = array(
+      'borders' => array(
+        'allborders' => array(
+          'style' => PHPExcel_Style_Border::BORDER_THIN,
+        )
+      ),
+      'font' => array(
+        'name' => 'Arial Narrow',
+        'size' => '12'
+      ),
+      'alignment' => array(
+        'wrap' => true,
+      )
+    );
+
+    $obj = json_decode($data, true);
+    $no = 1;
+    $baseRow = 8;
+
+    $objPHPExcel->getActiveSheet()->setCellValue('A2', "PADA " . $settingSIPP['NamaPN']);
+    $objPHPExcel->getActiveSheet()->setCellValue('A3', "BULAN " . strtoupper(pilihbulan($bulan)) . " " . $tahun);
+    foreach ($obj as $item) {
+      $row = $baseRow + $no;
+
+      $objPHPExcel->getActiveSheet()
+        ->setCellValue('A' . $row, $no)
+        ->setCellValue('B' . $row, $item['pagu_awal'])
+        ->setCellValue('C' . $row, $item['pagu_revisi'])
+        ->setCellValue('D' . $row, $item['realisasi_sampai_bulan_lalu'])
+        ->setCellValue('E' . $row, $item['realisasi'])
+        ->setCellValue('F' . $row, $item['jumlah_realisasi'])
+        ->setCellValue('G' . $row, $item['saldo'])
+        ->setCellValue('H' . $row, $item['target_layanan'])
+        ->setCellValue('I' . $row, $item['jml_layanan'])
+        ->setCellValue('J' . $row, $item['keterangan'])
+        ->getRowDimension($row)->setRowHeight(25);
+
+      //$objPHPExcel->getActiveSheet()->insertNewRowAfter($row); 
+      $no++;
+    }
+
+    $objPHPExcel->getActiveSheet()->getStyle('A9:J' . $row)->applyFromArray($styleArray);
+    $objPHPExcel->getActiveSheet()->getStyle('A9:J' . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('A9:J' . $row)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('B9:G' . $row)->getNumberFormat()->setFormatCode('_(Rp* #,##0_);_(Rp* (#,##0);_(Rp* "-"??_);_(@_)', true);
 
     //tanda tangan 
     $kolom_kpa = "C";

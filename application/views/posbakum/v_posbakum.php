@@ -3,7 +3,7 @@
     <div class="">
         <div class="page-title">
             <div class="title_left">
-                <h2>Laporan Pelaksanaan Pembebasan Biaya Perkara (LIPA 15)</h2>
+                <h2>Laporan Pelaksanaan Posbakum (LIPA 16)</h2>
             </div>
         </div>
         <div class="clearfix"></div>
@@ -53,7 +53,7 @@
                             </div>
 
                             <div class="ml-auto">
-                                <a href="<?php echo site_url() ?>LIPA_15/pagu_15" type="button" class="btn btn-danger">
+                                <a href="<?php echo site_url() ?>LIPA_16/pagu_16" type="button" class="btn btn-danger">
                                     Setting Pagu Awal
                                 </a>
                                 <a href="<?php echo site_url() ?>laporan_perkara" type="button" class="btn btn-outline-secondary">
@@ -78,14 +78,14 @@
                                     <th class="align-middle" scope="col">Jumlah</th>
                                     <th class="align-middle" scope="col" data-priority="2">Sisa</th>
                                     <th class="align-middle" scope="col">Target</th>
-                                    <th class="align-middle" scope="col">Jumlah Perkara</th>
+                                    <th class="align-middle" scope="col">Jumlah Layanan</th>
                                     <th class="align-middle" scope="col">Ket</th>
                                     <th class="align-middle" scope="col" data-priority="1">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php $no = 1;
-                                foreach ($prodeo as $value) { ?>
+                                foreach ($posbakum as $value) { ?>
                                     <tr>
                                         <td><?= $no++ ?></td>
                                         <td><?= pilihbulan($value->bulan) . ' ' . $value->tahun ?></td>
@@ -95,16 +95,16 @@
                                         <td><?= number_format($value->realisasi, 0, ',', '.') ?></td>
                                         <td><?= number_format($value->jumlah_realisasi, 0, ',', '.') ?></td>
                                         <td><?= number_format($value->saldo, 0, ',', '.') ?></td>
-                                        <td><?= number_format($value->target_perkara, 0, ',', '.') ?></td>
-                                        <td><?= number_format($value->jml_perkara, 0, ',', '.') ?></td>
+                                        <td><?= number_format($value->target_layanan, 0, ',', '.') ?></td>
+                                        <td><?= number_format($value->jml_layanan, 0, ',', '.') ?></td>
                                         <td><?= $value->keterangan ?></td>
                                         <td>
-                                            <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update" data-id="<?= $value->id ?>" title="Ubah data Prodeo" data-toggle="tooltip">
+                                            <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update" data-id="<?= $value->id ?>" title="Ubah data Posbakum" data-toggle="tooltip">
                                                 <span class="icon text-white">
                                                     <i class="fa fa-edit"></i>
                                                 </span>
                                             </a>
-                                            <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<?= $value->id ?>" title="Hapus data Prodeo" data-toggle="tooltip">
+                                            <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<?= $value->id ?>" title="Hapus data Posbakum" data-toggle="tooltip">
                                                 <span class="icon text-white">
                                                     <i class="fa fa-trash"></i>
                                                 </span>
@@ -152,7 +152,7 @@
         table.on('click', '.button-update', function() {
             let id = $(this).data('id');
             $.ajax({
-                url: '<?php echo base_url('LIPA_15/prodeo/get_lipa15_id') ?>',
+                url: '<?php echo base_url('LIPA_16/posbakum/get_lipa16_id') ?>',
                 type: 'POST',
                 dataType: 'json',
                 data: {
@@ -168,7 +168,7 @@
                     $('#edit_pagu_awal').val(response['pagu_awal'])
                     $('#edit_sisa_pagu').val(response['saldo'])
                     $('#edit_realisasi').val(response['realisasi'])
-                    $('#edit_jml_perkara').val(response['jml_perkara'])
+                    $('#edit_jml_layanan').val(response['jml_layanan'])
                     $('#edit_keterangan').val(response['keterangan'])
                     $('#edit-modal').modal('show');
                 }
@@ -179,7 +179,7 @@
             const tahun = $(this).val();
             // console.log(tahun);
             $.ajax({
-                url: '<?php echo base_url('LIPA_15/prodeo/filter_lipa15_tahun') ?>',
+                url: '<?php echo base_url('LIPA_16/posbakum/filter_lipa16_tahun') ?>',
                 type: 'POST',
                 dataType: 'json',
                 data: {
@@ -192,13 +192,13 @@
 
                     for (var i = 0; i < response.length; i++) {
                         response[i].button = `<a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split 
-                                                  btn-sm button-update" data-id="${response[i].id}" title="Ubah data Prodeo" data-toggle="tooltip">
+                                                  btn-sm button-update" data-id="${response[i].id}" title="Ubah data Posbakum" data-toggle="tooltip">
                                                 <span class="icon text-white">
                                                     <i class="fa fa-edit"></i>
                                                 </span>
                                             </a>
                                             <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split 
-                                            btn-sm button-delete" data-id="${response[i].id}" title="Hapus data Prodeo" data-toggle="tooltip">
+                                            btn-sm button-delete" data-id="${response[i].id}" title="Hapus data Posbakum" data-toggle="tooltip">
                                                 <span class="icon text-white">
                                                     <i class="fa fa-trash"></i>
                                                 </span>
@@ -213,8 +213,8 @@
                             addThousandSeparator(response[i].realisasi),
                             addThousandSeparator(response[i].jumlah_realisasi),
                             addThousandSeparator(response[i].saldo),
-                            response[i].target_perkara,
-                            response[i].jml_perkara,
+                            response[i].target_layanan,
+                            response[i].jml_layanan,
                             response[i].keterangan,
                             response[i].button
                             // Add other data columns here

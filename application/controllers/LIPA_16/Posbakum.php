@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  *
- * Controller Prodeo
+ * Controller Posbakum
  *
  * This controller for ...
  *
@@ -18,31 +18,32 @@ defined('BASEPATH') or exit('No direct script access allowed');
  *
  */
 
-class Prodeo extends CI_Controller
+class Posbakum extends CI_Controller
 {
 
   public function __construct()
   {
     parent::__construct();
     $this->load->library('config_library');
-    $this->load->model('prodeo_model');
+    $this->load->model('posbakum_model');
   }
-  //-------------------------------------------------------------------------
+
   public function index()
   {
-    $data['contents'] = 'prodeo/v_prodeo';
+    $data['contents'] = 'posbakum/v_posbakum';
     $data['nm_bulan'] = $this->config_library->get_nm_bulan();
-    $data['prodeo'] = $this->prodeo_model->getLipa15All();
+    $data['posbakum'] = $this->posbakum_model->getLipa16All();
     $data['settings'] = $this->config_library->get_config_SIPP();
     $this->load->view('templates/index', $data);
   }
+
   //-------------------------------------------------------------------------
   public function cek_pagu()
   {
     $year = $this->input->post('tahun');
     $month = $this->input->post('bulan');
-    $hasil_pagu = $this->prodeo_model->cekSaldoPagu15($year);
-    $hasil_lipa = $this->prodeo_model->cekLipa15byPeriode($month, $year);
+    $hasil_pagu = $this->posbakum_model->cekSaldoPagu16($year);
+    $hasil_lipa = $this->posbakum_model->cekLipa16byPeriode($month, $year);
 
 
     if (count($hasil_pagu) >= 1) {
@@ -78,7 +79,7 @@ class Prodeo extends CI_Controller
     } else {
       $response = [
         'kode' => '201',
-        'data' => 'Pagu Anggaran LIPA 15 tahun ' . $year . ' belum diisi, silahkan diisi terlebih dahulu'
+        'data' => 'Pagu Anggaran LIPA 16 tahun ' . $year . ' belum diisi, silahkan diisi terlebih dahulu'
       ];
       echo json_encode($response);
     }
@@ -92,7 +93,7 @@ class Prodeo extends CI_Controller
     }
 
     $this->form_validation->set_rules('realisasi', 'realisasi', 'required|trim|numeric');
-    $this->form_validation->set_rules('jml_perkara', 'jumlah perkara', 'required|trim|numeric');
+    $this->form_validation->set_rules('jml_layanan', 'jumlah layanan', 'required|trim|numeric');
     $this->form_validation->set_rules('keterangan', 'keterangan', 'trim');
   }
   //-------------------------------------------------------------------------
@@ -100,36 +101,36 @@ class Prodeo extends CI_Controller
   {
     $this->_rules('tambah');
     if ($this->form_validation->run() == false) {
-      $this->session->set_flashdata('error', '<strong>Data LIPA 15 Gagal ditambahkan!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
-      redirect('LIPA_15/prodeo');
+      $this->session->set_flashdata('error', '<strong>Data LIPA 16 Gagal ditambahkan!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
+      redirect('LIPA_16/posbakum');
     } else {
       $tahun = $this->input->post('tahun_hidden');
       $bulan = $this->input->post('bulan_hidden');
       $realisasi = $this->input->post('realisasi');
-      $perkara = $this->input->post('jml_perkara');
+      $layanan = $this->input->post('jml_layanan');
       $keterangan = $this->input->post('keterangan');
 
       $data = array(
         'bulan' => $bulan,
         'tahun' => $tahun,
         'realisasi' => $realisasi,
-        'jml_perkara' => $perkara,
+        'jml_layanan' => $layanan,
         'keterangan' => $keterangan,
       );
 
-      $data_saldo = $this->prodeo_model->cekSaldoPagu15($tahun);
+      $data_saldo = $this->posbakum_model->cekSaldoPagu16($tahun);
       $saldo = $data_saldo->saldo_sisa;
       // var_dump($saldo);
 
       if (floatval($realisasi) <= floatval($saldo)) {
-        $this->prodeo_model->inputLipa15($data);
-        $this->session->set_flashdata('success', '<strong>Data Prodeo berhasil ditambahkan!</strong>');
-        redirect('LIPA_15/prodeo');
+        $this->posbakum_model->inputLipa16($data);
+        $this->session->set_flashdata('success', '<strong>Data Posbakum berhasil ditambahkan!</strong>');
+        redirect('LIPA_16/posbakum');
       }
 
       $this->session->set_flashdata('error', '
-        <strong>Data Prodeo Gagal ditambahkan!</strong> Realisasi lebih besar daripada Saldo Pagu saat ini!');
-      redirect('LIPA_15/prodeo');
+        <strong>Data Posbakum gagal ditambahkan!</strong> Realisasi lebih besar daripada Saldo Pagu saat ini!');
+      redirect('LIPA_16/posbakum');
     }
   }
   //--------------------------------------------------------------------------------------
@@ -138,17 +139,17 @@ class Prodeo extends CI_Controller
     $idEncrypted = $this->input->post('id');
     $id = $this->encryption->decrypt($idEncrypted);
     $where = array('id' => $id);
-    $this->prodeo_model->deleteLipa15($where);
-    $this->session->set_flashdata('success', '<strong>Data Prodeo berhasil dihapus!</strong>');
-    redirect('LIPA_15/prodeo');
+    $this->posbakum_model->deleteLipa16($where);
+    $this->session->set_flashdata('success', '<strong>Data Posbakum berhasil dihapus!</strong>');
+    redirect('LIPA_16/posbakum');
   }
   //---------------------------------------------------------------------------------------
-  function get_lipa15_id()
+  function get_lipa16_id()
   {
     $encodedId = $this->input->post('id');
     $id = $this->encryption->decrypt($encodedId);
-    $data = $this->prodeo_model->getLipa15byId($id);
-    $raw_saldo = $this->prodeo_model->cekSaldoPagu15($data->tahun);
+    $data = $this->posbakum_model->getLipa16byId($id);
+    $raw_saldo = $this->posbakum_model->cekSaldoPagu16($data->tahun);
     $saldo = floatval($raw_saldo->saldo_sisa) + floatval($data->realisasi);
 
     $data->id = $this->encryption->encrypt($data->id);
@@ -164,49 +165,49 @@ class Prodeo extends CI_Controller
   {
     $this->_rules('ubah');
     if ($this->form_validation->run() == false) {
-      $this->session->set_flashdata('error', '<strong>Data LIPA 15 Gagal ditambahkan!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
-      redirect('LIPA_15/prodeo');
+      $this->session->set_flashdata('error', '<strong>Data LIPA 16 Gagal ditambahkan!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
+      redirect('LIPA_16/posbakum');
     } else {
       $encodedId = $this->input->post('edit_id');
       $id = $this->encryption->decrypt($encodedId);
       $tahun = $this->input->post('tahun_hidden');
       $realisasi = $this->input->post('realisasi');
-      $perkara = $this->input->post('jml_perkara');
+      $layanan = $this->input->post('jml_layanan');
       $keterangan = $this->input->post('keterangan');
 
       $data = array(
         'realisasi' => $realisasi,
-        'jml_perkara' => $perkara,
+        'jml_layanan' => $layanan,
         'keterangan' => $keterangan,
       );
 
-      $data_saldo = $this->prodeo_model->cekSaldoPagu15($tahun);
-      $datarealisasi_sebelumnya = $this->prodeo_model->getLipa15byId($id);
+      $data_saldo = $this->posbakum_model->cekSaldoPagu16($tahun);
+      $datarealisasi_sebelumnya = $this->posbakum_model->getLipa16byId($id);
       $realisasi_sebelumnya = floatval($datarealisasi_sebelumnya->realisasi);
       $saldo = floatval($data_saldo->saldo_sisa) + floatval($realisasi_sebelumnya);
 
       if (floatval($realisasi) <= $saldo) {
-        $this->prodeo_model->updateLipa15($id, $data);
-        $this->session->set_flashdata('success', '<strong>Data Prodeo berhasil diubah!</strong>');
-        redirect('LIPA_15/prodeo');
+        $this->posbakum_model->updateLipa16($id, $data);
+        $this->session->set_flashdata('success', '<strong>Data Posbakum berhasil diubah!</strong>');
+        redirect('LIPA_16/posbakum');
       }
 
       $this->session->set_flashdata('error', '
-        <strong>Data Prodeo Gagal ditambahkan!</strong> Realisasi lebih besar daripada Saldo Pagu saat ini!');
-      redirect('LIPA_15/prodeo');
+        <strong>Data Posbakum Gagal ditambahkan!</strong> Realisasi lebih besar daripada Saldo Pagu saat ini!');
+      redirect('LIPA_16/posbakum');
     }
   }
   //----------------------------------------------------------------------
-  function filter_lipa15_tahun()
+  function filter_lipa16_tahun()
   {
     $tahun = $this->input->post('tahun');
 
-    $data = $this->prodeo_model->getLipa15YearFilter($tahun);
+    $data = $this->posbakum_model->getLipa16YearFilter($tahun);
     header('Content-Type: application/json');
     echo json_encode($data);
   }
 }
 
 
-/* End of file Prodeo.php */
-/* Location: ./application/controllers/Prodeo.php */
+/* End of file Posbakum.php */
+/* Location: ./application/controllers/Posbakum.php */

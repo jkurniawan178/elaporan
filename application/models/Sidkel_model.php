@@ -98,7 +98,7 @@ class Sidkel_model extends CI_Model
     return $hasil->row();
   }
 
-  function getLipa14byId($id)
+  public function getLipa14byId($id)
   {
     $sql = " SELECT
               r.id, r.bulan, r.tahun,
@@ -153,7 +153,7 @@ class Sidkel_model extends CI_Model
     return $hasil->result();
   }
   //-------------------------------------------------------------------------
-  function cekSaldoPagu14($year)
+  public function cekSaldoPagu14($year)
   {
     $sql = "SELECT p.tahun_anggaran AS tahun,  p.pagu_awal,
             p.pagu_revisi,
@@ -199,7 +199,7 @@ class Sidkel_model extends CI_Model
     }
   }
   //-------------------------------------------------------------------------
-  function cekLipa14byPagu($idPagu)
+  public function cekLipa14byPagu($idPagu)
   {
     $sql = "SELECT r.id
     FROM elaporan_lipa_14 r

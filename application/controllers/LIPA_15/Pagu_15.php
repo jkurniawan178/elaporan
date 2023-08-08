@@ -51,7 +51,7 @@ class Pagu_15 extends CI_Controller
     $this->_rules('tambah');
     if ($this->form_validation->run() == false) {
       $this->session->set_flashdata('error', '<strong>Data pagu tidak berhasil ditambahkan!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
-      redirect('LIPA_14/pagu_14');
+      redirect('LIPA_15/pagu_15');
     } else {
       $tahun = $this->input->post('tahun');
       $pagu_awal = $this->input->post('pagu_awal');
