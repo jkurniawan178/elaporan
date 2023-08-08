@@ -56,22 +56,22 @@ class Posbakum_model extends CI_Model
     $this->db2->insert('elaporan_pagu_16', $data);
   }
   //-------------------------------------------------------------------------
-  // public function getPagu15byId($id)
-  // {
-  //   $data = $this->db2->get_where('elaporan_pagu_15', array('id' => $id));
+  public function getPagu16byId($id)
+  {
+    $data = $this->db2->get_where('elaporan_pagu_16', array('id' => $id));
 
-  //   if ($data->num_rows() > 0) {
-  //     return $data->row(); //REturn the first row as an object
-  //   } else {
-  //     return null;
-  //   }
-  // }
+    if ($data->num_rows() > 0) {
+      return $data->row(); //REturn the first row as an object
+    } else {
+      return null;
+    }
+  }
   //-------------------------------------------------------------------------
-  // public function updatePagu15($id, $data)
-  // {
-  //   $this->db2->where('id', $id);
-  //   $this->db2->update('elaporan_pagu_15', $data);
-  // }
+  public function updatePagu16($id, $data)
+  {
+    $this->db2->where('id', $id);
+    $this->db2->update('elaporan_pagu_16', $data);
+  }
   //-------------------------------------------------------------------------
   // public function cekLipa15byPagu($idPagu)
   // {

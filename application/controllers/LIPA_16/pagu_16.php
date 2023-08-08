@@ -81,49 +81,49 @@ class Pagu_16 extends CI_Controller
         }
     }
     //----------------------------------------------------------------------------------------------------
-    //Pencarian data PAGU 15 by id
-    // public function get_pagu15()
-    // {
-    //     $encodedId = $this->input->post('id');
-    //     $id = $this->encryption->decrypt($encodedId);
-    //     $data = $this->prodeo_model->getPagu15byId($id);
+    //Pencarian data PAGU 16 by id
+    public function get_pagu16()
+    {
+        $encodedId = $this->input->post('id');
+        $id = $this->encryption->decrypt($encodedId);
+        $data = $this->posbakum_model->getPagu16byId($id);
 
-    //     $data->id = $this->encryption->encrypt($data->id);
-    //     $data->pagu_awal = number_format($data->pagu_awal, 0, ',', '.');
-    //     $data->pagu_revisi = number_format($data->pagu_revisi, 0, ',', '.');
+        $data->id = $this->encryption->encrypt($data->id);
+        $data->pagu_awal = number_format($data->pagu_awal, 0, ',', '.');
+        $data->pagu_revisi = number_format($data->pagu_revisi, 0, ',', '.');
 
-    //     header('Content-Type: application/json');
-    //     echo json_encode($data);
-    // }
+        header('Content-Type: application/json');
+        echo json_encode($data);
+    }
     //----------------------------------------------------------------------------------------------------
-    // public function ubah_aksi()
-    // {
-    //     $this->_rules('edit');
-    //     if ($this->form_validation->run() == false) {
-    //         $this->session->set_flashdata('error', '<strong>Data pagu tidak berhasil diubah!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
-    //         redirect('LIPA_15/pagu_15');
-    //     } else {
-    //         $idEncrypted = $this->input->post('id');
-    //         $id = $this->encryption->decrypt($idEncrypted);
+    public function ubah_aksi()
+    {
+        $this->_rules('edit');
+        if ($this->form_validation->run() == false) {
+            $this->session->set_flashdata('error', '<strong>Data pagu tidak berhasil diubah!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
+            redirect('LIPA_16/pagu_16');
+        } else {
+            $idEncrypted = $this->input->post('id');
+            $id = $this->encryption->decrypt($idEncrypted);
 
-    //         // $tahun = $this->input->post('tahun');
-    //         $pagu_awal = $this->input->post('pagu_awal');
-    //         $pagu_revisi = $this->input->post('pagu_revisi');
-    //         $perkara = $this->input->post('perkara');
+            // $tahun = $this->input->post('tahun');
+            $pagu_awal = $this->input->post('pagu_awal');
+            $pagu_revisi = $this->input->post('pagu_revisi');
+            $layanan = $this->input->post('layanan');
 
-    //         $data = array(
-    //             // 'tahun_anggaran' => $tahun,
-    //             'pagu_awal' => $pagu_awal,
-    //             'pagu_revisi' => $pagu_revisi,
-    //             'target_perkara' => $perkara
-    //         );
+            $data = array(
+                // 'tahun_anggaran' => $tahun,
+                'pagu_awal' => $pagu_awal,
+                'pagu_revisi' => $pagu_revisi,
+                'target_layanan' => $layanan
+            );
 
-    //         // var_dump($data);
-    //         $this->prodeo_model->updatePagu15($id, $data);
-    //         $this->session->set_flashdata('success', '<strong>Data pagu berhasil diubah!</strong>');
-    //         redirect('LIPA_15/pagu_15');
-    //     }
-    // }
+            // var_dump($data);
+            $this->posbakum_model->updatePagu16($id, $data);
+            $this->session->set_flashdata('success', '<strong>Data pagu berhasil diubah!</strong>');
+            redirect('LIPA_16/pagu_16');
+        }
+    }
     //----------------------------------------------------------------------------------------------------
     // public function delete_aksi()
     // {
