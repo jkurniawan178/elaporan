@@ -92,7 +92,7 @@
                                         <td><?= $value->jenis_putusan ?></td>
                                         <td><?= $value->belum_diputus ?></td>
                                         <td>
-                                            <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<?= $value->id ?>" title="Hapus data Posbakum" data-toggle="tooltip">
+                                            <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<?= $value->id ?>" title="Hapus perkara elitigasi" data-toggle="tooltip">
                                                 <span class="icon text-white">
                                                     <i class="fa fa-trash"></i>
                                                 </span>

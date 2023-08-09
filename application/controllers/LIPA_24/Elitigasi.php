@@ -81,6 +81,17 @@ class Elitigasi extends CI_Controller
       redirect('LIPA_24/elitigasi');
     }
   }
+
+  //--------------------------------------------------------------------------------------
+  public function delete_aksi()
+  {
+    $idEncrypted = $this->input->post('id');
+    $id = $this->encryption->decrypt($idEncrypted);
+    $where = array('id' => $id);
+    $this->elitigasi_model->deleteLipa24($where);
+    $this->session->set_flashdata('success', '<strong>Perkara Elitigasi berhasil dihapus!</strong>');
+    redirect('LIPA_24/elitigasi');
+  }
 }
 
 

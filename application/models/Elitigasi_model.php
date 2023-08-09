@@ -79,6 +79,12 @@ class Elitigasi_model extends CI_Model
   {
     $this->db2->insert('elaporan_lipa_24', $data);
   }
+  //-------------------------------------------------------------------------
+  public function deleteLipa24($where)
+  {
+    $this->db2->where($where);
+    $this->db2->delete('elaporan_lipa_24');
+  }
 }
 
 /* End of file Elitigasi_model.php */
