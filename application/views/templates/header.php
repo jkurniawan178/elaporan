@@ -25,4 +25,7 @@
   <link href="<?php echo base_url() ?>resources/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
   <!-- Custom Theme Style -->
   <link href="<?php echo base_url() ?>resources/css/custom.css" rel="stylesheet">
+  <link rel="stylesheet" href="<?php echo base_url() ?>resources/autocomplete/jquery-ui.css">
+  <link href="<?php echo base_url() ?>resources/autocomplete/jquery-ui-custom.css" rel="stylesheet">
+
 </head>

@@ -36,6 +36,51 @@ class Elitigasi extends CI_Controller
     $data['settings'] = $this->config_library->get_config_SIPP();
     $this->load->view('templates/index', $data);
   }
+  //---------------------------------------------------------------
+  public function get_suggestions()
+  {
+    $query = $this->input->get('term');
+    $suggestions = $this->elitigasi_model->get_suggestions($query);
+
+    // Return suggestions in JSON format
+    echo json_encode($suggestions);
+  }
+  //----------------------------------------------------------------------------------------------------
+  protected function _rules()
+  {
+    $this->form_validation->set_rules('nomor_perkara', 'nomor perkara', 'required|trim');
+  }
+  //----------------------------------------------------------------------------------------------------
+  public function tambah_aksi()
+  {
+    $this->_rules();
+    if ($this->form_validation->run() == false) {
+      $this->session->set_flashdata('error', '<strong>Perkara Elitigasi tidak berhasil ditambahkan!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
+      redirect('LIPA_24/elitigasi');
+    } else {
+      $perkara = $this->input->post('nomor_perkara');
+      $perkara_id = $this->elitigasi_model->getPerkaraId($perkara);
+
+      $data = array(
+        'perkara_id' => $perkara_id->perkara_id
+      );
+
+      // var_dump($perkara_id);
+
+      //validasi
+      //cek apabila nomor perkara valid dan terdaptar di sipp di tahun yang sama sudah diinput
+
+      if (!is_null($perkara_id)) {
+        $this->elitigasi_model->inputElitigasi($data);
+        $this->session->set_flashdata('success', '<strong>Perkara Elitigasi berhasil ditambahkan!</strong>');
+        redirect('LIPA_24/elitigasi');
+      }
+
+      $this->session->set_flashdata('error', '
+       <strong>Perkara Elitigasi Gagal ditambahkan!</strong> Nomor Perkara ' . $perkara . '; salah / tidak ditemukan!');
+      redirect('LIPA_24/elitigasi');
+    }
+  }
 }
 
 

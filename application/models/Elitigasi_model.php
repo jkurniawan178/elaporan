@@ -32,19 +32,13 @@ class Elitigasi_model extends CI_Model
 
 
   // ------------------------------------------------------------------------
-  public function index()
-  {
-    // 
-  }
-
-  // ------------------------------------------------------------------------
   public function getLitigasiAll()
   {
     $sql = "SELECT lit.id, p.perkara_id, p.nomor_perkara, p.jenis_perkara_nama, p.`tanggal_pendaftaran`,
             pen.majelis_hakim_nama,
             SUBSTRING_INDEX(pen.panitera_pengganti_text,': ',-1) AS panitera_pengganti,
             put.`tanggal_putusan`, st.`nama` AS jenis_putusan,
-            IF(tanggal_putusan IS NULL,nomor_perkara,'') AS belum_diputus
+            IF(tanggal_putusan IS NULL,'v','') AS belum_diputus
             
             FROM perkara p LEFT JOIN perkara_putusan put USING(perkara_id)
             LEFT JOIN perkara_penetapan pen USING(perkara_id)
@@ -58,6 +52,32 @@ class Elitigasi_model extends CI_Model
       $row->perkara_id = $this->encryption->encrypt($row->perkara_id);
     }
     return $data;
+  }
+  //--------------------------------------------------------------------------
+  public function get_suggestions($query)
+  {
+    $this->db->like('nomor_perkara', $query);
+    $this->db->select('nomor_perkara');
+    $this->db->order_by('perkara_id', 'ASC');
+    $this->db->limit(10);
+
+    $query = $this->db->get('perkara');
+    return $query->result_array();
+  }
+
+  //-----------------------------------------------------------------------------
+  function getPerkaraId($perkara)
+  {
+    $sql = "SELECT perkara_id
+            FROM perkara
+            WHERE nomor_perkara = '$perkara'";
+    $hasil = $this->db->query($sql);
+    return $hasil->row();
+  }
+  //----------------------------------------------------------------------------
+  public function inputElitigasi($data)
+  {
+    $this->db2->insert('elaporan_lipa_24', $data);
   }
 }
 

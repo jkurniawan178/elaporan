@@ -87,8 +87,8 @@
                                         <td><?= $value->jenis_perkara_nama ?></td>
                                         <td><?= $value->majelis_hakim_nama ?></td>
                                         <td><?= $value->panitera_pengganti ?></td>
-                                        <td><?= $value->tanggal_pendaftaran ?></td>
-                                        <td><?= $value->tanggal_putusan ?></td>
+                                        <td><?= tgl_dari_mysql($value->tanggal_pendaftaran) ?></td>
+                                        <td><?= tgl_dari_mysql($value->tanggal_putusan) ?></td>
                                         <td><?= $value->jenis_putusan ?></td>
                                         <td><?= $value->belum_diputus ?></td>
                                         <td>
@@ -113,10 +113,8 @@
 
 <!-- jQuery -->
 <script src="<?php echo base_url() ?>resources/jquery/dist/jquery.min.js"></script>
-<script src="<?php echo base_url() ?>resources/js/thousandSeparator.js"></script>
 <?php include('add_modal.php') ?>
 <?php include('delete_modal.php') ?>
-<?php include('edit_modal.php') ?>
 <script>
     $(document).ready(function() {
         $('[data-toggle="tooltip]').tooltip();

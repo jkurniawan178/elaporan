@@ -34,8 +34,7 @@ class Sidkel_model extends CI_Model
   //-------------------------------------------------------------------------------------
   public function input_data($data)
   {
-    $db2 = $this->load->database('dbelaporan', true);
-    $db2->insert('elaporan_lipa_14', $data);
+    $this->db2->insert('elaporan_lipa_14', $data);
   }
 
   public function get_All()
