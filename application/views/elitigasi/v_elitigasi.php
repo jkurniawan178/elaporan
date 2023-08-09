@@ -71,10 +71,10 @@
                                     <th class="align-middle" scope="col">Jenis Perkara</th>
                                     <th class="align-middle" scope="col">Nama Majelis Hakim</th>
                                     <th class="align-middle" scope="col">Nama Panitera</th>
-                                    <th class="align-middle" scope="col">Tgl Pendaftaran</th>
+                                    <th class="align-middle" scope="col" data-priority="1">Tgl Pendaftaran</th>
                                     <th class="align-middle" scope="col" data-priority="1">Tgl Putus</th>
                                     <th class="align-middle" scope="col">Jenis Putusan</th>
-                                    <th class="align-middle" scope="col" data-priority="2">Belum Diputus</th>
+                                    <th class="align-middle" scope="col">Belum Diputus</th>
                                     <th class="align-middle" scope="col" data-priority="1">Action</th>
                                 </tr>
                             </thead>
@@ -113,6 +113,7 @@
 
 <!-- jQuery -->
 <script src="<?php echo base_url() ?>resources/jquery/dist/jquery.min.js"></script>
+<script src="<?php echo base_url() ?>resources/js/helper.js"></script>
 <?php include('add_modal.php') ?>
 <?php include('delete_modal.php') ?>
 <script>
@@ -139,37 +140,32 @@
             const tahun = $(this).val();
             // console.log(tahun);
             $.ajax({
-                url: '<?php echo base_url('LIPA_16/posbakum/filter_lipa16_tahun') ?>',
+                url: '<?php echo base_url('LIPA_24/elitigasi/filter_lipa24_tahun') ?>',
                 type: 'POST',
                 dataType: 'json',
                 data: {
                     'tahun': tahun
                 },
                 success: function(response) {
-                    console.log(response)
-                    // var table = $('#table-sidkel').DataTable();
                     table.clear(); // Clear existing data from the table
 
                     for (var i = 0; i < response.length; i++) {
                         response[i].button = `<a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split 
-                                            btn-sm button-delete" data-id="${response[i].id}" title="Hapus data Posbakum" data-toggle="tooltip">
+                                            btn-sm button-delete" data-id="${response[i].id}" title="Hapus perkara elitigasi" data-toggle="tooltip">
                                                 <span class="icon text-white">
                                                     <i class="fa fa-trash"></i>
                                                 </span>
                                             </a>`
-                        response[i].periode = `${pilihBulan(response[i].bulan)} ${response[i].tahun}`
                         table.row.add([
                             i + 1,
-                            response[i].periode,
-                            addThousandSeparator(response[i].pagu_awal),
-                            addThousandSeparator(response[i].pagu_revisi),
-                            addThousandSeparator(response[i].realisasi_sampai_bulan_lalu),
-                            addThousandSeparator(response[i].realisasi),
-                            addThousandSeparator(response[i].jumlah_realisasi),
-                            addThousandSeparator(response[i].saldo),
-                            response[i].target_layanan,
-                            response[i].jml_layanan,
-                            response[i].keterangan,
+                            response[i].jenis_perkara_nama,
+                            response[i].nomor_perkara,
+                            response[i].majelis_hakim_nama,
+                            response[i].panitera_pengganti,
+                            formatDate(response[i].tanggal_pendaftaran),
+                            formatDate(response[i].tanggal_putusan),
+                            response[i].jenis_putusan,
+                            response[i].belum_diputus,
                             response[i].button
                             // Add other data columns here
                         ])

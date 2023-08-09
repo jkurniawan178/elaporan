@@ -43,7 +43,8 @@ class Elitigasi_model extends CI_Model
             FROM perkara p LEFT JOIN perkara_putusan put USING(perkara_id)
             LEFT JOIN perkara_penetapan pen USING(perkara_id)
             LEFT JOIN status_putusan st ON st.id=put.`status_putusan_id`
-            INNER JOIN dbelaporan.`elaporan_lipa_24` lit USING(perkara_id)";
+            INNER JOIN dbelaporan.`elaporan_lipa_24` lit USING(perkara_id)
+            ORDER BY p.alur_perkara_id ASC, p.perkara_id ASC";
     $hasil = $this->db->query($sql);
     $data = $hasil->result();
 
@@ -84,6 +85,35 @@ class Elitigasi_model extends CI_Model
   {
     $this->db2->where($where);
     $this->db2->delete('elaporan_lipa_24');
+  }
+  //-------------------------------------------------------------------------
+  public function getLipa24YearFilter($tahun)
+  {
+    if ($tahun === 'all') {
+      $where = "";
+    } else {
+      $where = "WHERE YEAR(p.tanggal_pendaftaran) = $tahun";
+    }
+
+    $sql = "SELECT lit.id, p.perkara_id, p.nomor_perkara, p.jenis_perkara_nama, p.`tanggal_pendaftaran`,
+            pen.majelis_hakim_nama,
+            SUBSTRING_INDEX(pen.panitera_pengganti_text,': ',-1) AS panitera_pengganti,
+            put.`tanggal_putusan`, st.`nama` AS jenis_putusan,
+            IF(tanggal_putusan IS NULL,'v','') AS belum_diputus
+            
+            FROM perkara p LEFT JOIN perkara_putusan put USING(perkara_id)
+            LEFT JOIN perkara_penetapan pen USING(perkara_id)
+            LEFT JOIN status_putusan st ON st.id=put.`status_putusan_id`
+            INNER JOIN dbelaporan.`elaporan_lipa_24` lit USING(perkara_id)
+            $where
+            ORDER BY p.alur_perkara_id ASC, p.perkara_id ASC";
+    $hasil = $this->db->query($sql);
+    $data = $hasil->result();
+
+    foreach ($data as $row) {
+      $row->id = $this->encryption->encrypt($row->id);
+    }
+    return $data;
   }
 }
 

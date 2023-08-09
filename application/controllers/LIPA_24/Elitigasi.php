@@ -92,6 +92,15 @@ class Elitigasi extends CI_Controller
     $this->session->set_flashdata('success', '<strong>Perkara Elitigasi berhasil dihapus!</strong>');
     redirect('LIPA_24/elitigasi');
   }
+  //----------------------------------------------------------------------
+  function filter_lipa24_tahun()
+  {
+    $tahun = $this->input->post('tahun');
+
+    $data = $this->elitigasi_model->getLipa24YearFilter($tahun);
+    header('Content-Type: application/json');
+    echo json_encode($data);
+  }
 }
 
 
