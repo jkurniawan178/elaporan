@@ -23,6 +23,7 @@
           <li><a href="<?php echo site_url() ?>LIPA_14/sidkel">Laporan Pelaksanaan Sidang Keliling (LIPA.14)</a></li>
           <li><a href="<?php echo site_url() ?>LIPA_15/prodeo">Laporan Pelaksanaan Prodeo (LIPA.15)</a></li>
           <li><a href="<?php echo site_url() ?>LIPA_16/posbakum">Laporan Pelaksanaan Posbakum (LIPA.16)</a></li>
+          <li><a href="<?php echo site_url() ?>LIPA_24/elitigasi">Laporan Pelaksanaan Elitigasi (LIPA.24)</a></li>
         </ul>
       </li>
 

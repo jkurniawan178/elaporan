@@ -11,6 +11,7 @@
 
 <!-- jQuery -->
 <script src="<?php echo base_url() ?>resources/jquery/dist/jquery.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script> -->
 <!-- Bootstrap -->
 <script src="<?php echo base_url() ?>resources/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Chart.js -->
@@ -28,6 +29,8 @@
 <!-- Custom Theme Scripts -->
 <script src="<?php echo base_url() ?>resources/js/custom.js"></script>
 <script src="<?php echo base_url() ?>resources/js/helper.js"></script>
+<script src="<?php echo base_url() ?>resources/autocomplete/jquery-ui.js"></script>
+</script>
 <script>
   //Function that using bootstrap validator
   (function() {
