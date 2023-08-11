@@ -3,7 +3,7 @@
     <div class="">
         <div class="page-title">
             <div class="title_left">
-                <h2>Saldo Awal - LIPA 07</h2>
+                <h2>Saldo Awal Keuangan Perkara - LIPA 07</h2>
             </div>
         </div>
         <div class="clearfix"></div>
@@ -94,6 +94,8 @@
 
 <!-- jQuery -->
 <script src="<?php echo base_url() ?>resources/jquery/dist/jquery.min.js"></script>
+<!-- Format Mask -->
+<script src="<?php echo base_url() ?>resources/cleave.min.js"></script>
 <script src="<?php echo base_url() ?>resources/js/thousandSeparator.js"></script>
 <?php include('add_modal.php') ?>
 <?php include('edit_modal.php') ?>

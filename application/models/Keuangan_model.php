@@ -46,7 +46,18 @@ class Keuangan_model extends CI_Model
 
     return $data;
   }
-
+  // ------------------------------------------------------------------------
+  public function searchSaldoAwalbyYear($year)
+  {
+    $sql = "SELECT tahun FROM elaporan_saldo_awal WHERE tahun = $year";
+    $hasil = $this->db2->query($sql);
+    return $hasil->result();
+  }
+  // ------------------------------------------------------------------------
+  public function inputSaldoAwal($data)
+  {
+    $this->db2->insert('elaporan_saldo_awal', $data);
+  }
   // ------------------------------------------------------------------------
 
 }
