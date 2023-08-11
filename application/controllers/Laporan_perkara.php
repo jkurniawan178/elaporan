@@ -149,6 +149,22 @@ class Laporan_perkara extends CI_Controller
           }
           break;
           //-------------------------------------------------------------------------------------------------------
+        case 'lipa_7a':
+          $data = $this->laporan_model->getLIPA7a($bulan, $tahun);
+
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $hasil = $this->export_excel_lipa7a($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            echo json_encode($hasil);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Lipa 6 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+            ];
+            echo json_encode($response);
+          }
+          break;
+          //-------------------------------------------------------------------------------------------------------
         case 'lipa_8':
           $data = $this->laporan_model->getLIPA8($bulan, $tahun);
 
@@ -1028,6 +1044,74 @@ class Laporan_perkara extends CI_Controller
     $kolom_kpa = "C";
     $kolom_pansek = "M";
     $row = $row + 3;
+    $row_awal_ttd = $row;
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
+
+    $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
+
+    return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
+  }
+  //-----------------------------------------------------------------------------------------------
+  //--------------------------------Export Data Lipa 7a ke Excel------------------------------------
+  protected function export_excel_lipa7a($data, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan)
+  {
+    if (!file_exists(FCPATH . "new_templates/" . $jenis_laporan . ".xls")) {
+      $response = [
+        'kode' => '202',
+        'data' => 'Template Belum Tersedia'
+      ];
+      return $response;
+      exit;
+    }
+
+    $objReader = PHPExcel_IOFactory::createReader('Excel5');
+    $objPHPExcel = $objReader->load(FCPATH . "new_templates/" . $jenis_laporan . ".xls");
+
+    $styleArray = array(
+      // 'borders' => array(
+      //   'allborders' => array(
+      //     'style' => PHPExcel_Style_Border::BORDER_THIN,
+      //   )
+      // ),
+      'font' => array(
+        'name' => 'Arial Narrow',
+        'size' => '12'
+      ),
+      'alignment' => array(
+        'wrap' => true,
+      )
+    );
+
+    $obj = json_decode($data, true);
+    $no = 1;
+    $baseRow = 9;
+
+    $objPHPExcel->getActiveSheet()->setCellValue('B2', "PADA " . $settingSIPP['NamaPN']);
+    $objPHPExcel->getActiveSheet()->setCellValue('B3', "BULAN " . strtoupper(pilihbulan($bulan)) . " " . $tahun);
+    foreach ($obj as $item) {
+      $row = $baseRow + $no;
+
+      $objPHPExcel->getActiveSheet()
+        ->setCellValue('B' . $row, $item['no'])
+        ->setCellValue('C' . $row, $item['Keterangan'])
+        ->setCellValue('D' . $row, $item['jumlah_debet'])
+        ->setCellValue('E' . $row, $item['jumlah_kredit'])
+        ->getRowDimension($row)->setRowHeight(18);
+
+      //$objPHPExcel->getActiveSheet()->insertNewRowAfter($row); 
+      $no++;
+    }
+
+    $objPHPExcel->getActiveSheet()->getStyle('B' . $baseRow . ':E' . $row)->applyFromArray($styleArray);
+    $objPHPExcel->getActiveSheet()->getStyle('B' . $baseRow . ':B' . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('C' . $baseRow . ':C' . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+    $objPHPExcel->getActiveSheet()->getStyle('B' . $baseRow . ':E' . $row)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+    //tanda tangan 
+    $kolom_kpa = "C";
+    $kolom_pansek = "E";
+    $row = $row + 4;
     $row_awal_ttd = $row;
     //Fungsi untuk kolom TTD
     $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);

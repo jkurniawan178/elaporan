@@ -388,6 +388,83 @@ class Laporan_model extends CI_Model
 		return $hasil->result();
 	}
 	// ------------------------------------------------------------------------
+	// -----------------------------Ambil Data Lipa 7a--------------------------
+	public function getLIPA7a($bulan, $tahun)
+	{
+		$periode = $tahun . '-' . $bulan;
+		$awal_tahun = $tahun . '-01-01';
+		$sql = "SELECT 1 AS 'urutan', 1 AS 'no','Saldo Awal' AS 'Keterangan',
+				(SELECT CASE WHEN (SELECT t1.`saldo_awal_7a` FROM dbelaporan.`elaporan_saldo_awal` as t1 WHERE tahun = '$tahun') IS not NULL THEN 
+						(select t1.saldo_awal_7a from dbelaporan.`elaporan_saldo_awal` as t1 where tahun = '$tahun') +
+						COALESCE((SELECT SUM(jumlah) FROM perkara_biaya WHERE jenis_transaksi='1' and date_format(tanggal_transaksi,'%Y-%m-%d') >= '$awal_tahun' AND date_format(tanggal_transaksi, '%Y-%m') < '$periode' AND tahapan_id <= 40),0) -
+						COALESCE((SELECT SUM(jumlah) FROM perkara_biaya WHERE jenis_transaksi='-1' and date_format(tanggal_transaksi,'%Y-%m-%d') >= '$awal_tahun' AND Date_format(tanggal_transaksi, '%Y-%m') < '$periode' AND tahapan_id <= 40),0)
+					else 
+						0 END) AS jumlah_debet, 
+					'-' AS jumlah_kredit
+				union
+					SELECT 2 AS 'urutan',2 AS 'no', 'Penerimaan Bulan ini' AS 'keterangan', SUM(jumlah) AS jumlah_debet,'-' AS jumlah_kredit 
+					FROM perkara_biaya WHERE jenis_transaksi='1' AND date_format(tanggal_transaksi, '%Y-%m')='$periode' AND tahapan_id<=40
+				union
+					SELECT 3 AS 'urutan',3 AS 'no', 'Biaya Proses/ATK/Pemberkasan' AS 'keterangan','-' AS jumlah_debet, 
+					SUM(jumlah) AS jumlah_kredit FROM perkara_biaya WHERE kategori_id='12' AND date_format(tanggal_transaksi, '%Y-%m')='$periode' AND tahapan_id<=40
+				union
+					SELECT 4 AS 'urutan',4 AS 'no', 'Biaya Panggilan' AS 'keterangan','-' AS jumlah_debet, 
+					SUM(jumlah)AS jumlah_kredit FROM perkara_biaya WHERE kategori_id='4' AND date_format(tanggal_transaksi, '%Y-%m')='$periode'  AND tahapan_id<=40
+				union
+					SELECT 5 AS 'urutan',5 AS 'no', 'Biaya Penerjemah' AS 'Keterangan', '-' AS jumlah_debet, 
+					SUM(jumlah) AS jumlah_kredit FROM perkara_biaya WHERE kategori_id='10' AND date_format(tanggal_transaksi, '%Y-%m')='$periode'  AND tahapan_id<=40
+				union
+					SELECT 6 AS 'urutan',6 AS 'no', 'Biaya Pemberitahuan' AS 'keterangan', '-' AS jumlah_debet,
+					SUM(jumlah)AS jumlah_kredit FROM perkara_biaya WHERE kategori_id='6' AND date_format(tanggal_transaksi, '%Y-%m')='$periode' AND tahapan_id<=40
+				union
+					SELECT 7 AS 'urutan',7 AS 'no', 'Biaya Sita' AS 'Keterangan','-' AS jumlah_debet,
+					SUM(jumlah) AS jumlah_kredit FROM perkara_biaya WHERE kategori_id='5' AND date_format(tanggal_transaksi, '%Y-%m')='$periode'  AND tahapan_id<=40
+				UNION
+					SELECT 8 AS 'urutan',8 AS 'no', 'Biaya Pemeriksaan Setempat' AS 'Keterangan','-' AS jumlah_debet,
+					SUM(jumlah)AS jumlah_kredit FROM perkara_biaya WHERE kategori_id='7' AND date_format(tanggal_transaksi, '%Y-%m')='$periode'  AND tahapan_id<=40
+				UNION
+					SELECT 9 AS 'urutan',9 AS 'no', 'Biaya Sumpah' AS 'keterangan','-' AS jumlah_debet,
+					SUM(jumlah)AS jumlah_kredit FROM perkara_biaya WHERE kategori_id='9' AND date_format(tanggal_transaksi, '%Y-%m')='$periode'  AND tahapan_id<=40
+				UNION
+					SELECT 10 AS 'urutan',10 AS 'no', 'Biaya Pengiriman' AS 'Keterangan', '-' AS jumlah_debet, 
+					SUM(jumlah) AS jumlah_kredit FROM perkara_biaya WHERE kategori_id='3' AND date_format(tanggal_transaksi, '%Y-%m')='$periode' AND tahapan_id<=40
+				UNION
+					SELECT 11 AS 'urutan',11 AS 'no','Materai' AS 'keterangan', '-' AS jumlah_debet, 
+					SUM(jumlah)AS jumlah_kredit FROM perkara_biaya WHERE kategori_id='8' AND date_format(tanggal_transaksi, '%Y-%m')='$periode'  AND tahapan_id<=40
+				UNION
+					SELECT 12 AS 'urutan',12 AS 'no','PNBP' AS 'Keterangan','' AS jumlah_debet,'' AS jumlah_kredit
+				union
+					SELECT 13 AS 'urutan','' AS 'no','Panggilan, pemberitahuan dan lain-lain' AS 'keterangan', '-' AS jumlah_debet, 
+					SUM(jumlah)AS jumlah_kredit FROM perkara_biaya 
+					WHERE jenis_biaya_id not IN ('61','62','63','64') and kategori_id='11' AND date_format(tanggal_transaksi, '%Y-%m')='$periode' AND tahapan_id<=40
+				union
+					SELECT 14 AS 'urutan','' AS 'no', 'Pendaftaran' AS 'Keterangan','-' AS jumlah_debet, 
+					SUM(jumlah) AS jumlah_kredit FROM perkara_biaya 
+					WHERE jenis_biaya_id in ('61','62','63','64') 
+					AND date_format(tanggal_transaksi, '%Y-%m')='$periode'  AND tahapan_id<=40
+				union
+					SELECT 15 AS 'urutan',' ' AS 'no', 'Redaksi' AS 'Keterangan', '-' AS jumlah_debet,
+					SUM(jumlah)AS jumlah_kredit FROM perkara_biaya WHERE jenis_biaya_id='157' AND date_format(tanggal_transaksi, '%Y-%m')='$periode'  AND tahapan_id<=40
+				union
+					SELECT 16 AS 'urutan',13 AS 'no', 'Pengembalian Sisa Panjar' AS 'keterangan','-' AS jumlah_debet,
+					SUM(jumlah)AS jumlah_kredit FROM perkara_biaya WHERE kategori_id='2' AND date_format(tanggal_transaksi, '%Y-%m')='$periode'  AND tahapan_id<=40
+				union	
+					SELECT 17 AS 'urutan',' ' AS 'no', 'Jumlah' AS 'Keterangan',
+					((SELECT CASE WHEN (SELECT t1.`saldo_awal_7a` FROM dbelaporan.`elaporan_saldo_awal` AS t1 WHERE tahun = '$tahun') IS NOT NULL THEN 
+							(SELECT t1.saldo_awal_7a FROM dbelaporan.`elaporan_saldo_awal` AS t1 WHERE tahun = '$tahun') +
+							COALESCE((SELECT SUM(jumlah) FROM perkara_biaya WHERE jenis_transaksi='1' AND date_format(tanggal_transaksi,'%Y-%m-%d') >= '$awal_tahun' AND DATE_FORMAT(tanggal_transaksi, '%Y-%m') < '$periode' AND tahapan_id <= 40),0) -
+							COALESCE((SELECT SUM(jumlah) FROM perkara_biaya WHERE jenis_transaksi='-1' AND date_format(tanggal_transaksi,'%Y-%m-%d') >= '$awal_tahun' AND DATE_FORMAT(tanggal_transaksi, '%Y-%m') < '$periode' AND tahapan_id <= 40),0)
+						ELSE 
+							0 END) +
+						(select SUM(jumlah) FROM perkara_biaya WHERE jenis_transaksi='1' AND date_format(tanggal_transaksi, '%Y-%m')='$periode' AND tahapan_id<=40)) as jumlah_debet,
+					
+					(SELECT SUM(jumlah) FROM perkara_biaya WHERE jenis_transaksi='-1' AND DATE_FORMAT(tanggal_transaksi, '%Y-%m') = '$periode'
+					AND tahapan_id<=40) AS jumlah_kredit
+				order by urutan";
+		$hasil = $this->db->query($sql);
+		return $hasil->result();
+	}
+	// ------------------------------------------------------------------------
 	// -----------------------------Ambil Data Lipa 8--------------------------
 	public function getLIPA8($bulan, $tahun)
 	{
@@ -765,9 +842,9 @@ class Laporan_model extends CI_Model
 							delegasi_keluar LEFT JOIN delegasi_proses_keluar ON delegasi_proses_keluar.delegasi_id=delegasi_keluar.id
 							LEFT JOIN perkara_penetapan ON perkara_penetapan.`perkara_id` = delegasi_keluar.`perkara_id`
 						WHERE 
-							DATE_FORMAT(delegasi_keluar.tgl_delegasi,'%Y-%m')='2023-01'
+							DATE_FORMAT(delegasi_keluar.tgl_delegasi,'%Y-%m')='$periode'
 							AND
-							(DATE_FORMAT(delegasi_proses_keluar.tgl_pengiriman_relaas,'%Y-%m')>='2023-01'
+							(DATE_FORMAT(delegasi_proses_keluar.tgl_pengiriman_relaas,'%Y-%m')>='$periode'
 							OR  
 							delegasi_proses_keluar.`tgl_pengiriman_relaas` IS NULL) 
 						";

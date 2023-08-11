@@ -28,9 +28,9 @@
 										<option value="lipa_4">LAPORAN PERKARA YANG DIMOHONKAN PENINJAUAN KEMBALI (LIPA.4) </option>
 										<option value="lipa_5">LAPORAN PERKARA YANG DIMOHONKAN EKSEKUSI (LIPA.5) </option>
 										<option value="lipa_6">LAPORAN KEGIATAN HAKIM (LIPA.6) </option>
-										<!-- <option value="lipa_7_a">LAPORAN KEUANGAN PERKARA (LIPA.7.A) </option>
-										<option value="lipa_7_b">LAPORAN KEUANGAN PERKARA EKSEKUSI (LIPA.7.B) </option>
-										<option value="lipa_7_c">LAPORAN KEUANGAN PERKARA KONSIGNASI(LIPA.7.C) </option> -->
+										<option value="lipa_7a">LAPORAN KEUANGAN PERKARA (LIPA.7.A) </option>
+										<!-- <option value="lipa_7b">LAPORAN KEUANGAN PERKARA EKSEKUSI (LIPA.7.B) </option>
+										<option value="lipa_7c">LAPORAN KEUANGAN PERKARA KONSIGNASI(LIPA.7.C) </option> -->
 										<option value="lipa_8">LAPORAN PERKARA DITERIMA, DICABUT DAN DIPUTUS MENURUT JENIS PERKARA (LIPA.8) </option>
 										<option value="lipa_9">LAPORAN PERKARA KHUSUS PP. NO.10 TAHUN 1983 JO. PP. NO.45 TAHUN 1990 (LIPA.9) </option>
 										<option value="lipa_10">LAPORAN PENYEBAB TERJADINYA PERCERAIAN (LIPA.10) </option>
