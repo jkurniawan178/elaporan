@@ -132,6 +132,17 @@ class Saldo_awal extends CI_Controller
       redirect('LIPA_7/saldo_awal');
     }
   }
+  //-------------------------------------------------------------------------------
+  public function delete_aksi()
+  {
+    $idEncrypted = $this->input->post('id');
+    $id = $this->encryption->decrypt($idEncrypted);
+
+    $where = array('id' => $id);
+    $this->keuangan_model->deleteSaldoAwal($where);
+    $this->session->set_flashdata('success', '<strong>Data Saldo Awal berhasil dihapus!</strong>');
+    redirect('LIPA_7/saldo_awal');
+  }
 }
 
 

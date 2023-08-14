@@ -76,6 +76,12 @@ class Keuangan_model extends CI_Model
     $this->db2->where('id', $id);
     $this->db2->update('elaporan_saldo_awal', $data);
   }
+  //-------------------------------------------------------------------------
+  public function deleteSaldoAwal($where)
+  {
+    $this->db2->where($where);
+    $this->db2->delete('elaporan_saldo_awal');
+  }
 }
 
 /* End of file Keuangan_model.php */

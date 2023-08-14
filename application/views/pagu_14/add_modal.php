@@ -90,6 +90,8 @@
 <script>
     //--------------------------Script for modal section----------------------------------------
     //--------------------------- Get the input element Modal Tambah --------------------
+
+    //TODO - Implement cleave.js
     const paguAwal = document.getElementById("pagu_awal");
     const paguRevisi = document.getElementById("pagu_revisi");
 
