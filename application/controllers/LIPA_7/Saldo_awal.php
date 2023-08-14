@@ -87,6 +87,51 @@ class Saldo_awal extends CI_Controller
       redirect('LIPA_7/saldo_awal');
     }
   }
+  //-------------------------------------------------------------------------------------------------------------
+  //Pencarian data Saldo Awal by id
+  public function get_saldo_awal()
+  {
+    $encodedId = $this->input->post('id');
+    $id = $this->encryption->decrypt($encodedId);
+    $data = $this->keuangan_model->getSaldoAwalbyId($id);
+
+    $data->id = $this->encryption->encrypt($data->id);
+    $data->saldo_awal_7a = number_format($data->saldo_awal_7a, 0, ',', '.');
+    $data->saldo_awal_7b = number_format($data->saldo_awal_7b, 0, ',', '.');
+    $data->saldo_awal_7c = number_format($data->saldo_awal_7c, 0, ',', '.');
+
+    header('Content-Type: application/json');
+    echo json_encode($data);
+  }
+  //----------------------------------------------------------------------------------------------------
+  public function ubah_aksi()
+  {
+    $this->_rules('edit');
+    if ($this->form_validation->run() == false) {
+      $this->session->set_flashdata('error', '<strong>Data Saldo Awal Tidak berhasil diubah!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
+      redirect('LIPA_7/saldo_awal');
+    } else {
+      $idEncrypted = $this->input->post('id');
+      $id = $this->encryption->decrypt($idEncrypted);
+
+      $awal_7a = $this->input->post('awal_7a');
+      $awal_7b = $this->input->post('awal_7b');
+      $awal_7c = $this->input->post('awal_7c');
+      $keterangan = $this->input->post('keterangan');
+
+      $data = array(
+        'saldo_awal_7a' => $awal_7a,
+        'saldo_awal_7b' => $awal_7b,
+        'saldo_awal_7c' => $awal_7c,
+        'keterangan' => $keterangan,
+      );
+
+      // var_dump($data);
+      $this->keuangan_model->updateSaldoAwal($id, $data);
+      $this->session->set_flashdata('success', '<strong>Data Saldo Awal berhasil diubah!</strong>');
+      redirect('LIPA_7/saldo_awal');
+    }
+  }
 }
 
 

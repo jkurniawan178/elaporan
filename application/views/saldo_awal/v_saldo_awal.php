@@ -115,7 +115,7 @@
             let id = $(this).data('id');
 
             $.ajax({
-                url: '<?php echo base_url('LIPA_16/Pagu_16/get_pagu16') ?>',
+                url: '<?php echo base_url('LIPA_7/saldo_awal/get_saldo_awal') ?>',
                 type: 'POST',
                 dataType: 'json',
                 data: {
@@ -124,10 +124,11 @@
                 success: function(response) {
                     // console.log(response)
                     $('#edit_id').val(response['id'])
-                    $('#edit_tahun').val(response['tahun_anggaran'])
-                    $('#edit_pagu_awal').val(response['pagu_awal'])
-                    $('#edit_pagu_revisi').val(response['pagu_revisi'])
-                    $('#edit_layanan').val(response['target_layanan'])
+                    $('#edit_tahun').val(response['tahun'])
+                    $('#edit_awal_7a').val(response['saldo_awal_7a'])
+                    $('#edit_awal_7b').val(response['saldo_awal_7b'])
+                    $('#edit_awal_7c').val(response['saldo_awal_7c'])
+                    $('#edit_keterangan').val(response['keterangan'])
                     $('#edit-modal').modal('show');
                 }
             })

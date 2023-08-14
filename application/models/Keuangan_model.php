@@ -59,7 +59,23 @@ class Keuangan_model extends CI_Model
     $this->db2->insert('elaporan_saldo_awal', $data);
   }
   // ------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
+  public function getSaldoAwalbyId($id)
+  {
+    $data = $this->db2->get_where('elaporan_saldo_awal', array('id' => $id));
 
+    if ($data->num_rows() > 0) {
+      return $data->row(); //REturn the first row as an object
+    } else {
+      return null;
+    }
+  }
+  //-------------------------------------------------------------------------
+  public function updateSaldoAwal($id, $data)
+  {
+    $this->db2->where('id', $id);
+    $this->db2->update('elaporan_saldo_awal', $data);
+  }
 }
 
 /* End of file Keuangan_model.php */
