@@ -188,18 +188,21 @@
     })
 
     //---------------------------Thousand separator (Add Modal) field script-------------
-    const realisasi = document.getElementById("realisasi");
-    const saldo = document.getElementById("sisa_pagu");
-    realisasi.addEventListener("keyup", function(event) {
-        formatInputValue(event.target);
+    const realisasi = new Cleave('#realisasi', {
+        numeral: true,
+        numeralDecimalMark: ',',
+        delimiter: '.',
+        numeralPositiveOnly: true,
+        numeralThousandsGroupStyle: 'thousand'
+
     });
 
     //function to remove thousand separator before send it to controller
     document.getElementById("add_form").addEventListener("submit", function(event) {
-        let inputRealisasi = removeThousandSeparator(realisasi.value);
+        let inputRealisasi = realisasi.getRawValue();
         let numRealisasi = parseFloat(inputRealisasi);
         if (!isNaN(numRealisasi)) {
-            realisasi.value = numRealisasi;
+            document.getElementById('realisasi').value = numRealisasi;
         }
     })
 </script>

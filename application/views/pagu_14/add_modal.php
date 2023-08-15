@@ -90,26 +90,29 @@
 <script>
     //--------------------------Script for modal section----------------------------------------
     //--------------------------- Get the input element Modal Tambah --------------------
+    const paguAwal = new Cleave('#pagu_awal', {
+        numeral: true,
+        numeralDecimalMark: ',',
+        delimiter: '.',
+        numeralPositiveOnly: true,
+        numeralThousandsGroupStyle: 'thousand'
 
-    //TODO - Implement cleave.js
-    const paguAwal = document.getElementById("pagu_awal");
-    const paguRevisi = document.getElementById("pagu_revisi");
-
-    // Add event listener for keyup event
-    paguAwal.addEventListener("keyup", function(event) {
-        formatInputValue(event.target);
     });
 
-    paguRevisi.addEventListener("keyup", function(event) {
-        formatInputValue(event.target);
-    });
+    const paguRevisi = new Cleave('#pagu_revisi', {
+        numeral: true,
+        numeralDecimalMark: ',',
+        delimiter: '.',
+        numeralPositiveOnly: true,
+        numeralThousandsGroupStyle: 'thousand'
 
+    });
 
     //function to remove thousand separator before send it to controller
     document.getElementById("add_form").addEventListener("submit", function(event) {
         // Get the current input value without dots (thousand separators)
-        let inputPaguAwal = removeThousandSeparator(paguAwal.value);
-        let inputPaguRevisi = removeThousandSeparator(paguRevisi.value);
+        let inputPaguAwal = paguAwal.getRawValue();
+        let inputPaguRevisi = paguRevisi.getRawValue();
 
         // Convert the value to a number
         let numPaguAwal = parseFloat(inputPaguAwal);
@@ -117,10 +120,10 @@
 
         // Set the numeric value as the new value of the input field
         if (!isNaN(numPaguAwal)) {
-            paguAwal.value = numPaguAwal;
+            document.getElementById("pagu_awal").value = numPaguAwal;
         }
         if (!isNaN(numPaguRevisi)) {
-            paguRevisi.value = numPaguRevisi;
+            document.getElementById("pagu_revisi").value = numPaguRevisi;
         }
 
     })
