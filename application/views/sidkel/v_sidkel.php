@@ -123,6 +123,8 @@
 
 <!-- jQuery -->
 <script src="<?php echo base_url() ?>resources/jquery/dist/jquery.min.js"></script>
+<!-- Format Mask -->
+<script src="<?php echo base_url() ?>resources/cleave/cleave.min.js"></script>
 <script src="<?php echo base_url() ?>resources/js/thousandSeparator.js"></script>
 <?php include('add_modal.php') ?>
 <?php include('delete_modal.php') ?>

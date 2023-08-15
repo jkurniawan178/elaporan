@@ -3,7 +3,7 @@
     <div class="">
         <div class="page-title">
             <div class="title_left">
-                <h2>Pagu Anggaran - Pelaksanaan Posbakum</h2>
+                <h2>Saldo Awal Keuangan Perkara - LIPA 07</h2>
             </div>
         </div>
         <div class="clearfix"></div>
@@ -31,7 +31,7 @@
                         <div class="ml-2">
                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#add-modal">
                                 <i class="fa fa-plus"></i>
-                                Tambah Pagu Anggaran
+                                Tambah Saldo Awal
                             </button>
                         </div>
                     </div>
@@ -42,31 +42,36 @@
                                     <table id="table-pagu" class=" text-center table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                                         <thead>
                                             <tr>
-                                                <th class="align-middle" scope="col">No</th>
-                                                <th class="align-middle" scope="col" data-priority="1">Tahun</th>
-                                                <th class="align-middle" scope="col" data-priority="1">Pagu Awal</th>
-                                                <th class="align-middle" scope="col">Pagu Revisi</th>
-                                                <th class="align-middle" scope="col">Target Pelayanan</th>
-                                                <th class="align-middle" scope="col" data-priority="1">Actions</th>
+                                                <th class="align-middle" scope="col" rowspan="2">No</th>
+                                                <th class="align-middle" scope="col" rowspan="2" data-priority="1">Tahun</th>
+                                                <th class="align-middle" scope="colgroup" colspan="3" data-priority="1">Saldo Awal</th>
+                                                <th class="align-middle" scope="col" rowspan="2">Keterangan</th>
+                                                <th class="align-middle" scope="col" rowspan="2">Actions</th>
+                                            </tr>
+                                            <tr>
+                                                <th class="align-middle" scope="col">LIPA 7a</th>
+                                                <th class="align-middle" scope="col">LIPA 7b</th>
+                                                <th class="align-middle" scope="col">LIPA 7c</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php $no = 1;
-                                            foreach ($pagu_16 as $value) { ?>
+                                            foreach ($saldo_awal as $value) { ?>
                                                 <tr>
                                                     <td><?= $no++ ?></td>
-                                                    <td><?= $value->tahun_anggaran ?></td>
-                                                    <td><?= number_format($value->pagu_awal, 0, ',', '.') ?></td>
-                                                    <td><?= number_format($value->pagu_revisi, 0, ',', '.') ?></td>
-                                                    <td><?= $value->target_layanan ?></td>
+                                                    <td><?= $value->tahun ?></td>
+                                                    <td><?= number_format($value->saldo_awal_7a, 0, ',', '.') ?></td>
+                                                    <td><?= number_format($value->saldo_awal_7b, 0, ',', '.') ?></td>
+                                                    <td><?= number_format($value->saldo_awal_7c, 0, ',', '.') ?></td>
+                                                    <td><?= $value->keterangan ?></td>
                                                     <td>
-                                                        <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update" data-id="<?= $value->id ?>" title="Revisi pagu" data-toggle="tooltip">
+                                                        <a href="javascript:void(0)" type="button" class="btn btn-primary btn-icon-split btn-sm button-update" data-id="<?= $value->id ?>" title="Edit Saldo Awal" data-toggle="tooltip">
                                                             <span class="icon text-white">
                                                                 <i class="fa fa-edit"></i>
                                                             </span>
                                                         </a>
 
-                                                        <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<?= $value->id ?>" title="Hapus data pagu" data-toggle="tooltip">
+                                                        <a href="javascript:void(0)" type="button" class="btn btn-danger btn-icon-split btn-sm button-delete" data-id="<?= $value->id ?>" title="Hapus Saldo Awal" data-toggle="tooltip">
                                                             <span class="icon text-white">
                                                                 <i class="fa fa-trash"></i>
                                                             </span>
@@ -110,7 +115,7 @@
             let id = $(this).data('id');
 
             $.ajax({
-                url: '<?php echo base_url('LIPA_16/Pagu_16/get_pagu16') ?>',
+                url: '<?php echo base_url('LIPA_7/saldo_awal/get_saldo_awal') ?>',
                 type: 'POST',
                 dataType: 'json',
                 data: {
@@ -119,10 +124,11 @@
                 success: function(response) {
                     // console.log(response)
                     $('#edit_id').val(response['id'])
-                    $('#edit_tahun').val(response['tahun_anggaran'])
-                    $('#edit_pagu_awal').val(response['pagu_awal'])
-                    $('#edit_pagu_revisi').val(response['pagu_revisi'])
-                    $('#edit_layanan').val(response['target_layanan'])
+                    $('#edit_tahun').val(response['tahun'])
+                    $('#edit_awal_7a').val(response['saldo_awal_7a'])
+                    $('#edit_awal_7b').val(response['saldo_awal_7b'])
+                    $('#edit_awal_7c').val(response['saldo_awal_7c'])
+                    $('#edit_keterangan').val(response['keterangan'])
                     $('#edit-modal').modal('show');
                 }
             })

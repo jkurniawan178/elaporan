@@ -33,10 +33,7 @@
         </ul>
       </li>
 
-      <li><a><i class="fa fa-table"></i> Saldo Awal <span class="fa fa-chevron-down"></span></a>
-        <ul class="nav child_menu">
-          <!-- <li><a href="tables_dynamic.html">Saldo Awal Keuangan Perkara</a></li> -->
-        </ul>
+      <li><a href="<?php echo site_url() ?>LIPA_7/Saldo_Awal"><i class="fa fa-money"></i> Saldo Awal</span></a>
       </li>
     </ul>
   </div>

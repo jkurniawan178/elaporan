@@ -136,17 +136,21 @@
     })
 
     //---------------------------Thousand separator (Add Modal) field script-------------
-    const edit_realisasi = document.getElementById("edit_realisasi");
-    edit_realisasi.addEventListener("keyup", function(event) {
-        formatInputValue(event.target);
+    const editRealisasi = new Cleave('#edit_realisasi', {
+        numeral: true,
+        numeralDecimalMark: ',',
+        delimiter: '.',
+        numeralPositiveOnly: true,
+        numeralThousandsGroupStyle: 'thousand'
+
     });
 
     //function to remove thousand separator before send it to controller
     document.getElementById("edit_form").addEventListener("submit", function(event) {
-        let inputRealisasi = removeThousandSeparator(edit_realisasi.value);
+        let inputRealisasi = editRealisasi.getRawValue();
         let numRealisasi = parseFloat(inputRealisasi);
         if (!isNaN(numRealisasi)) {
-            edit_realisasi.value = numRealisasi;
+            document.getElementById('edit_realisasi').value = numRealisasi;
         }
     })
 </script>
