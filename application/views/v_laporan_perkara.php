@@ -29,8 +29,8 @@
 										<option value="lipa_5">LAPORAN PERKARA YANG DIMOHONKAN EKSEKUSI (LIPA.5) </option>
 										<option value="lipa_6">LAPORAN KEGIATAN HAKIM (LIPA.6) </option>
 										<option value="lipa_7a">LAPORAN KEUANGAN PERKARA (LIPA.7.A) </option>
-										<!-- <option value="lipa_7b">LAPORAN KEUANGAN PERKARA EKSEKUSI (LIPA.7.B) </option>
-										<option value="lipa_7c">LAPORAN KEUANGAN PERKARA KONSIGNASI(LIPA.7.C) </option> -->
+										<option value="lipa_7b">LAPORAN KEUANGAN PERKARA EKSEKUSI (LIPA.7.B) </option>
+										<!-- <option value="lipa_7c">LAPORAN KEUANGAN PERKARA KONSIGNASI(LIPA.7.C) </option> -->
 										<option value="lipa_8">LAPORAN PERKARA DITERIMA, DICABUT DAN DIPUTUS MENURUT JENIS PERKARA (LIPA.8) </option>
 										<option value="lipa_9">LAPORAN PERKARA KHUSUS PP. NO.10 TAHUN 1983 JO. PP. NO.45 TAHUN 1990 (LIPA.9) </option>
 										<option value="lipa_10">LAPORAN PENYEBAB TERJADINYA PERCERAIAN (LIPA.10) </option>
@@ -54,9 +54,9 @@
 							<div class="item form-group">
 								<label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Periode <span class="required">*</span>
 								</label>
-								<div class="col-md-6 col-sm-6">
+								<div class="col-md-8 col-sm-8">
 									<div class="row">
-										<div class="col-md-3 col-sm-3 ">
+										<div class="col-md-3 col-sm-4 ">
 											<select class="form-control" name="bulan" id="bulan" style="padding:8px 0;">
 												<?php for ($i = 1; $i <= 12; $i++) { ?>
 													<option value="<?php if (strlen($i) == 2) {
