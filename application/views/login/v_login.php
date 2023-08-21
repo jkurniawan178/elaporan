@@ -51,7 +51,6 @@
                 </div>
                 <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
                     <form>
-
                         <div class="divider d-flex align-items-center my-4">
                             <p class="lead fw-normal mb-0 me-3"><strong>LOGIN APLIKASI E-LAPORAN</strong></p>
                         </div>
