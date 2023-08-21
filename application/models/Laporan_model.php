@@ -555,14 +555,14 @@ class Laporan_model extends CI_Model
 					(SELECT CASE WHEN (SELECT t1.`saldo_awal_7b` FROM dbelaporan.`elaporan_saldo_awal` as t1 WHERE tahun = '2023') IS not NULL THEN 
 					(select t1.saldo_awal_7b from dbelaporan.`elaporan_saldo_awal` as t1 where tahun = '2023') +
 					COALESCE((SELECT SUM(jumlah) 
-					FROM (select jumlah from perkara_biaya WHERE jenis_transaksi='1' and date_format(tanggal_transaksi,'%Y-%m-%d') >= '2023-01-01' AND date_format(tanggal_transaksi, '%Y-%m') < '$periode' AND tahapan_id = 50
+					FROM (select jumlah from perkara_biaya WHERE jenis_transaksi='1' and date_format(tanggal_transaksi,'%Y-%m-%d') >= '$periode-01' AND date_format(tanggal_transaksi, '%Y-%m') < '$periode' AND tahapan_id = 50
 					union all
-					select jumlah from perkara_biaya_ht WHERE jenis_transaksi='1' and date_format(tanggal_transaksi,'%Y-%m-%d') >= '2023-01-01' AND date_format(tanggal_transaksi, '%Y-%m') < '$periode' AND tahapan_id = 51
+					select jumlah from perkara_biaya_ht WHERE jenis_transaksi='1' and date_format(tanggal_transaksi,'%Y-%m-%d') >= '$periode-01' AND date_format(tanggal_transaksi, '%Y-%m') < '$periode' AND tahapan_id = 51
 					)data_penerimaan),0) -
 					COALESCE((SELECT SUM(jumlah) 
-					FROM (SELECT jumlah FROM perkara_biaya WHERE jenis_transaksi='-1' AND DATE_FORMAT(tanggal_transaksi,'%Y-%m-%d') >= '2023-01-01' AND DATE_FORMAT(tanggal_transaksi, '%Y-%m') < '$periode' AND tahapan_id = 50
+					FROM (SELECT jumlah FROM perkara_biaya WHERE jenis_transaksi='-1' AND DATE_FORMAT(tanggal_transaksi,'%Y-%m-%d') >= '$periode-01' AND DATE_FORMAT(tanggal_transaksi, '%Y-%m') < '$periode' AND tahapan_id = 50
 					UNION ALL
-					SELECT jumlah FROM perkara_biaya_ht WHERE jenis_transaksi='-1' AND DATE_FORMAT(tanggal_transaksi,'%Y-%m-%d') >= '2023-01-01' AND DATE_FORMAT(tanggal_transaksi, '%Y-%m') < '$periode' AND tahapan_id = 51
+					SELECT jumlah FROM perkara_biaya_ht WHERE jenis_transaksi='-1' AND DATE_FORMAT(tanggal_transaksi,'%Y-%m-%d') >= '$periode-01' AND DATE_FORMAT(tanggal_transaksi, '%Y-%m') < '$periode' AND tahapan_id = 51
 					)data_pengeluaran),0)
 					else 
 					0 END) +
@@ -975,6 +975,25 @@ class Laporan_model extends CI_Model
 		);
 
 		return $response;
+	}
+	// ------------------------------------------------------------------------
+	// -----------------------------Ambil Data Lipa 23--------------------------
+	public function getLIPA23($bulan, $tahun)
+	{
+		$periode = $tahun . '-' . $bulan;
+		$sql = "SELECT C.sisa_lalu, C.diterima_bulan_ini, C.dicabut, C.putus_elektronik, SUM(C.total_putus) - SUM(C.putus_elektronik) AS putus_biasa, C.total_putus,
+				SUM(C.sisa_lalu) + SUM(C.diterima_bulan_ini) - SUM(C.total_putus) AS sisa_bulan_ini
+				FROM (SELECT
+					SUM(CASE WHEN DATE_FORMAT(vpk.tanggal_pendaftaran,'%Y-%m') < '$periode' AND ((vpk.tanggal_putusan IS NULL) OR (DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m') >= '$periode')) THEN 1 ELSE 0 END) AS sisa_lalu,
+					SUM(CASE WHEN DATE_FORMAT(vpk.tanggal_pendaftaran,'%Y-%m') = '$periode' THEN 1 ELSE 0 END) AS diterima_bulan_ini,
+					SUM( CASE WHEN ((DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m')='$periode'  AND vpk.`status_putusan_id` IN (7,67,85)) OR DATE_FORMAT(vpk.tanggal_cabut,'%Y-%m')='$periode') THEN 1 ELSE 0 END) AS dicabut,
+					(SELECT COUNT(perkara_id) FROM v_perkara vpk INNER JOIN dbelaporan.`elaporan_lipa_24` USING (perkara_id)
+						WHERE DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m')='$periode'  AND vpk.status_putusan_id IS NOT NULL) AS putus_elektronik,
+					SUM(CASE WHEN DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m')='$periode'  AND vpk.status_putusan_id IS NOT NULL THEN 1 ELSE 0 END) AS total_putus
+					FROM v_perkara vpk INNER JOIN perkara_efiling_id USING(perkara_id)) AS C 
+				";
+		$hasil = $this->db->query($sql);
+		return $hasil->result();
 	}
 	// ------------------------------------------------------------------------
 	// -----------------------------Ambil Data Lipa 24--------------------------

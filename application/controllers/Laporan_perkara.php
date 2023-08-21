@@ -407,6 +407,22 @@ class Laporan_perkara extends CI_Controller
           }
           break;
 
+        case 'lipa_23':
+          $data = $this->laporan_model->getLIPA23($bulan, $tahun);
+
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $hasil = $this->export_excel_lipa23($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            echo json_encode($hasil);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Lipa 23 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+            ];
+            echo json_encode($response);
+          }
+          break;
+
         case 'lipa_24':
           $data = $this->laporan_model->getLIPA24($bulan, $tahun);
 
@@ -2373,6 +2389,78 @@ class Laporan_perkara extends CI_Controller
   }
 
   //-----------------------------------------------------------------------------------------------
+  //--------------------------------Export Data Lipa 23 ke Excel------------------------------------
+  protected function export_excel_lipa23($data, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan)
+  {
+    if (!file_exists(FCPATH . "new_templates/" . $jenis_laporan . ".xls")) {
+      $response = [
+        'kode' => '202',
+        'data' => 'Template Belum Tersedia'
+      ];
+      return $response;
+      exit;
+    }
+
+    $objReader = PHPExcel_IOFactory::createReader('Excel5');
+    $objPHPExcel = $objReader->load(FCPATH . "new_templates/" . $jenis_laporan . ".xls");
+
+    $styleArray = array(
+      'borders' => array(
+        'allborders' => array(
+          'style' => PHPExcel_Style_Border::BORDER_THIN,
+        )
+      ),
+      'font' => array(
+        'name' => 'Arial Narrow',
+        'size' => '12'
+      ),
+      'alignment' => array(
+        'wrap' => true,
+      )
+    );
+
+    $obj = json_decode($data, true);
+    $no = 1;
+    $baseRow = 9;
+
+    $objPHPExcel->getActiveSheet()->setCellValue('A2', "PADA " . $settingSIPP['NamaPN']);
+    $objPHPExcel->getActiveSheet()->setCellValue('A3', "BULAN " . strtoupper(pilihbulan($bulan)) . " " . $tahun);
+    foreach ($obj as $item) {
+      $row = $baseRow + $no;
+
+      $objPHPExcel->getActiveSheet()
+        ->setCellValue('A' . $row, $no)
+        ->setCellValue('B' . $row, $item['sisa_lalu'])
+        ->setCellValue('C' . $row, $item['diterima_bulan_ini'])
+        ->setCellValue('D' . $row, $item['dicabut'])
+        ->setCellValue('E' . $row, $item['putus_elektronik'])
+        ->setCellValue('F' . $row, $item['putus_biasa'])
+        ->setCellValue('G' . $row, $item['total_putus'])
+        ->setCellValue('H' . $row, $item['sisa_bulan_ini'])
+        ->getRowDimension($row)->setRowHeight(65);
+
+      //$objPHPExcel->getActiveSheet()->insertNewRowAfter($row); 
+      $no++;
+    }
+
+    $objPHPExcel->getActiveSheet()->getStyle('A9:H' . $row)->applyFromArray($styleArray);
+    $objPHPExcel->getActiveSheet()->getStyle('A9:H' . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('A9:H' . $row)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+    //tanda tangan 
+    $kolom_kpa = "B";
+    $kolom_pansek = "G";
+    $row = $row + 3;
+    $row_awal_ttd = $row;
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
+
+    $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
+
+    return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
+  }
+
+  //-----------------------------------------------------------------------------------------------
   //--------------------------------Export Data Lipa 24 ke Excel------------------------------------
   protected function export_excel_lipa24($data, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan)
   {
@@ -2421,7 +2509,7 @@ class Laporan_perkara extends CI_Controller
         ->setCellValue('F' . $row, '0')
         ->setCellValue('G' . $row, $item['putus_bulan_ini'])
         ->setCellValue('H' . $row, $item['sisa_bulan_ini'])
-        ->getRowDimension($row)->setRowHeight(90);
+        ->getRowDimension($row)->setRowHeight(65);
 
       //$objPHPExcel->getActiveSheet()->insertNewRowAfter($row); 
       $no++;
