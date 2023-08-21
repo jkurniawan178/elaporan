@@ -27,10 +27,10 @@
         }
 
         .h-custom {
-            height: calc(100% - 71px);
+            height: calc(100vh - 70px);
         }
 
-        @media (max-width: 450px) {
+        @media (max-width: 768px) {
             .h-custom {
                 height: 100%;
             }
@@ -42,7 +42,7 @@
     </style>
 </head>
 
-<body class="vh-100">
+<body class="min-vh-100">
     <section class="h-custom">
         <div class="container-fluid h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
