@@ -1,5 +1,5 @@
 <div class="right_col" role="main">
-  <h2 class="mb-4">Penanganan Perkara Tingkat Pertama Tahun 2023</h2>
+  <h2 class="mb-4">Penanganan Perkara Tingkat Pertama Tahun <?php echo $dashboard->tahun ?></h2>
   <div class="container">
     <div class="row">
       <div class="col-md-4 col-xl-3">

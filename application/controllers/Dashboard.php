@@ -35,10 +35,11 @@ class Dashboard extends CI_Controller
 
 	public function getDashboard()
 	{
-		$sql = "SELECT C.sisatahunlalu, C.masuk, C.minutasi, C.sisaperkara, C.putus, C.belumminutasi, C.ecourt,
+		$sql = "SELECT C.tahun, C.sisatahunlalu, C.masuk, C.minutasi, C.sisaperkara, C.putus, C.belumminutasi, C.ecourt,
 		ROUND(SUM(C.minutasi)*100/(SUM(C.masuk)+SUM(C.sisatahunlalu)),2) AS kinerjaPN,
 		round((C.ecourt/C.masuk)*100,2) as rasio_ecourt
 		FROM (SELECT
+		YEAR(NOW()) as tahun,
 		SUM(CASE WHEN YEAR(A.tanggal_pendaftaran)<=YEAR(NOW())-1 AND (YEAR(B.tanggal_minutasi)>=YEAR(NOW()) OR (B.tanggal_minutasi IS NULL OR B.tanggal_minutasi='')) THEN 1 ELSE 0 END) AS sisatahunlalu,
 		SUM(CASE WHEN YEAR(A.tanggal_pendaftaran)=YEAR(NOW()) THEN 1 ELSE 0 END) AS masuk,
 		SUM(CASE WHEN YEAR(A.tanggal_pendaftaran)<=YEAR(NOW()) AND YEAR(B.tanggal_minutasi)=YEAR(NOW()) THEN 1 ELSE 0 END) AS minutasi,
