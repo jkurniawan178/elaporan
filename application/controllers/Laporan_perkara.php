@@ -24,6 +24,10 @@ class Laporan_perkara extends CI_Controller
   public function __construct()
   {
     parent::__construct();
+    if ($this->session->userdata('userid') == NULL or $this->session->userdata('userid') == "") {
+      $this->session->sess_destroy();
+      redirect('masuk');
+    }
     $this->load->model('laporan_model');
     $this->load->library('Config_library');
     // $this->load->model('sidkel_model');

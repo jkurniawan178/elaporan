@@ -24,6 +24,10 @@ class Saldo_awal extends CI_Controller
   public function __construct()
   {
     parent::__construct();
+    if ($this->session->userdata('userid') == NULL or $this->session->userdata('userid') == "") {
+      $this->session->sess_destroy();
+      redirect('masuk');
+    }
     $this->load->model('keuangan_model');
     $this->load->library('config_library');
   }

@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-Laporan - Login</title>
     <link rel="icon" href="images/favicon.ico" type="image/ico">
-    <link href="resources/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo base_url() ?>resources/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="<?php echo base_url() ?>resources/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -56,22 +58,36 @@
         <div class="login-card">
             <div class="row mb-4">
                 <div class="col-md-3 pr-0 d-flex align-items-center "><img src="resources/images/logo.png" class="logo-image" alt=""></div>
-                <div class="col-md-9 pl-0 d-flex align-items-center "><img src="resources/images/logo1.png" class="img-fluid" alt="Login image"></div>
+                <div class="col-md-9 pl-0 d-flex align-items-center "><img src="resources/images/logo2.png" class="img-fluid" alt="Login image"></div>
             </div>
-
+            <?php echo $this->session->flashdata('error_msg') ?>
             <h2 class="lead fw-normal my-2 me-3">Login</h2>
-            <form class="login-form">
-                <div class="form-outline mb-3">
-                    <input type="text" id="username" class="form-control form-control-md" placeholder="Username" />
-                    <!-- <label class="form-label" for="username">Username</label> -->
+            <form class="login-form needs-validation" action="<?php echo base_url() . 'masuk/signin' ?>" method="post" novalidate>
+                <div class="item form-group">
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fa fa-user fa-lg"></i></div>
+                        </div>
+                        <input type="text" id="userName" name="userName" required class="form-control" placeholder="Username">
+                        <div class="invalid-feedback">
+                            Username Tidak Boleh Kosong
+                        </div>
+                    </div>
                 </div>
-                <!-- <input type="text" id="username" class="form-control" placeholder="Username"> -->
-                <div class="form-outline mb-3">
-                    <input type="password" id="password" class="form-control form-control-md" placeholder="Enter password" />
-                    <!-- <label class="form-label" for="password">Password</label> -->
+                <div class="item form-group">
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fa fa-key"></i></div>
+                        </div>
+                        <input type="password" id="password" name="password" required class="form-control" placeholder="Password">
+                        <div class="invalid-feedback">
+                            Password Tidak Boleh Kosong
+                        </div>
+                    </div>
                 </div>
+
                 <div class="text-center text-md-left pt-2">
-                    <button type="button" class="btn btn-primary btn-block">Login</button>
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
                 </div>
             </form>
         </div>
@@ -81,9 +97,29 @@
         <p>Hak Cipta © Pengadilan Tinggi Agama Maluku Utara 2023</p>
     </div>
 
-    <script src="resources/jquery/dist/jquery.min.js"></script>
-    <script src="resources/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="resources/js/custom.js"></script>
+    <script src="<?php echo base_url() ?>resources/jquery/dist/jquery.min.js"></script>
+    <script src="<?php echo base_url() ?>resources/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo base_url() ?>resources/js/custom.js"></script>
+    <script>
+        //Function that using bootstrap validator
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
 </body>
 
 </html>
