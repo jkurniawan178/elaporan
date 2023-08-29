@@ -32,6 +32,14 @@ class Masuk_model extends CI_Model
     return $q;
   }
 
+  public function sequrity()
+  {
+    if ($this->session->userdata('userid') == NULL or $this->session->userdata('userid') == "") {
+      $this->session->sess_destroy();
+      redirect('masuk');
+    }
+  }
+
   // ------------------------------------------------------------------------
 
 

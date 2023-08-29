@@ -24,10 +24,8 @@ class Prodeo extends CI_Controller
   public function __construct()
   {
     parent::__construct();
-    if ($this->session->userdata('userid') == NULL or $this->session->userdata('userid') == "") {
-      $this->session->sess_destroy();
-      redirect('masuk');
-    }
+    $this->load->model('masuk_model');
+    $this->masuk_model->sequrity();
     $this->load->library('config_library');
     $this->load->model('prodeo_model');
   }
