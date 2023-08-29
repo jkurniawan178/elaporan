@@ -3,10 +3,10 @@
 <body class="nav-md footer_fixed">
   <div class="container body">
     <div class="main_container">
-      <div class="col-md-3 left_col">
+      <div class="col-md-3 left_col menu_fixed">
         <div class="left_col scroll-view">
           <div class="navbar nav_title mt-2 mb-4" style="border: 0;">
-            <a href="index.html" class="site_title">
+            <a href="<?php echo base_url() ?>dashboard" class="site_title">
               <i class="fa fa-openid"></i>
               <img src="<?php echo base_url() ?>resources/images/logo1.png" class="img-fluid ml-1" style="width: 65%;" alt="">
             </a>
@@ -21,7 +21,7 @@
           <!-- /sidebar menu -->
 
           <!-- /menu footer buttons -->
-          <div class="sidebar-footer hidden-small">
+          <!-- <div class="sidebar-footer hidden-small">
             <div class="profile clearfix">
               <div class="profile_pic">
               </div>
@@ -30,30 +30,31 @@
                 <h2>Pengadilan Agama Ternate</h2>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- /menu footer buttons -->
         </div>
       </div>
 
       <!-- top navigation -->
-      <div class="top_nav">
-        <div class="nav_menu pt-3 pb-2" style="min-height: 50px;">
-          <div class="col-md-1 nav toggle">
+      <div class="top_nav sticky-top">
+        <div class="nav_menu py-1" style="min-height: 40px;">
+          <div class="nav toggle">
             <a id="menu_toggle"><i class="fa fa-bars"></i></a>
           </div>
-          <div class="col-md-7">
+          <div class="col-md-7 d-none d-md-block">
             <h2><?php echo $settings['NamaPT'] ?></h2>
             <h4><?php echo $settings['NamaPN'] ?></h4>
           </div>
-          <nav class="col-md-4 col-sm-2 nav navbar-nav">
-            <ul class=" navbar-right">
+          <nav class="nav navbar-nav">
+            <ul class="navbar-right pl-2">
               <li class="nav-item dropdown open" style="padding-left: 15px;">
                 <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                  Selamat Datang, <span class="text-danger font-weight-bold"><?php echo $this->session->userdata('fullname') ?></span>
+                  <img class="user-avatar rounded-circle" src="<?php echo base_url() ?>resources/images/avatar.png" alt="">
+                  <span class="text-danger font-weight-bold"><?php echo $this->session->userdata('fullname') ?></span>
                 </a>
                 <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                   <a class="dropdown-item" href="javascript:;"> Profile</a>
-                  <a class="dropdown-item" href="<?php echo base_url() . 'masuk/logout' ?>"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                  <a class="dropdown-item" href="<?php echo base_url() . 'masuk/logout' ?>"><i class="fa fa-sign-out text-danger pull-right"></i> Log Out</a>
                 </div>
               </li>
             </ul>
