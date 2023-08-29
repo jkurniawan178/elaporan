@@ -7,13 +7,17 @@ class Masuk extends CI_Controller
     {
         parent::__construct();
         $this->load->model('masuk_model');
-        // $this->load->model('sidkel_model');
     }
 
     public function index()
     {
-
-        $this->load->view('login/v_login1');
+        $user = $this->session->userdata('userid');
+        if ($this->session->userdata('userid') == NULL or $this->session->userdata('userid') == "") {
+            $this->session->sess_destroy();
+            $this->load->view('login/v_login1');
+        } else {
+            redirect('dashboard');
+        }
     }
 
     protected function _rules()
