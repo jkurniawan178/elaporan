@@ -25,13 +25,14 @@ class Sidkel extends CI_Controller
   {
     parent::__construct();
     $this->load->model('masuk_model');
-    $this->masuk_model->sequrity();
     $this->load->library('config_library');
     $this->load->model('sidkel_model');
   }
 
   public function index()
   {
+    $menu = $this->masuk_model->sequrity();
+    $data['menu'] = $menu;
     $data['contents'] = 'sidkel/v_sidkel';
     $data['nm_bulan'] = $this->config_library->get_nm_bulan();
     $data['sidkel'] = $this->sidkel_model->get_All();

@@ -25,11 +25,12 @@ class Input_iwadl extends CI_Controller
   {
     parent::__construct();
     $this->load->model('masuk_model');
-    $this->masuk_model->sequrity();
   }
 
   public function index()
   {
+    $menu = $this->masuk_model->sequrity();
+    $data['menu'] = $menu;
     $data['contents'] = 'v_input_iwadl';
     $this->load->view('templates/index', $data);
   }

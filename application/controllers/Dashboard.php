@@ -24,11 +24,12 @@ class Dashboard extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('masuk_model');
-		$this->masuk_model->sequrity();
 		$this->load->library('config_library');
 	}
 	public function index()
 	{
+		$menu = $this->masuk_model->sequrity();
+		$data['menu'] = $menu;
 		$data['contents'] = 'v_dashboard';
 		$data['dashboard'] = $this->getDashboard();
 		$data['settings'] = $this->config_library->get_config_SIPP();

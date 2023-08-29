@@ -37,6 +37,39 @@ class Masuk_model extends CI_Model
     if ($this->session->userdata('userid') == NULL or $this->session->userdata('userid') == "") {
       $this->session->sess_destroy();
       redirect('masuk');
+    } else {
+      //set menu berdasarkan user
+      $menu = array(
+        'mn_pagu' => true,
+        'mn_input' => true,
+        'mn_laporan' => true,
+        'mn_saldo' => true
+      );
+
+      $group_id = $this->session->userdata('group_id');
+
+      if ($group_id <= '10' || $group_id == '30' || $group_id == '430') { // Admin, Ketua, Wakil, Panitera, panmud hukum
+        // Admin, Ketua, Wakil, Panitera
+      } else if ($group_id == '431' || $group_id == '1003') { //Staff panmud hukum, meja 3 gugatan
+        $menu['mn_saldo'] = false;
+      } else if ($group_id == '20' || $group_id == '1000' || $group_id == '1010' || $group_id == '1020' || $group_id == '500') // Hakim, Panmud, PP
+      {
+        $menu['mn_input'] = false;
+        $menu['mn_pagu'] = false;
+        $menu['mn_saldo'] = false;
+      } else if ($group_id == '702') { // KASIR
+        $menu['mn_input'] = false;
+        $menu['mn_pagu'] = false;
+      } else {
+        $this->session->set_flashdata('error_msg', '<div class="alert alert-danger alert-dismissible fade in show mt-2 text-center">Anda Tidak Memiliki Akses
+                                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                      </button></div>');
+        redirect('masuk');
+        return;
+      }
+
+      return $menu;
     }
   }
 

@@ -25,13 +25,14 @@ class Saldo_awal extends CI_Controller
   {
     parent::__construct();
     $this->load->model('masuk_model');
-    $this->masuk_model->sequrity();
     $this->load->model('keuangan_model');
     $this->load->library('config_library');
   }
 
   public function index()
   {
+    $menu = $this->masuk_model->sequrity();
+    $data['menu'] = $menu;
     $data['contents'] = 'saldo_awal/v_saldo_awal';
     $data['saldo_awal'] = $this->keuangan_model->getSaldoAwalAll();
     $data['settings'] = $this->config_library->get_config_SIPP();
