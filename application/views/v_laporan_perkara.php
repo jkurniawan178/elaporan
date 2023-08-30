@@ -130,37 +130,7 @@
 							</div>
 						</form>
 						<div class="ln_solid"></div>
-						<!-- <div>
-							<h2 class="text-center">PREVIEW LAPORAN YANG DIMOHONKAN BANDING</h2>
-							<h2 class="text-center">PADA PENGADILAN AGAMA TERNATE</h2>
-							<h2 class="text-center">BULAN JANUARI 2023</h2>
-							<h4 class="text-right">Lipa.2</h4>
-							<table class="table table table-bordered text-center">
-								<col>
-								<col>
-								<col>
-								<colgroup span="8"></colgroup>
-								<thead class="table-success">
-									<tr>
-										<th scope="col" rowspan="2">No</th>
-										<th scope="col" rowspan="2">Nomor Perkara PA</th>
-										<th scope="col" rowspan="2">Nama Majelis Hakim</th>
-										<th colspan="8" scope="colgroup">Tanggal</th>
-										<th scope="col" rowspan="2">Ket</th>
-									</tr>
-									<tr>
-										<th scope="col">Putusan PA</th>
-										<th scope="col">Permohonan Banding</th>
-										<th scope="col">Pemberitahuan Inzage</th>
-										<th scope="col">Pengiriman Berkas PTA</th>
-										<th scope="col">Putusan Banding</th>
-										<th scope="col">Penerimaan Kembali di PA</th>
-										<th scope="col">Pemberitahuan ke Para Pihak</th>
-										<th scope="col">Penyampaian Fotocopy Relas PBT ke PTA</th>
-									</tr>
-								</thead>
-								<tbody id="show_data"></tbody>
-							</table> -->
+						<div id="table-content"></div>
 					</div>
 				</div>
 			</div>
@@ -172,6 +142,7 @@
 
 <!-- jQuery -->
 <script src="<?php echo base_url() ?>resources/jquery/dist/jquery.min.js"></script>
+<script src="<?php echo base_url() ?>resources/js/helper.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -207,18 +178,19 @@
 				beforeSend: function() {
 					$('#spinner').show();
 				},
-				success: function(data) {
-					if (data.kode == "200") {
+				success: function(response) {
+					if (response.kode == "200") {
 						var jenis = jenis_laporan.replace("_", " ").toUpperCase();
 						$('#panel-verifikasi').show();
-						$('#btn-download-laporan').attr("href", data.data)
-						$('#preview_laporan').html('Preview Laporan ' + jenis + '<small>Periksa Laporan Terlebih Dahulu Sebelum anda verifikasi</small>');
-					} else if (data.kode == "201" || data.kode == '202') {
-						//create something here
-						// alert(data.data)
+						$('#btn-download-laporan').attr("href", response.link)
+						$('#preview_laporan').html('Preview Laporan ' + jenis + ' Periode ' + pilihBulan(bulan) + ' ' + tahun + '<small>Periksa Laporan Terlebih Dahulu Sebelum anda verifikasi</small>');
+						$('#table-content').html(response.table);
+						$("#show_data").html(generateTableRows(response.data));
+						console.log(response.data);
+					} else if (response.kode == "201" || response.kode == '202') {
 						iziToast.error({
 							title: 'Error!',
-							message: data.data,
+							message: response.data,
 							position: 'topCenter'
 						});
 					}

@@ -76,7 +76,15 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa2($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -462,11 +470,8 @@ class Laporan_perkara extends CI_Controller
     $namafile = $tahun . '_' . $bulan . '_' . $jenis_laporan . '.xlsx';
     $file = FCPATH . 'hasil/' . $namafile;
     $objWriter->save($file);
-    $response = [
-      'kode' => '200',
-      'data' => base_url() . 'hasil/' . $namafile
-    ];
-    return $response;
+    $link = base_url() . 'hasil/' . $namafile;
+    return $link;
   }
   //----------------------------------------------------------------------------------------------
   //--------------------------------Function Write Kolom Ttd--------------------------------------
