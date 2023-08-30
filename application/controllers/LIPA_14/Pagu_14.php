@@ -24,12 +24,15 @@ class Pagu_14 extends CI_Controller
   public function __construct()
   {
     parent::__construct();
+    $this->load->model('masuk_model');
     $this->load->model('sidkel_model');
     $this->load->library('config_library');
   }
 
   public function index()
   {
+    $menu = $this->masuk_model->sequrity();
+    $data['menu'] = $menu;
     $data['contents'] = 'pagu_14/v_pagu_14';
     $data['pagu_14'] = $this->sidkel_model->getPagu14All();
     $data['settings'] = $this->config_library->get_config_SIPP();

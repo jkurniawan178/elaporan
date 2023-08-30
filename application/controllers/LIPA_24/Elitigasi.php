@@ -24,12 +24,15 @@ class Elitigasi extends CI_Controller
   public function __construct()
   {
     parent::__construct();
+    $this->load->model('masuk_model');
     $this->load->model('elitigasi_model');
     $this->load->library('Config_library');
   }
 
   public function index()
   {
+    $menu = $this->masuk_model->sequrity();
+    $data['menu'] = $menu;
     $data['contents'] = 'elitigasi/v_elitigasi';
     $data['nm_bulan'] = $this->config_library->get_nm_bulan();
     $data['elitigasi'] = $this->elitigasi_model->getLitigasiAll();

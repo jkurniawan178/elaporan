@@ -24,6 +24,7 @@ class Laporan_perkara extends CI_Controller
   public function __construct()
   {
     parent::__construct();
+    $this->load->model('masuk_model');
     $this->load->model('laporan_model');
     $this->load->library('Config_library');
     // $this->load->model('sidkel_model');
@@ -31,6 +32,8 @@ class Laporan_perkara extends CI_Controller
   //-----------------------------------------------------------------------------------------------
   public function index()
   {
+    $menu = $this->masuk_model->sequrity();
+    $data['menu'] = $menu;
     $data['contents'] = 'v_laporan_perkara';
     $data['nm_bulan'] = $this->config_library->get_nm_bulan();
     $data['settings'] = $this->config_library->get_config_SIPP();

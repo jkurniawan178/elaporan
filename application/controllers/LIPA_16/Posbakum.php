@@ -24,12 +24,15 @@ class Posbakum extends CI_Controller
   public function __construct()
   {
     parent::__construct();
+    $this->load->model('masuk_model');
     $this->load->library('config_library');
     $this->load->model('posbakum_model');
   }
 
   public function index()
   {
+    $menu = $this->masuk_model->sequrity();
+    $data['menu'] = $menu;
     $data['contents'] = 'posbakum/v_posbakum';
     $data['nm_bulan'] = $this->config_library->get_nm_bulan();
     $data['posbakum'] = $this->posbakum_model->getLipa16All();

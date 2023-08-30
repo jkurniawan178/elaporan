@@ -24,12 +24,15 @@ class Prodeo extends CI_Controller
   public function __construct()
   {
     parent::__construct();
+    $this->load->model('masuk_model');
     $this->load->library('config_library');
     $this->load->model('prodeo_model');
   }
   //-------------------------------------------------------------------------
   public function index()
   {
+    $menu = $this->masuk_model->sequrity();
+    $data['menu'] = $menu;
     $data['contents'] = 'prodeo/v_prodeo';
     $data['nm_bulan'] = $this->config_library->get_nm_bulan();
     $data['prodeo'] = $this->prodeo_model->getLipa15All();
