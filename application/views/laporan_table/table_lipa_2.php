@@ -3,7 +3,7 @@
     <h2 class="text-center">BULAN JANUARI 2023</h2>
     <h4 class="text-right">Lipa.2</h4>
     <div class="table-responsive">
-        <table class="text-center table table-striped table-bordered" id="table_lipa2" cellspacing="0" width="100%">
+        <table class="text-center table table-striped table-bordered" id="table_lipa2">
             <thead class="table-success">
                 <tr>
                     <th scope="col" rowspan="2" class="align-middle">No</th>
@@ -41,17 +41,15 @@
                 tableContent += "<td class='align-middle'>" + formatDate(row.permohonan_banding) + "</td>";
                 tableContent += "<td class='align-middle'>" + "P: " + formatDate(row.pbt_inzage_p) + "<br/> T: " + formatDate(row.pbt_inzage_t) + "</td>";
                 tableContent += "<td class='align-middle'>" + formatDate(row.pengiriman_berkas_banding) + "</td>";
-
-                if (row.tanggal_cabut === "" || row.tanggal_cabut === null) {
-                    tableContent += "<td class='align-middle'>" + formatDate(row.putusan_banding) + "</td>";
-                } else {
-                    tableContent += "<td class='align-middle'>" + formatDate(row.tanggal_cabut) + "</td>";
-                }
-
+                tableContent += "<td class='align-middle'>" + formatDate(row.putusan_banding) + "</td>";
                 tableContent += "<td class='align-middle'>" + formatDate(row.penerimaan_kembali_berkas_banding) + "</td>";
                 tableContent += "<td class='align-middle'>" + "P: " + formatDate(row.pbt_banding_p) + "<br/> T: " + formatDate(row.pbt_banding_t) + "</td>";
                 tableContent += "<td class='align-middle'>" + "-" + "</td>";
-                tableContent += "<td class='align-middle'>" + "-" + "</td>";
+                if (row.tanggal_cabut === "" || row.tanggal_cabut === null) {
+                    tableContent += "<td class='align-middle'>" + "-" + "</td>";
+                } else {
+                    tableContent += "<td class='align-middle'>" + "cabut tanggal : " + formatDate(row.tanggal_cabut) + "</td>";
+                }
                 tableContent += "</tr>";
             }
 

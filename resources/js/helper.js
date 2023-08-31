@@ -43,9 +43,13 @@ function pilihBulan(bulan) {
 }
 
 function formatDate(dateString) {
-	const date = new Date(dateString);
-	const day = String(date.getDate()).padStart(2, "0");
-	const month = String(date.getMonth() + 1).padStart(2, "0");
-	const year = date.getFullYear();
-	return `${day}/${month}/${year}`;
+	if (dateString === null || dateString === "" || dateString === 0) {
+		return "-";
+	} else {
+		const date = new Date(dateString);
+		const day = String(date.getDate()).padStart(2, "0");
+		const month = String(date.getMonth() + 1).padStart(2, "0");
+		const year = date.getFullYear();
+		return `${day}/${month}/${year}`;
+	}
 }

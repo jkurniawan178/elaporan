@@ -754,11 +754,11 @@ class Laporan_perkara extends CI_Controller
         ->setCellValue('E' . $row, tgl_dari_mysql($item['permohonan_banding']))
         ->setCellValue('F' . $row, tgl_dari_mysql($item['pbt_inzage_p']) . chr(13) . tgl_dari_mysql($item['pbt_inzage_t']))
         ->setCellValue('G' . $row, tgl_dari_mysql($item['pengiriman_berkas_banding']))
-        ->setCellValue('H' . $row, tgl_dari_mysql(($item['tanggal_cabut'] === null) ? $item['putusan_banding'] : $item['tanggal_cabut']))
+        ->setCellValue('H' . $row, tgl_dari_mysql($item['putusan_banding']))
         ->setCellValue('I' . $row, tgl_dari_mysql($item['penerimaan_kembali_berkas_banding']))
         ->setCellValue('J' . $row, tgl_dari_mysql($item['pbt_banding_p']) . chr(13) . tgl_dari_mysql($item['pbt_banding_t']))
         ->setCellValue('K' . $row,  '')
-        ->setCellValue('L' . $row, ($item['tanggal_cabut'] === null) ? '' : 'cabut')
+        ->setCellValue('L' . $row, ($item['tanggal_cabut'] === null) ? '' : 'cabut tgl : ' . tgl_dari_mysql($item['tanggal_cabut']))
         ->getRowDimension($row)->setRowHeight(46);
 
       //$objPHPExcel->getActiveSheet()->insertNewRowAfter($row); 
@@ -831,10 +831,10 @@ class Laporan_perkara extends CI_Controller
         ->setCellValue('E' . $row, tgl_dari_mysql($item['penerimaan_memori_kasasi']))
         ->setCellValue('F' . $row, tgl_dari_mysql($item['tidak_memenuhi_syarat']))
         ->setCellValue('G' . $row, tgl_dari_mysql($item['pengiriman_berkas_kasasi']))
-        ->setCellValue('H' . $row, tgl_dari_mysql(($item['tanggal_cabut'] === null) ? $item['putusan_kasasi'] : $item['tanggal_cabut']))
+        ->setCellValue('H' . $row, tgl_dari_mysql($item['putusan_kasasi']))
         ->setCellValue('I' . $row, tgl_dari_mysql($item['penerimaan_berkas_kasasi']))
         ->setCellValue('J' . $row, tgl_dari_mysql($item['pbt_putusan_p']) . chr(13) . tgl_dari_mysql($item['pbt_putusan_t']))
-        ->setCellValue('K' . $row, ($item['tanggal_cabut'] !== null) ? 'cabut' : null)
+        ->setCellValue('K' . $row, ($item['tanggal_cabut'] !== null) ? 'cabut tgl: ' . tgl_dari_mysql($item['tanggal_cabut']) : null)
         ->getRowDimension($row)->setRowHeight(35);
 
       //$objPHPExcel->getActiveSheet()->insertNewRowAfter($row); 
@@ -906,10 +906,10 @@ class Laporan_perkara extends CI_Controller
         ->setCellValue('D' . $row, $item['nomor_putusan_kasasi'])
         ->setCellValue('E' . $row, tgl_dari_mysql($item['permohonan_pk']))
         ->setCellValue('F' . $row, tgl_dari_mysql($item['pengiriman_berkas_pk']))
-        ->setCellValue('G' . $row, tgl_dari_mysql(($item['tanggal_cabut'] === null) ? $item['putusan_pk'] : $item['tanggal_cabut']))
+        ->setCellValue('G' . $row, tgl_dari_mysql($item['putusan_pk']))
         ->setCellValue('H' . $row, tgl_dari_mysql($item['penerimaan_berkas_pk']))
         ->setCellValue('I' . $row, tgl_dari_mysql($item['pbt_pk_p']) . chr(13) . tgl_dari_mysql($item['pbt_pk_t']))
-        ->setCellValue('J' . $row, ($item['tanggal_cabut'] !== null) ? 'cabut' : null)
+        ->setCellValue('J' . $row, ($item['tanggal_cabut'] !== null) ? 'cabut tgl: ' . tgl_dari_mysql($item['tanggal_cabut']) : null)
         ->getRowDimension($row)->setRowHeight(35);
 
       //$objPHPExcel->getActiveSheet()->insertNewRowAfter($row); 
