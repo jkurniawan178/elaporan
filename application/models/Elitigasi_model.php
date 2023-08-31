@@ -81,6 +81,13 @@ class Elitigasi_model extends CI_Model
     $this->db2->insert('elaporan_lipa_24', $data);
   }
   //-------------------------------------------------------------------------
+  public function cekPerkaraId($perkara_id)
+  {
+    $sql = "SELECT id FROM elaporan_lipa_24
+            WHERE perkara_id = '$perkara_id'";
+    $hasil = $this->db2->query($sql);
+    return $hasil->row();
+  }
   public function deleteLipa24($where)
   {
     $this->db2->where($where);

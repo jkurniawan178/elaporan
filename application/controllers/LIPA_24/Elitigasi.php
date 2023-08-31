@@ -74,13 +74,17 @@ class Elitigasi extends CI_Controller
       //cek apabila nomor perkara valid dan terdaptar di sipp di tahun yang sama sudah diinput
 
       if (!is_null($perkara_id)) {
-        $this->elitigasi_model->inputElitigasi($data);
-        $this->session->set_flashdata('success', '<strong>Perkara Elitigasi berhasil ditambahkan!</strong>');
-        redirect('LIPA_24/elitigasi');
+        $id = $this->elitigasi_model->cekPerkaraId($perkara_id->perkara_id);
+
+        if (count($id) == 0) {
+          $this->elitigasi_model->inputElitigasi($data);
+          $this->session->set_flashdata('success', '<strong>Perkara Elitigasi berhasil ditambahkan!</strong>');
+          redirect('LIPA_24/elitigasi');
+        }
       }
 
       $this->session->set_flashdata('error', '
-       <strong>Perkara Elitigasi Gagal ditambahkan!</strong> Nomor Perkara ' . $perkara . '; salah / tidak ditemukan!');
+       <strong>Perkara Elitigasi Gagal ditambahkan!</strong> Nomor Perkara ' . $perkara . '; salah / tidak ditemukan / Sudah Pernah Diinput!');
       redirect('LIPA_24/elitigasi');
     }
   }
