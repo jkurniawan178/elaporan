@@ -2,29 +2,30 @@
     <h2 class="text-center">PADA PENGADILAN AGAMA TERNATE</h2>
     <h2 class="text-center">BULAN JANUARI 2023</h2>
     <h4 class="text-right">Lipa.2</h4>
-    <table class="text-center table table-striped table-bordered dt-responsive" id="table_lipa2" cellspacing="0" width="100%">
-        <thead class="table-success">
-            <tr>
-                <th scope="col" rowspan="2" class="align-middle">No</th>
-                <th scope="col" rowspan="2" class="align-middle">Nomor Perkara PA</th>
-                <th scope="col" rowspan="2" class="align-middle">Nama Majelis Hakim</th>
-                <th colspan="8" scope="colgroup" class="align-middle">Tanggal</th>
-                <th scope="col" rowspan="2" class="align-middle">Ket</th>
-            </tr>
-            <tr>
-                <th scope="col" class="align-middle">Putusan PA</th>
-                <th scope="col" class="align-middle">Permohonan Banding</th>
-                <th scope="col" class="align-middle">Pemberitahuan Inzage</th>
-                <th scope="col" class="align-middle">Pengiriman Berkas PTA</th>
-                <th scope="col" class="align-middle">Putusan Banding/Cabut</th>
-                <th scope="col" class="align-middle">Penerimaan Kembali di PA</th>
-                <th scope="col" class="align-middle">Pemberitahuan ke Para Pihak</th>
-                <th scope="col" class="align-middle">Penyampaian FC Relas PBT ke PTA</th>
-            </tr>
-        </thead>
-        <tbody id="show_data"></tbody>
-    </table>
-
+    <div class="table-responsive">
+        <table class="text-center table table-striped table-bordered" id="table_lipa2" cellspacing="0" width="100%">
+            <thead class="table-success">
+                <tr>
+                    <th scope="col" rowspan="2" class="align-middle">No</th>
+                    <th scope="col" rowspan="2" class="align-middle">Nomor Perkara PA</th>
+                    <th scope="col" rowspan="2" class="align-middle">Nama Majelis Hakim</th>
+                    <th colspan="8" scope="colgroup" class="align-middle">Tanggal</th>
+                    <th scope="col" rowspan="2" class="align-middle">Ket</th>
+                </tr>
+                <tr>
+                    <th scope="col" class="align-middle">Putusan PA</th>
+                    <th scope="col" class="align-middle">Permohonan Banding</th>
+                    <th scope="col" class="align-middle">Pemberitahuan Inzage</th>
+                    <th scope="col" class="align-middle">Pengiriman Berkas PTA</th>
+                    <th scope="col" class="align-middle">Putusan Banding/Cabut</th>
+                    <th scope="col" class="align-middle">Penerimaan Kembali di PA</th>
+                    <th scope="col" class="align-middle">Pemberitahuan ke Para Pihak</th>
+                    <th scope="col" class="align-middle">Penyampaian FC Relas PBT ke PTA</th>
+                </tr>
+            </thead>
+            <tbody id="show_data"></tbody>
+        </table>
+    </div>
     <script>
         function generateTableRows(data) {
             var tableContent = "";

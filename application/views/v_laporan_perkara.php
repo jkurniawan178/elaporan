@@ -11,15 +11,15 @@
 			<div class="col-md-12 col-sm-12 ">
 				<div class="x_panel">
 					<div class="x_title">
-						<h2>Cetak Laporan <small>Silahkan Pilih Jenis, Periode dan Tanggal Laporan</small></h2>
+						<h2>Cetak Laporan <small>Pilih Jenis, Periode dan Tanggal Laporan</small></h2>
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
 						<br />
 						<form id="form-laporan" data-parsley-validate class="form-horizontal form-label-left">
-							<div class="item form-group">
-								<label class="col-form-label col-md-3 col-sm-3 label-align">Jenis Laporan</label>
-								<div class="col-md-8 col-sm-8 ">
+							<div class="form-group row">
+								<label class="col-form-label col-md-3 col-sm-3 d-flex justify-content-md-end" for="jenis_laporan">Jenis Laporan <span class="required text-danger">*</span></label>
+								<div class="col-md-8 col-sm-8">
 									<select class="form-control" id="jenis_laporan">
 										<option value="-" disabled selected>====== Silahkan Pilih Jenis Laporan ======</option>
 										<option value="lipa_1">LAPORAN KEADAAN PERKARA (LIPA.1) </option>
@@ -51,12 +51,12 @@
 									</select>
 								</div>
 							</div>
-							<div class="item form-group">
-								<label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Periode <span class="required">*</span>
+							<div class="form-group row">
+								<label class="col-form-label col-md-3 col-sm-3 d-flex justify-content-md-end" for="bulan">Periode <span class="required text-danger">*</span>
 								</label>
 								<div class="col-md-8 col-sm-8">
 									<div class="row">
-										<div class="col-md-3 col-sm-4 ">
+										<div class="col-md-3 col-sm-4 mb-2 mb-md-0">
 											<select class="form-control" name="bulan" id="bulan" style="padding:8px 0;">
 												<?php for ($i = 1; $i <= 12; $i++) { ?>
 													<option value="<?php if (strlen($i) == 2) {
@@ -84,13 +84,13 @@
 									</div>
 								</div>
 							</div>
-							<div class="item form-group">
-								<label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Tanggal Laporan</label>
-								<fieldset>
+							<div class="form-group row">
+								<label for="date_lapor" class="col-form-label col-md-3 col-sm-3 d-flex justify-content-md-end">Tanggal Laporan<span class="required text-danger">*</span></label>
+								<fieldset class="col-md-5 col-sm-5">
 									<div class="control-group">
 										<div class="controls">
-											<div class="col-md-11 xdisplay_inputx form-group row has-feedback">
-												<input type="text" class="form-control has-feedback-left" id="date_lapor" placeholder="First Name" aria-describedby="inputSuccess2Status2">
+											<div class="xdisplay_inputx form-group row has-feedback">
+												<input type="text" class="form-control has-feedback-left" id="date_lapor" placeholder="Tanggal laporan" aria-describedby="inputSuccess2Status2">
 												<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
 												<span id="inputSuccess2Status2" class="sr-only">(success)</span>
 											</div>

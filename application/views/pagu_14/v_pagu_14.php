@@ -42,17 +42,14 @@
                                     <table id="table-pagu" class=" text-center table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                                         <thead>
                                             <tr>
-                                                <th class="align-middle" scope="col" rowspan="2" data-priority="1">No</th>
-                                                <th class="align-middle" scope="col" rowspan="2" data-priority="1">Tahun</th>
-                                                <th class="align-middle" scope="col" rowspan="2">Pagu Awal</th>
-                                                <th class="align-middle" scope="col" rowspan="2">Pagu Revisi</th>
-                                                <th class="align-middle" colspan="3" scope="colgroup">Target</th>
-                                                <th class="align-middle" scope="col" rowspan="2">Actions</th>
-                                            </tr>
-                                            <tr>
-                                                <th class="align-middle" scope="col">Lokasi</th>
-                                                <th class="align-middle" scope="col">Kegiatan</th>
-                                                <th class="align-middle" scope="col">Perkara</th>
+                                                <th class="align-middle" scope="col" data-priority="1">No</th>
+                                                <th class="align-middle" scope="col" data-priority="1">Tahun</th>
+                                                <th class="align-middle" scope="col" data-priority="1">Pagu Awal</th>
+                                                <th class="align-middle" scope="col" data-priority="1">Pagu Revisi</th>
+                                                <th class="align-middle" scope="col" data-priority="2">Target Lokasi</th>
+                                                <th class="align-middle" scope="col" data-priority="2">Target Kegiatan</th>
+                                                <th class="align-middle" scope="col" data-priority="2">Target Perkara</th>
+                                                <th class="align-middle" scope="col" data-priority="1">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
