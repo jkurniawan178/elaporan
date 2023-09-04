@@ -43,7 +43,12 @@ function pilihBulan(bulan) {
 }
 
 function formatDate(dateString) {
-	if (dateString === null || dateString === "" || dateString === 0) {
+	if (
+		dateString === null ||
+		dateString === "" ||
+		dateString === 0 ||
+		dateString === "0000-00-00"
+	) {
 		return "-";
 	} else {
 		const date = new Date(dateString);

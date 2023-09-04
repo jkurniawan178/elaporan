@@ -42,6 +42,7 @@
                 order: [
                     [0, 'asc']
                 ],
+                "bFilter": false,
                 columnDefs: [{
                         className: "align-middle",
                         targets: ["_all"]

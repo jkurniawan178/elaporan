@@ -1148,7 +1148,7 @@ class Laporan_perkara extends CI_Controller
         ->setCellValue('J' . $row, tgl_dari_mysql(($item['pelaksanaan_eksekusi_rill']) === '0000-00-00' ? null : $item['pelaksanaan_eksekusi_rill']))
         ->setCellValue('K' . $row, tgl_dari_mysql(($item['penetapan_noneksekusi']) === '0000-00-00' ? null : $item['penetapan_noneksekusi']))
         ->setCellValue('L' . $row, '')
-        ->setCellValue('M' . $row, '')
+        ->setCellValue('M' . $row, $item['alasan'])
         ->setCellValue('N' . $row, '')
         ->getRowDimension($row)->setRowHeight(25);
 
