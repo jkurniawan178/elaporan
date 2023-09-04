@@ -131,7 +131,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa4($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -148,7 +155,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa5($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -164,7 +178,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa6($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -180,7 +201,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa7a($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -196,7 +224,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa7b($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -212,7 +247,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa8($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -228,7 +270,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa9($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -244,7 +293,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa10($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -260,7 +316,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa12($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -276,7 +339,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa13($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -292,7 +362,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa14($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -308,7 +385,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa15($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -324,7 +408,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa16($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -340,7 +431,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa17($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -356,7 +454,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa18($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -372,7 +477,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa19($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -388,7 +500,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa20($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -404,7 +523,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa21($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -422,7 +548,14 @@ class Laporan_perkara extends CI_Controller
             $masuk = $data['delegasi_masuk'];
             $keluar = $data['delegasi_keluar'];
             $hasil = $this->export_excel_lipa22($masuk, $keluar, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -438,7 +571,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa23($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -454,7 +594,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa24($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
