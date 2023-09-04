@@ -100,7 +100,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa3($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',

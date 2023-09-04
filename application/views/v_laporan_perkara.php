@@ -122,14 +122,19 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
-						<br />
 						<form id="form-verifikasi" data-parsley-validate class="form-horizontal form-label-left">
 							<div class="item form-group">
 								<a href="#" id="btn-download-laporan" class="btn btn-primary pull-right btn-sm"><i class="fa fa-download"></i> Download Laporan</a>
 								<!-- <button type="button" class="btn btn-info btn-sm" style="display: none;">Verifikasi Laporan</button> -->
 							</div>
 						</form>
-						<div class="ln_solid"></div>
+						<div class="ln_solid my-1"></div>
+
+						<h2 class="text-center" id="judul_laporan"></h2>
+						<h2 class="text-center" id="nama_pengadilan"></h2>
+						<h2 class="text-center" id="periode_laporan"></h2>
+						<h4 class="text-right" id="kode_lipa"></h4>
+
 						<div id="table-content"></div>
 					</div>
 				</div>
@@ -159,12 +164,16 @@
 			}
 		);
 		$('#btn_generate').on('click', function() {
-			var jenis_laporan = $('#jenis_laporan').val();
-			var bulan = $('#bulan').val();
-			var tahun = $('#tahun').val();
-			var tanggal_laporan = $('#date_lapor').val();
+			const jenis_laporan = $('#jenis_laporan').val();
+			const bulan = $('#bulan').val();
+			const tahun = $('#tahun').val();
+			const tanggal_laporan = $('#date_lapor').val();
+			const jenis_text = $('#jenis_laporan option:selected').text();
+			const nama_PA = $('#nama_PA').text();
 			$('#btn-download-laporan').attr("href", '')
 			$('#panel-verifikasi').hide();
+
+
 			$.ajax({
 				type: "POST",
 				url: "<?php echo base_url('index.php/laporan_perkara/get_lipa') ?>",
@@ -184,9 +193,13 @@
 						$('#panel-verifikasi').show();
 						$('#btn-download-laporan').attr("href", response.link)
 						$('#preview_laporan').html('Preview Laporan ' + jenis + ' Periode ' + pilihBulan(bulan) + ' ' + tahun + '<small>Periksa Laporan Terlebih Dahulu Sebelum anda verifikasi</small>');
+
+						$('#judul_laporan').text(jenis_text);
+						$('#nama_pengadilan').text(`PADA ${nama_PA.toUpperCase()}`);
+						$('#periode_laporan').text(`PERIODE ${pilihBulan(bulan).toUpperCase()} ${tahun}`);
+						$('#kode_lipa').text(jenis_laporan);
 						$('#table-content').html(response.table);
 						$("#show_data").html(generateTableRows(response.data));
-						console.log(response.data);
 					} else if (response.kode == "201" || response.kode == '202') {
 						iziToast.error({
 							title: 'Error!',
