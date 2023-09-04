@@ -58,8 +58,6 @@
                 data[i].keterangan = "cabut tanggal : " + formatDate(data[i].tanggal_cabut);
             }
 
-            console.log(data[i].keterangan);
-
             table.row.add([
                 i + 1,
                 data[i].nomor_perkara_pn,

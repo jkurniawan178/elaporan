@@ -55,7 +55,6 @@
             ]
         });
         table.clear();
-        console.log(data);
         // Loop through the received data and create rows for the table
         for (let i = 0; i < data.length; i++) {
 
