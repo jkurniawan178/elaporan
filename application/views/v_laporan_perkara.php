@@ -133,7 +133,6 @@
 						<h2 class="text-center" id="judul_laporan"></h2>
 						<h2 class="text-center" id="nama_pengadilan"></h2>
 						<h2 class="text-center" id="periode_laporan"></h2>
-						<h4 class="text-right" id="kode_lipa"></h4>
 
 						<div id="table-content"></div>
 					</div>
@@ -151,6 +150,7 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
+		//datetime picker
 		const formatDate = 'DD/MM/YYYY'
 		$("#date_lapor").daterangepicker({
 				singleDatePicker: true,
@@ -163,6 +163,7 @@
 				// console.log(start.toISOString(), end.toISOString());
 			}
 		);
+
 		$('#btn_generate').on('click', function() {
 			const jenis_laporan = $('#jenis_laporan').val();
 			const bulan = $('#bulan').val();

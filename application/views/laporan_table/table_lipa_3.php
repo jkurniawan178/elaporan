@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <table class="text-center table table-striped table-bordered" id="table_lipa2">
+    <table class="text-center table table-striped table-bordered" id="table_lipa3">
         <thead class="bg-success">
             <tr>
                 <th scope="col" rowspan="2" class="align-middle">No</th>
@@ -37,30 +37,42 @@
 </div>
 <script>
     function generateTableRows(data) {
-        var tableContent = "";
-
+        const table = $('#table_lipa3').DataTable({
+            order: [
+                [0, 'asc']
+            ],
+            columnDefs: [{
+                    className: "align-middle",
+                    targets: ["_all"]
+                } // Apply class to specific columns
+            ]
+        });
+        table.clear();
         // Loop through the received data and create rows for the table
-        for (var i = 0; i < data.length; i++) {
-            var row = data[i];
-            tableContent += "<tr>";
-            tableContent += "<td class='align-middle'>" + (i + 1) + "</td>"; // Increment i to show a 1-based index
-            tableContent += "<td class='align-middle'>" + row.nomor_perkara_pn + "</td>";
-            tableContent += "<td class='align-middle'>" + row.nomor_putusan_banding + "</td>";
-            tableContent += "<td class='align-middle'>" + formatDate(row.permohonan_kasasi) + "</td>";
-            tableContent += "<td class='align-middle'>" + formatDate(row.penerimaan_memori_kasasi) + "</td>";
-            tableContent += "<td class='align-middle'>" + formatDate(row.tidak_memenuhi_syarat) + "</td>";
-            tableContent += "<td class='align-middle'>" + formatDate(row.pengiriman_berkas_kasasi) + "</td>";
-            tableContent += "<td class='align-middle'>" + formatDate(row.putusan_kasasi) + "</td>";
-            tableContent += "<td class='align-middle'>" + formatDate(row.penerimaan_berkas_kasasi) + "</td>";
-            tableContent += "<td class='align-middle'>" + "P: " + formatDate(row.pbt_putusan_p) + "<br/> T: " + formatDate(row.pbt_putusan_t) + "</td>";
-            if (row.tanggal_cabut === "" || row.tanggal_cabut === null) {
-                tableContent += "<td class='align-middle'>" + "-" + "</td>";
-            } else {
-                tableContent += "<td class='align-middle'>" + "cabut tanggal : " + formatDate(row.tanggal_cabut) + "</td>";
-            }
-            tableContent += "</tr>";
-        }
+        for (let i = 0; i < data.length; i++) {
 
-        return tableContent;
+            if (data[i].tanggal_cabut === "" || data[i].tanggal_cabut === null) {
+                data[i].keterangan = "-";
+            } else {
+                data[i].keterangan = "cabut tanggal : " + formatDate(data[i].tanggal_cabut);
+            }
+
+            console.log(data[i].keterangan);
+
+            table.row.add([
+                i + 1,
+                data[i].nomor_perkara_pn,
+                data[i].nomor_putusan_banding,
+                formatDate(data[i].permohonan_kasasi),
+                formatDate(data[i].penerimaan_memori_kasasi),
+                formatDate(data[i].tidak_memenuhi_syarat),
+                formatDate(data[i].pengiriman_berkas_kasasi),
+                formatDate(data[i].putusan_kasasi),
+                formatDate(data[i].penerimaan_berkas_kasasi),
+                `P: ${formatDate(data[i].pbt_putusan_p)}<br/> T: ${formatDate(data[i].pbt_putusan_t)}`,
+                data[i].keterangan
+            ])
+        }
+        table.draw();
     }
 </script>

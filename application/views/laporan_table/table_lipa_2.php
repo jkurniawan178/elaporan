@@ -4,7 +4,7 @@
                 <tr>
                     <th scope="col" rowspan="2" class="align-middle">No</th>
                     <th scope="col" rowspan="2" class="align-middle">Nomor Perkara PA</th>
-                    <th scope="col" rowspan="2" class="align-middle">Nama Majelis Hakim</th>
+                    <th scope="col" rowspan="2" class="align-middle" style="min-width: 250px;">Nama Majelis Hakim</th>
                     <th colspan="8" scope="colgroup" class="align-middle">Tanggal</th>
                     <th scope="col" rowspan="2" class="align-middle">Ket</th>
                 </tr>
@@ -38,31 +38,43 @@
     </div>
     <script>
         function generateTableRows(data) {
-            var tableContent = "";
+            const table = $('#table_lipa2').DataTable({
+                order: [
+                    [0, 'asc']
+                ],
+                columnDefs: [{
+                        className: "align-middle",
+                        targets: ["_all"]
+                    } // Apply class to specific columns
+                ]
+            });
+            table.clear();
 
             // Loop through the received data and create rows for the table
             for (var i = 0; i < data.length; i++) {
-                var row = data[i];
-                tableContent += "<tr>";
-                tableContent += "<td class='align-middle'>" + (i + 1) + "</td>"; // Increment i to show a 1-based index
-                tableContent += "<td class='align-middle'>" + row.nomor_perkara_pn + "</td>";
-                tableContent += "<td class='align-middle'>" + row.majelis_hakim_nama + "</td>";
-                tableContent += "<td class='align-middle'>" + formatDate(row.putusan_pn) + "</td>";
-                tableContent += "<td class='align-middle'>" + formatDate(row.permohonan_banding) + "</td>";
-                tableContent += "<td class='align-middle'>" + "P: " + formatDate(row.pbt_inzage_p) + "<br/> T: " + formatDate(row.pbt_inzage_t) + "</td>";
-                tableContent += "<td class='align-middle'>" + formatDate(row.pengiriman_berkas_banding) + "</td>";
-                tableContent += "<td class='align-middle'>" + formatDate(row.putusan_banding) + "</td>";
-                tableContent += "<td class='align-middle'>" + formatDate(row.penerimaan_kembali_berkas_banding) + "</td>";
-                tableContent += "<td class='align-middle'>" + "P: " + formatDate(row.pbt_banding_p) + "<br/> T: " + formatDate(row.pbt_banding_t) + "</td>";
-                tableContent += "<td class='align-middle'>" + "-" + "</td>";
-                if (row.tanggal_cabut === "" || row.tanggal_cabut === null) {
-                    tableContent += "<td class='align-middle'>" + "-" + "</td>";
+
+                if (data[i].tanggal_cabut === "" || data[i].tanggal_cabut === null) {
+                    data[i].keterangan = "-";
                 } else {
-                    tableContent += "<td class='align-middle'>" + "cabut tanggal : " + formatDate(row.tanggal_cabut) + "</td>";
+                    data[i].keterangan = "cabut tanggal : " + formatDate(data[i].tanggal_cabut);
                 }
-                tableContent += "</tr>";
+
+                table.row.add([
+                    i + 1,
+                    data[i].nomor_perkara_pn,
+                    data[i].majelis_hakim_nama,
+                    formatDate(data[i].putusan_pn),
+                    formatDate(data[i].permohonan_banding),
+                    `P: ${formatDate(data[i].pbt_inzage_p)}<br/> T: ${formatDate(data[i].pbt_inzage_t)}`,
+                    formatDate(data[i].pengiriman_berkas_banding),
+                    formatDate(data[i].putusan_banding),
+                    formatDate(data[i].penerimaan_kembali_berkas_banding),
+                    `P: ${formatDate(data[i].pbt_banding_p)} <br/> T: ${formatDate(data[i].pbt_banding_t)}`,
+                    "-",
+                    data[i].keterangan
+                ])
             }
 
-            return tableContent;
+            table.draw();
         }
     </script>

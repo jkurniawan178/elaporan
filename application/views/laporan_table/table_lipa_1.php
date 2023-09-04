@@ -5,8 +5,8 @@
                 <th scope="col" rowspan="2" class="align-middle">No</th>
                 <th scope="col" rowspan="2" class="align-middle">Nomor Perkara</th>
                 <th scope="col" rowspan="2" class="align-middle">Kode Perkara</th>
-                <th scope="col" rowspan="2" class="align-middle" style="min-width: 300px;">Nama Majelis Hakim</th>
-                <th scope="col" rowspan="2" class="align-middle">Nama PP</th>
+                <th scope="col" rowspan="2" class="align-middle" style="min-width: 250px;">Nama Majelis Hakim</th>
+                <th scope="col" rowspan="2" class="align-middle" style="min-width: 150px;">Nama PP</th>
                 <th scope="colgroup" colspan="5" class="align-middle">Tanggal</th>
                 <th scope="col" rowspan="2" class="align-middle">Jenis Putusan</th>
                 <th scope="colgroup" colspan="2" class="align-middle">Tanggal</th>
@@ -43,17 +43,19 @@
 </div>
 <script>
     function generateTableRows(data) {
-        var tableContent = "";
-        let valueData = data.hasil;
-
-        console.log(valueData)
-        var table = $('#table_lipa1').DataTable({
+        const table = $('#table_lipa1').DataTable({
             order: [
                 [0, 'asc']
             ],
+            columnDefs: [{
+                    className: "align-middle",
+                    targets: ["_all"]
+                } // Apply class to specific columns
+            ]
         });
         table.clear();
         // Loop through the received data and create rows for the table
+        let valueData = data.hasil;
         for (var i = 0; i < valueData.length; i++) {
             // var row = valueData[i];
             table.row.add([
