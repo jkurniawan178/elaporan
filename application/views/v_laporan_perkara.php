@@ -194,12 +194,13 @@
 						$('#btn-download-laporan').attr("href", response.link)
 						$('#preview_laporan').html('Preview Laporan ' + jenis + ' Periode ' + pilihBulan(bulan) + ' ' + tahun + '<small>Periksa Laporan Terlebih Dahulu Sebelum anda verifikasi</small>');
 
+						//table view
 						$('#judul_laporan').text(jenis_text);
 						$('#nama_pengadilan').text(`PADA ${nama_PA.toUpperCase()}`);
 						$('#periode_laporan').text(`PERIODE ${pilihBulan(bulan).toUpperCase()} ${tahun}`);
 						$('#kode_lipa').text(jenis_laporan);
 						$('#table-content').html(response.table);
-						$("#show_data").html(generateTableRows(response.data));
+						generateTableRows(response.data);
 					} else if (response.kode == "201" || response.kode == '202') {
 						iziToast.error({
 							title: 'Error!',
