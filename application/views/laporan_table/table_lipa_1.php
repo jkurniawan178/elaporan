@@ -1,41 +1,41 @@
 <div class="table-responsive">
     <table class="text-center table table-striped table-bordered" id="table_lipa1" cellspacing="0" width="100%">
-        <thead class="bg-success">
+        <thead class="bg-success text-dark">
             <tr>
-                <th scope="col" rowspan="2" class="align-middle">No</th>
-                <th scope="col" rowspan="2" class="align-middle">Nomor Perkara</th>
-                <th scope="col" rowspan="2" class="align-middle">Kode Perkara</th>
-                <th scope="col" rowspan="2" class="align-middle" style="min-width: 250px;">Nama Majelis Hakim</th>
-                <th scope="col" rowspan="2" class="align-middle" style="min-width: 150px;">Nama PP</th>
-                <th scope="colgroup" colspan="5" class="align-middle">Tanggal</th>
-                <th scope="col" rowspan="2" class="align-middle">Jenis Putusan</th>
-                <th scope="colgroup" colspan="2" class="align-middle">Tanggal</th>
-                <th scope="col" rowspan="2" class="align-middle">Ket</th>
+                <th scope="col" rowspan="2" class="align-middle p-2">No</th>
+                <th scope="col" rowspan="2" class="align-middle p-2">Nomor Perkara</th>
+                <th scope="col" rowspan="2" class="align-middle p-2">Kode Perkara</th>
+                <th scope="col" rowspan="2" class="align-middle p-2" style="min-width: 250px;">Nama Majelis Hakim</th>
+                <th scope="col" rowspan="2" class="align-middle p-2" style="min-width: 150px;">Nama PP</th>
+                <th scope="colgroup" colspan="5" class="align-middle p-2">Tanggal</th>
+                <th scope="col" rowspan="2" class="align-middle p-2">Jenis Putusan</th>
+                <th scope="colgroup" colspan="2" class="align-middle p-2">Tanggal</th>
+                <th scope="col" rowspan="2" class="align-middle p-2">Ket</th>
             </tr>
             <tr>
-                <th scope="col" class="align-middle">Penerimaan</th>
-                <th scope="col" class="align-middle">PMH</th>
-                <th scope="col" class="align-middle">PHS</th>
-                <th scope="col" class="align-middle">Sidang I</th>
-                <th scope="col" class="align-middle">Diputus</th>
-                <th scope="col" class="align-middle">Belum Dibagi</th>
-                <th scope="col" class="align-middle">Belum Diputus</th>
+                <th scope="col" class="align-middle p-2">Penerimaan</th>
+                <th scope="col" class="align-middle p-2">PMH</th>
+                <th scope="col" class="align-middle p-2">PHS</th>
+                <th scope="col" class="align-middle p-2">Sidang I</th>
+                <th scope="col" class="align-middle p-2">Diputus</th>
+                <th scope="col" class="align-middle p-2">Belum Dibagi</th>
+                <th scope="col" class="align-middle p-2">Belum Diputus</th>
             </tr>
             <tr class="bg-warning">
-                <th scope="col" class="align-middle py-0">1</th>
-                <th scope="col" class="align-middle py-0">2</th>
-                <th scope="col" class="align-middle py-0">3</th>
-                <th scope="col" class="align-middle py-0">4</th>
-                <th scope="col" class="align-middle py-0">5</th>
-                <th scope="col" class="align-middle py-0">6</th>
-                <th scope="col" class="align-middle py-0">7</th>
-                <th scope="col" class="align-middle py-0">8</th>
-                <th scope="col" class="align-middle py-0">9</th>
-                <th scope="col" class="align-middle py-0">10</th>
-                <th scope="col" class="align-middle py-0">11</th>
-                <th scope="col" class="align-middle py-0">12</th>
-                <th scope="col" class="align-middle py-0">13</th>
-                <th scope="col" class="align-middle py-0">14</th>
+                <th scope="col" class="align-middle py-0 px-2">1</th>
+                <th scope="col" class="align-middle py-0 px-2">2</th>
+                <th scope="col" class="align-middle py-0 px-2">3</th>
+                <th scope="col" class="align-middle py-0 px-2">4</th>
+                <th scope="col" class="align-middle py-0 px-2">5</th>
+                <th scope="col" class="align-middle py-0 px-2">6</th>
+                <th scope="col" class="align-middle py-0 px-2">7</th>
+                <th scope="col" class="align-middle py-0 px-2">8</th>
+                <th scope="col" class="align-middle py-0 px-2">9</th>
+                <th scope="col" class="align-middle py-0 px-2">10</th>
+                <th scope="col" class="align-middle py-0 px-2">11</th>
+                <th scope="col" class="align-middle py-0 px-2">12</th>
+                <th scope="col" class="align-middle py-0 px-2">13</th>
+                <th scope="col" class="align-middle py-0 px-2">14</th>
             </tr>
         </thead>
         <tbody id="show_data"></tbody>

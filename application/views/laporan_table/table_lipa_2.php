@@ -1,37 +1,37 @@
     <div class="table-responsive">
         <table class="text-center table table-striped table-bordered" id="table_lipa2">
-            <thead class="bg-success">
+            <thead class="bg-success text-dark">
                 <tr>
-                    <th scope="col" rowspan="2" class="align-middle">No</th>
-                    <th scope="col" rowspan="2" class="align-middle">Nomor Perkara PA</th>
-                    <th scope="col" rowspan="2" class="align-middle" style="min-width: 250px;">Nama Majelis Hakim</th>
-                    <th colspan="8" scope="colgroup" class="align-middle">Tanggal</th>
-                    <th scope="col" rowspan="2" class="align-middle">Ket</th>
+                    <th scope="col" rowspan="2" class="align-middle p-2">No</th>
+                    <th scope="col" rowspan="2" class="align-middle p-2">Nomor Perkara PA</th>
+                    <th scope="col" rowspan="2" class="align-middle p-2" style="min-width: 250px;">Nama Majelis Hakim</th>
+                    <th colspan="8" scope="colgroup" class="align-middle p-2">Tanggal</th>
+                    <th scope="col" rowspan="2" class="align-middle p-2">Ket</th>
                 </tr>
                 <tr>
-                    <th scope="col" class="align-middle">Putusan PA</th>
-                    <th scope="col" class="align-middle">Permohonan Banding</th>
-                    <th scope="col" class="align-middle">Pemberitahuan Inzage</th>
-                    <th scope="col" class="align-middle">Pengiriman Berkas PTA</th>
-                    <th scope="col" class="align-middle">Putusan Banding/Cabut</th>
-                    <th scope="col" class="align-middle">Penerimaan Kembali di PA</th>
-                    <th scope="col" class="align-middle">Pemberitahuan ke Para Pihak</th>
-                    <th scope="col" class="align-middle">Penyampaian FC Relas PBT ke PTA</th>
+                    <th scope="col" class="align-middle p-2">Putusan PA</th>
+                    <th scope="col" class="align-middle p-2">Permohonan Banding</th>
+                    <th scope="col" class="align-middle p-2">Pemberitahuan Inzage</th>
+                    <th scope="col" class="align-middle p-2">Pengiriman Berkas PTA</th>
+                    <th scope="col" class="align-middle p-2">Putusan Banding/Cabut</th>
+                    <th scope="col" class="align-middle p-2">Penerimaan Kembali di PA</th>
+                    <th scope="col" class="align-middle p-2">Pemberitahuan ke Para Pihak</th>
+                    <th scope="col" class="align-middle p-2">Penyampaian FC Relas PBT ke PTA</th>
                 </tr>
                 <tr class="bg-warning">
-                    <th scope="col" class="align-middle py-0">1</th>
-                    <th scope="col" class="align-middle py-0">2</th>
-                    <th scope="col" class="align-middle py-0">3</th>
-                    <th scope="col" class="align-middle py-0">4</th>
-                    <th scope="col" class="align-middle py-0">5</th>
-                    <th scope="col" class="align-middle py-0">6</th>
-                    <th scope="col" class="align-middle py-0">7</th>
-                    <th scope="col" class="align-middle py-0">8</th>
-                    <th scope="col" class="align-middle py-0">9</th>
-                    <th scope="col" class="align-middle py-0">10</th>
-                    <th scope="col" class="align-middle py-0">11</th>
-                    <th scope="col" class="align-middle py-0">12</th>
-                </tr>
+                    <th scope="col" class="align-middle py-0 px-2">1</th>
+                    <th scope="col" class="align-middle py-0 px-2">2</th>
+                    <th scope="col" class="align-middle py-0 px-2">3</th>
+                    <th scope="col" class="align-middle py-0 px-2">4</th>
+                    <th scope="col" class="align-middle py-0 px-2">5</th>
+                    <th scope="col" class="align-middle py-0 px-2">6</th>
+                    <th scope="col" class="align-middle py-0 px-2">7</th>
+                    <th scope="col" class="align-middle py-0 px-2">8</th>
+                    <th scope="col" class="align-middle py-0 px-2">9</th>
+                    <th scope="col" class="align-middle py-0 px-2">10</th>
+                    <th scope="col" class="align-middle py-0 px-2">11</th>
+                    <th scope="col" class="align-middle py-0 px-2">12</th>
+                </tr> px-2
             </thead>
             <tbody id="show_data"></tbody>
         </table>

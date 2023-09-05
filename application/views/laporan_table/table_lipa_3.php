@@ -1,35 +1,35 @@
 <div class="table-responsive">
     <table class="text-center table table-striped table-bordered" id="table_lipa3">
-        <thead class="bg-success">
+        <thead class="bg-success text-dark">
             <tr>
-                <th scope="col" rowspan="2" class="align-middle">No</th>
-                <th scope="col" colspan="2" class="align-middle">Nomor Perkara</th>
-                <th colspan="7" scope="colgroup" class="align-middle">Tanggal</th>
-                <th scope="col" rowspan="2" class="align-middle">Ket</th>
+                <th scope="col" rowspan="2" class="align-middle p-2">No</th>
+                <th scope="col" colspan="2" class="align-middle p-2">Nomor Perkara</th>
+                <th colspan="7" scope="colgroup" class="align-middle p-2">Tanggal</th>
+                <th scope="col" rowspan="2" class="align-middle p-2">Ket</th>
             </tr>
             <tr>
-                <th scope="col" class="align-middle">Tingkat Pertama</th>
-                <th scope="col" class="align-middle">Tingkat Banding</th>
-                <th scope="col" class="align-middle">Permohonan Kasasi</th>
-                <th scope="col" class="align-middle">Penerimaan Memori Kasasi</th>
-                <th scope="col" class="align-middle">Penetapan Tidak Memenuhi Syarat Formal</th>
-                <th scope="col" class="align-middle">Pengiriman Berkas ke MA</th>
-                <th scope="col" class="align-middle">Putus Kasasi</th>
-                <th scope="col" class="align-middle">Penerimaan Kembali Berkas Kasasi di PA</th>
-                <th scope="col" class="align-middle">Pemberitahuan ke Para Pihak</th>
+                <th scope="col" class="align-middle p-2">Tingkat Pertama</th>
+                <th scope="col" class="align-middle p-2">Tingkat Banding</th>
+                <th scope="col" class="align-middle p-2">Permohonan Kasasi</th>
+                <th scope="col" class="align-middle p-2">Penerimaan Memori Kasasi</th>
+                <th scope="col" class="align-middle p-2">Penetapan Tidak Memenuhi Syarat Formal</th>
+                <th scope="col" class="align-middle p-2">Pengiriman Berkas ke MA</th>
+                <th scope="col" class="align-middle p-2">Putus Kasasi</th>
+                <th scope="col" class="align-middle p-2">Penerimaan Kembali Berkas Kasasi di PA</th>
+                <th scope="col" class="align-middle p-2">Pemberitahuan ke Para Pihak</th>
             </tr>
             <tr class="bg-warning">
-                <th scope="col" class="align-middle py-0">1</th>
-                <th scope="col" class="align-middle py-0">2</th>
-                <th scope="col" class="align-middle py-0">3</th>
-                <th scope="col" class="align-middle py-0">4</th>
-                <th scope="col" class="align-middle py-0">5</th>
-                <th scope="col" class="align-middle py-0">6</th>
-                <th scope="col" class="align-middle py-0">7</th>
-                <th scope="col" class="align-middle py-0">8</th>
-                <th scope="col" class="align-middle py-0">9</th>
-                <th scope="col" class="align-middle py-0">10</th>
-                <th scope="col" class="align-middle py-0">11</th>
+                <th scope="col" class="align-middle py-0 px-2">1</th>
+                <th scope="col" class="align-middle py-0 px-2">2</th>
+                <th scope="col" class="align-middle py-0 px-2">3</th>
+                <th scope="col" class="align-middle py-0 px-2">4</th>
+                <th scope="col" class="align-middle py-0 px-2">5</th>
+                <th scope="col" class="align-middle py-0 px-2">6</th>
+                <th scope="col" class="align-middle py-0 px-2">7</th>
+                <th scope="col" class="align-middle py-0 px-2">8</th>
+                <th scope="col" class="align-middle py-0 px-2">9</th>
+                <th scope="col" class="align-middle py-0 px-2">10</th>
+                <th scope="col" class="align-middle py-0 px-2">11</th>
             </tr>
         </thead>
         <tbody id="show_data"></tbody>

@@ -11,63 +11,63 @@
     <table class="text-center table table-bordered" id="table_lipa9" style="border-collapse: collapse !important;">
         <thead class="bg-success text-dark">
             <tr>
-                <th rowspan="4" class="vertical-text align-middle">Nomor</th>
-                <th rowspan="2" colspan="6" class="align-middle">JENIS PERKARA</th>
-                <th rowspan="4" class="vertical-text align-middle">Jumlah</th>
-                <th rowspan="2" colspan="3" class="align-middle">DIPUTUS</th>
-                <th rowspan="4" class="vertical-text align-middle">Jumlah</th>
-                <th rowspan="2" colspan="3" class="align-middle">SISA</th>
-                <th rowspan="4" class="vertical-text align-middle">Jumlah</th>
-                <th rowspan="1" colspan="4" class="align-middle">PERKARA YANG DIPUTUS</th>
+                <th rowspan="4" class="vertical-text align-middle p-2">Nomor</th>
+                <th rowspan="2" colspan="6" class="align-middle p-2">JENIS PERKARA</th>
+                <th rowspan="4" class="vertical-text align-middle p-2">Jumlah</th>
+                <th rowspan="2" colspan="3" class="align-middle p-2">DIPUTUS</th>
+                <th rowspan="4" class="vertical-text align-middle p-2">Jumlah</th>
+                <th rowspan="2" colspan="3" class="align-middle p-2">SISA</th>
+                <th rowspan="4" class="vertical-text align-middle p-2">Jumlah</th>
+                <th rowspan="1" colspan="4" class="align-middle p-2">PERKARA YANG DIPUTUS</th>
             </tr>
             <tr>
-                <th colspan="2" class="align-middle">PENGGUGAT/<br>PEMOHON</th>
-                <th colspan="2" class="align-middle">TERGUGAT/<br>TERMOHON</th>
+                <th colspan="2" class="align-middle p-2">PENGGUGAT/<br>PEMOHON</th>
+                <th colspan="2" class="align-middle p-2">TERGUGAT/<br>TERMOHON</th>
             </tr>
             <tr>
-                <th class="vertical-text align-middle" colspan="2">Izin Poligami</th>
-                <th class="vertical-text align-middle" colspan="2">Cerai Talak </th>
-                <th class="vertical-text align-middle" colspan="2">Cerai Gugat</th>
-                <th class="vertical-text align-middle" rowspan="2">Izin Poligami </th>
-                <th class="vertical-text align-middle" rowspan="2">Cerai Talak </th>
-                <th class="vertical-text align-middle" rowspan="2">Cerai Gugat</th>
-                <th class="vertical-text align-middle" rowspan="2">Izin Poligami </th>
-                <th class="vertical-text align-middle" rowspan="2">Cerai Talak </th>
-                <th class="vertical-text align-middle" rowspan="2">Cerai Gugat </th>
-                <th class="vertical-text align-middle" rowspan="2">Ada Izin Pejabat</th>
-                <th class="vertical-text align-middle" rowspan="2">Tidak Ada Izin Pejabat </th>
-                <th class="vertical-text align-middle" rowspan="2">Ada Keterangan Pejabat </th>
-                <th class="vertical-text align-middle" rowspan="2">Tidak Ada Keterangan Pejabat </th>
+                <th class="vertical-text align-middle p-2" colspan="2">Izin Poligami</th>
+                <th class="vertical-text align-middle p-2" colspan="2">Cerai Talak </th>
+                <th class="vertical-text align-middle p-2" colspan="2">Cerai Gugat</th>
+                <th class="vertical-text align-middle p-2" rowspan="2">Izin Poligami </th>
+                <th class="vertical-text align-middle p-2" rowspan="2">Cerai Talak </th>
+                <th class="vertical-text align-middle p-2" rowspan="2">Cerai Gugat</th>
+                <th class="vertical-text align-middle p-2" rowspan="2">Izin Poligami </th>
+                <th class="vertical-text align-middle p-2" rowspan="2">Cerai Talak </th>
+                <th class="vertical-text align-middle p-2" rowspan="2">Cerai Gugat </th>
+                <th class="vertical-text align-middle p-2" rowspan="2">Ada Izin Pejabat</th>
+                <th class="vertical-text align-middle p-2" rowspan="2">Tidak Ada Izin Pejabat </th>
+                <th class="vertical-text align-middle p-2" rowspan="2">Ada Keterangan Pejabat </th>
+                <th class="vertical-text align-middle p-2" rowspan="2">Tidak Ada Keterangan Pejabat </th>
             </tr>
             <tr>
-                <th class="align-middle py-1 text-center">Sisa</th>
-                <th class="align-middle py-1 text-center">Terima</th>
-                <th class="align-middle py-1 text-center">Sisa</th>
-                <th class="align-middle py-1 text-center">Terima</th>
-                <th class="align-middle py-1 text-center">Sisa</th>
-                <th class="align-middle py-1 text-center">Terima</th>
+                <th class="align-middle py-1 px-2 text-center">Sisa</th>
+                <th class="align-middle py-1 px-2 text-center">Terima</th>
+                <th class="align-middle py-1 px-2 text-center">Sisa</th>
+                <th class="align-middle py-1 px-2 text-center">Terima</th>
+                <th class="align-middle py-1 px-2 text-center">Sisa</th>
+                <th class="align-middle py-1 px-2 text-center">Terima</th>
             </tr>
             <tr class="bg-warning">
-                <th scope="col" class="align-middle py-0">1</th>
-                <th scope="col" class="align-middle py-0">2</th>
-                <th scope="col" class="align-middle py-0">3</th>
-                <th scope="col" class="align-middle py-0">4</th>
-                <th scope="col" class="align-middle py-0">5</th>
-                <th scope="col" class="align-middle py-0">6</th>
-                <th scope="col" class="align-middle py-0">7</th>
-                <th scope="col" class="align-middle py-0">8</th>
-                <th scope="col" class="align-middle py-0">9</th>
-                <th scope="col" class="align-middle py-0">10</th>
-                <th scope="col" class="align-middle py-0">11</th>
-                <th scope="col" class="align-middle py-0">12</th>
-                <th scope="col" class="align-middle py-0">13</th>
-                <th scope="col" class="align-middle py-0">14</th>
-                <th scope="col" class="align-middle py-0">15</th>
-                <th scope="col" class="align-middle py-0">16</th>
-                <th scope="col" class="align-middle py-0">17</th>
-                <th scope="col" class="align-middle py-0">18</th>
-                <th scope="col" class="align-middle py-0">19</th>
-                <th scope="col" class="align-middle py-0">20</th>
+                <th scope="col" class="align-middle py-0 px-2">1</th>
+                <th scope="col" class="align-middle py-0 px-2">2</th>
+                <th scope="col" class="align-middle py-0 px-2">3</th>
+                <th scope="col" class="align-middle py-0 px-2">4</th>
+                <th scope="col" class="align-middle py-0 px-2">5</th>
+                <th scope="col" class="align-middle py-0 px-2">6</th>
+                <th scope="col" class="align-middle py-0 px-2">7</th>
+                <th scope="col" class="align-middle py-0 px-2">8</th>
+                <th scope="col" class="align-middle py-0 px-2">9</th>
+                <th scope="col" class="align-middle py-0 px-2">10</th>
+                <th scope="col" class="align-middle py-0 px-2">11</th>
+                <th scope="col" class="align-middle py-0 px-2">12</th>
+                <th scope="col" class="align-middle py-0 px-2">13</th>
+                <th scope="col" class="align-middle py-0 px-2">14</th>
+                <th scope="col" class="align-middle py-0 px-2">15</th>
+                <th scope="col" class="align-middle py-0 px-2">16</th>
+                <th scope="col" class="align-middle py-0 px-2">17</th>
+                <th scope="col" class="align-middle py-0 px-2">18</th>
+                <th scope="col" class="align-middle py-0 px-2">19</th>
+                <th scope="col" class="align-middle py-0 px-2">20</th>
             </tr>
         </thead>
         <tbody id="show_data"></tbody>
