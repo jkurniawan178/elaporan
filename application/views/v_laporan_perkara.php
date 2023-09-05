@@ -147,6 +147,7 @@
 <!-- jQuery -->
 <script src="<?php echo base_url() ?>resources/jquery/dist/jquery.min.js"></script>
 <script src="<?php echo base_url() ?>resources/js/helper.js"></script>
+<script src="<?php echo base_url() ?>resources/js/thousandSeparator.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function() {
