@@ -611,6 +611,7 @@ class Laporan_model extends CI_Model
 		 LEFT JOIN perkara_pk pk ON pk.`perkara_id` = p.`perkara_id`) AS
 		 vpk ON jp.id=vpk.jenis_perkara_id
 		 WHERE (jp.id >=341 AND jp.id<=371) GROUP BY jp.nama ORDER BY jp.id";
+		//TODO-add jumlah per kolom
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
 	}

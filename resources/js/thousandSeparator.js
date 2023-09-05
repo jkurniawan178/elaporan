@@ -11,7 +11,7 @@ function addThousandSeparator(number) {
 	if (number == null || number == "0") {
 		return "-";
 	} else {
-		let rawNumber = number.replace(/,|\.00$/g, "");
+		let rawNumber = number.toString().replace(/,|\.00$/g, "");
 		return rawNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 	}
 	// return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
