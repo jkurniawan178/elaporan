@@ -461,6 +461,7 @@ class Laporan_model extends CI_Model
 					COALESCE((SELECT SUM(jumlah) FROM perkara_biaya WHERE jenis_transaksi='-1' AND DATE_FORMAT(tanggal_transaksi, '%Y-%m') = '$periode'
 					AND tahapan_id<=40),0) AS jumlah_kredit
 				order by urutan";
+		//TODO-tambah saldo
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
 	}
