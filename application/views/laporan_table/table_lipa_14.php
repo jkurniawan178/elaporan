@@ -1,16 +1,17 @@
 <div class="table-responsive">
-    <table class="text-center table table-striped table-bordered" id="table_lipa13">
+    <table class="text-center table table-striped table-bordered" id="table_lipa14">
         <thead class="bg-success text-dark">
             <tr>
                 <th scope="col" class="align-middle p-2">No.</th>
-                <th scope="col" class="align-middle p-2">Nomor Akta Cerai</th>
-                <th scope="col" class="align-middle p-2">Tanggal Terbit</th>
-                <th scope="col" class="align-middle p-2">No. Seri</th>
-                <th scope="col" class="align-middle p-2">Nomor Perkara</th>
-                <th scope="col" class="align-middle p-2">Tanggal Putus</th>
-                <th scope="col" class="align-middle p-2">Tanggal BHT</th>
-                <th scope="col" class="align-middle p-2">Tanggal Ikrar</th>
-                <th scope="col" class="align-middle p-2">Keterangan</th>
+                <th scope="col" class="align-middle p-2">Pagu Awal(Rp)</th>
+                <th scope="col" class="align-middle p-2">Pagu Revisi (Rp)</th>
+                <th scope="col" class="align-middle p-2">Realisasi s/d Bulan Lalu</th>
+                <th scope="col" class="align-middle p-2">Realisasi Bulan Ini</th>
+                <th scope="col" class="align-middle p-2">Jumlah (Rp)</th>
+                <th scope="col" class="align-middle p-2">Sisa</th>
+                <th scope="col" class="align-middle p-2">Jumlah Kegiatan</th>
+                <th scope="col" class="align-middle p-2">Jumlah Perkara</th>
+                <th scope="col" class="align-middle p-2">Ket</th>
             </tr>
             <tr class="bg-warning">
                 <th scope="col" class="align-middle py-0 px-2">1</th>
@@ -22,6 +23,7 @@
                 <th scope="col" class="align-middle py-0 px-2">7</th>
                 <th scope="col" class="align-middle py-0 px-2">8</th>
                 <th scope="col" class="align-middle py-0 px-2">9</th>
+                <th scope="col" class="align-middle py-0 px-2">10</th>
             </tr>
         </thead>
         <tbody id="show_data"></tbody>
@@ -29,7 +31,7 @@
 </div>
 <script>
     function generateTableRows(data) {
-        const table = $('#table_lipa13').DataTable({
+        const table = $('#table_lipa14').DataTable({
             order: [
                 [0, 'asc']
             ],
@@ -40,21 +42,20 @@
                 } // Apply class to specific columns
             ],
         });
-        console.log(data);
         table.clear();
         // Loop through the received data and create rows for the table
         for (let i = 0; i < data.length; i++) {
-
             table.row.add([
                 i + 1,
-                data[i].nomor_akta_cerai,
-                formatDate(data[i].tgl_terbit_ac),
-                data[i].no_seri_akta_cerai,
-                data[i].nomor_perkara,
-                formatDate(data[i].tanggal_putusan),
-                formatDate(data[i].tanggal_bht),
-                formatDate(data[i].tgl_ikrar_talak),
-                "-"
+                addThousandSeparator(data[i].pagu_awal),
+                addThousandSeparator(data[i].pagu_revisi),
+                addThousandSeparator(data[i].realisasi_sampai_bulan_lalu),
+                addThousandSeparator(data[i].realisasi),
+                addThousandSeparator(data[i].jumlah_realisasi),
+                addThousandSeparator(data[i].saldo),
+                addThousandSeparator(data[i].jml_kegiatan),
+                addThousandSeparator(data[i].jml_perkara),
+                addThousandSeparator(data[i].keterangan)
             ])
         }
         table.draw();

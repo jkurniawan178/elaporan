@@ -18,17 +18,17 @@
                 <th scope="col" class="align-middle p-2">Gagal</th>
             </tr>
             <tr class="bg-warning">
-                <th scope="col" class="align-middle py-0">1</th>
-                <th scope="col" class="align-middle py-0">2</th>
-                <th scope="col" class="align-middle py-0">3</th>
-                <th scope="col" class="align-middle py-0">4</th>
-                <th scope="col" class="align-middle py-0">5</th>
-                <th scope="col" class="align-middle py-0">6</th>
-                <th scope="col" class="align-middle py-0">7</th>
-                <th scope="col" class="align-middle py-0">8</th>
-                <th scope="col" class="align-middle py-0">9</th>
-                <th scope="col" class="align-middle py-0">10</th>
-                <th scope="col" class="align-middle py-0">11</th>
+                <th scope="col" class="align-middle py-0 px-2">1</th>
+                <th scope="col" class="align-middle py-0 px-2">2</th>
+                <th scope="col" class="align-middle py-0 px-2">3</th>
+                <th scope="col" class="align-middle py-0 px-2">4</th>
+                <th scope="col" class="align-middle py-0 px-2">5</th>
+                <th scope="col" class="align-middle py-0 px-2">6</th>
+                <th scope="col" class="align-middle py-0 px-2">7</th>
+                <th scope="col" class="align-middle py-0 px-2">8</th>
+                <th scope="col" class="align-middle py-0 px-2">9</th>
+                <th scope="col" class="align-middle py-0 px-2">10</th>
+                <th scope="col" class="align-middle py-0 px-2">11</th>
             </tr>
         </thead>
         <tbody id="show_data"></tbody>
