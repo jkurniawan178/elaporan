@@ -1752,12 +1752,12 @@ class Laporan_perkara extends CI_Controller
       $objPHPExcel->getActiveSheet()
         ->setCellValue('A' . $row, $no)
         ->setCellValue('B' . $row, $item['nomor_akta_cerai'])
-        ->setCellValue('C' . $row, $item['tgl_terbit_ac'])
+        ->setCellValue('C' . $row, tgl_dari_mysql($item['tgl_terbit_ac']))
         ->setCellValue('D' . $row, $item['no_seri_akta_cerai'])
         ->setCellValue('E' . $row, $item['nomor_perkara'])
-        ->setCellValue('F' . $row, $item['tanggal_putusan'])
-        ->setCellValue('G' . $row, $item['tanggal_bht'])
-        ->setCellValue('H' . $row, ($item['tgl_ikrar_talak'] == null ? '-' : $item['tgl_ikrar_talak']))
+        ->setCellValue('F' . $row, tgl_dari_mysql($item['tanggal_putusan']))
+        ->setCellValue('G' . $row, tgl_dari_mysql($item['tanggal_bht']))
+        ->setCellValue('H' . $row, ($item['tgl_ikrar_talak'] == null ? '-' : tgl_dari_mysql($item['tgl_ikrar_talak'])))
         ->setCellValue('I' . $row, '-')
         ->getRowDimension($row)->setRowHeight(19.80);
 
