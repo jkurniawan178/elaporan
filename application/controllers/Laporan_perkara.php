@@ -1684,7 +1684,7 @@ class Laporan_perkara extends CI_Controller
         ->setCellValue('D' . $row, intval($item['sisa_lalu']) + intval($item['diterima_bulan_ini']) - $perkara_mediasi)
         ->setCellValue('E' . $row, $perkara_mediasi)
         ->setCellValue('F' . $row, $item['tidak_berhasil'])
-        ->setCellValue('G' . $row, intval($item['berhasil_akta']) + intval($item['berhasil_sebagian']) + intval($item['berhasil_cabut']))
+        ->setCellValue('G' . $row, $item['berhasil'])
         ->setCellValue('H' . $row, $item['gagal'])
         ->setCellValue('I' . $row, $item['perkara_proses_mediasi'])
         ->setCellValue('J' . $row, intval($item['sisa_lalu']) + intval($item['diterima_bulan_ini']) - intval($item['putus_bulan_ini']))

@@ -691,9 +691,7 @@ class Laporan_model extends CI_Model
 					SUM(CASE WHEN DATE_FORMAT(dimulai_mediasi,'%Y-%m')<'$periode' AND (DATE_FORMAT(keputusan_mediasi,'%Y-%m')>= '$periode' OR hasil_mediasi IS NULL) AND jenis_pengadilan=4 THEN 1 ELSE 0 END) 
 					AS sisa_mediasi_lalu,
 					SUM(CASE WHEN DATE_FORMAT(dimulai_mediasi,'%Y-%m')='$periode' AND jenis_pengadilan=4 THEN 1 ELSE 0 END)  AS perkara_mediasi,
-					SUM(CASE WHEN DATE_FORMAT(keputusan_mediasi,'%Y-%m')='$periode' AND jenis_pengadilan=4  AND hasil_mediasi='Y1' THEN 1 ELSE 0 END) AS berhasil_akta,
-					SUM(CASE WHEN DATE_FORMAT(keputusan_mediasi,'%Y-%m')='$periode' AND jenis_pengadilan=4  AND hasil_mediasi='S' THEN 1 ELSE 0 END) AS berhasil_sebagian,
-					SUM(CASE WHEN DATE_FORMAT(keputusan_mediasi,'%Y-%m')='$periode' AND jenis_pengadilan=4 AND hasil_mediasi='Y2' THEN 1 ELSE 0 END) AS berhasil_cabut,
+					SUM(CASE WHEN DATE_FORMAT(keputusan_mediasi,'%Y-%m')='$periode' AND jenis_pengadilan=4  AND hasil_mediasi IN ('Y1','S','Y2') THEN 1 ELSE 0 END) AS berhasil,
 					SUM(CASE WHEN DATE_FORMAT(keputusan_mediasi,'%Y-%m')='$periode' AND jenis_pengadilan=4 AND hasil_mediasi='T' THEN 1 ELSE 0 END) AS tidak_berhasil,
 					SUM(CASE WHEN DATE_FORMAT(keputusan_mediasi,'%Y-%m')='$periode' AND hasil_mediasi='D' THEN 1 ELSE 0 END) AS gagal,
 					SUM(CASE WHEN DATE_FORMAT(dimulai_mediasi,'%Y-%m')='$periode' AND jenis_pengadilan=4 AND (DATE_FORMAT(keputusan_mediasi,'%Y-%m')>'$periode' or hasil_mediasi IS NULL) THEN 1 ELSE 0 END)  AS perkara_proses_mediasi,
