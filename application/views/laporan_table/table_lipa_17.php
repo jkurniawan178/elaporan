@@ -42,17 +42,17 @@
         table.clear();
         // Loop through the received data and create rows for the table
         for (let i = 0; i < data.length; i++) {
-            data[i].eksekusi = parseInt(data[i].pendaftaran_eksekusi) +
-                parseInt(data[i].pendaftaran_eksekusi_ht);
+            data[i].eksekusi = parseFloat(data[i].pendaftaran_eksekusi) +
+                parseFloat(data[i].pendaftaran_eksekusi_ht);
 
             table.row.add([
                 i + 1,
-                addThousandSeparator(parseInt(data[i].pendaftaran)),
-                addThousandSeparator(parseInt(data[i].pendaftaran_banding)),
-                addThousandSeparator(parseInt(data[i].pendaftaran_kasasi)),
-                addThousandSeparator(parseInt(data[i].pendaftaran_pk)),
-                addThousandSeparator(parseInt(data[i].eksekusi)),
-                addThousandSeparator(parseInt(data[i].jumlah))
+                addThousandSeparator(parseFloat(data[i].pendaftaran)),
+                addThousandSeparator(parseFloat(data[i].pendaftaran_banding)),
+                addThousandSeparator(parseFloat(data[i].pendaftaran_kasasi)),
+                addThousandSeparator(parseFloat(data[i].pendaftaran_pk)),
+                addThousandSeparator(parseFloat(data[i].eksekusi)),
+                addThousandSeparator(parseFloat(data[i].jumlah))
             ])
         }
         table.draw();
