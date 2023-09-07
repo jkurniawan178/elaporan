@@ -2193,6 +2193,16 @@ class Laporan_perkara extends CI_Controller
     $objPHPExcel->getActiveSheet()->setCellValue('A3', "BULAN " . strtoupper(pilihbulan($bulan)) . " " . $tahun);
     foreach ($obj as $item) {
       $row = $baseRow + $no;
+      $sisa_g = null;
+      $sisa_p = null;
+
+      if ($item['minutasi_g'] == null && $item['putus_g'] != null) {
+        $sisa_g = 1;
+        $sisa_p = null;
+      } else if ($item['minutasi_p'] == null && $item['putus_p'] != null) {
+        $sisa_p = 1;
+        $sisa_g = null;
+      }
       $objPHPExcel->getActiveSheet()
         ->setCellValue('A' . $row, $no)
         ->setCellValue('B' . $row, $item['nomor_perkara'])
@@ -2201,6 +2211,8 @@ class Laporan_perkara extends CI_Controller
         ->setCellValue('E' . $row, $item['putus_g'])
         ->setCellValue('F' . $row, $item['minutasi_p'])
         ->setCellValue('G' . $row, $item['minutasi_g'])
+        ->setCellValue('H' . $row, $sisa_p)
+        ->setCellValue('I' . $row, $sisa_g)
         ->getRowDimension($row)->setRowHeight(44.5);
       $no++;
     }
