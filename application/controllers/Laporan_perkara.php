@@ -2343,15 +2343,15 @@ class Laporan_perkara extends CI_Controller
         ->setCellValue('C' . $row, $item['kode_perkara'])
         ->setCellValue('D' . $row, str_replace('<br/>', chr(13), str_replace('</br>', chr(13), $item['majelis_hakim'])))
         ->setCellValue('E' . $row, $item['panitera_pengganti'])
-        ->setCellValue('F' . $row, $item['penerimaan'])
-        ->setCellValue('G' . $row, $item['pmh'])
-        ->setCellValue('H' . $row, $item['phs'])
-        ->setCellValue('I' . $row, $item['sidang_pertama'])
-        ->setCellValue('J' . $row, $item['diputus'])
+        ->setCellValue('F' . $row, tgl_dari_mysql($item['penerimaan']))
+        ->setCellValue('G' . $row, tgl_dari_mysql($item['pmh']))
+        ->setCellValue('H' . $row, tgl_dari_mysql($item['phs']))
+        ->setCellValue('I' . $row, tgl_dari_mysql($item['sidang_pertama']))
+        ->setCellValue('J' . $row, tgl_dari_mysql($item['diputus']))
         ->setCellValue('K' . $row, $item['jenis_putusan'])
-        ->setCellValue('L' . $row, ($item['belum_dibagi'] === null ? "" : 'v'))
-        ->setCellValue('M' . $row, ($item['belum_putus'] === null ? "" : 'v'))
-        ->setCellValue('N' . $row, ($item['belum_minutasi'] === null ? "" : 'v'))
+        ->setCellValue('L' . $row, ($item['belum_dibagi'] === null ? "-" : 'v'))
+        ->setCellValue('M' . $row, ($item['belum_putus'] === null ? "-" : 'v'))
+        ->setCellValue('N' . $row, ($item['belum_minutasi'] === null ? "-" : 'v'))
         ->getRowDimension($row)->setRowHeight(45.75);
       $no++;
     }
