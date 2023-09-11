@@ -461,6 +461,7 @@ class Laporan_model extends CI_Model
 					COALESCE((SELECT SUM(jumlah) FROM perkara_biaya WHERE jenis_transaksi='-1' AND DATE_FORMAT(tanggal_transaksi, '%Y-%m') = '$periode'
 					AND tahapan_id<=40),0) AS jumlah_kredit
 				order by urutan";
+		//TODO-tambah saldo
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
 	}
@@ -610,6 +611,7 @@ class Laporan_model extends CI_Model
 		 LEFT JOIN perkara_pk pk ON pk.`perkara_id` = p.`perkara_id`) AS
 		 vpk ON jp.id=vpk.jenis_perkara_id
 		 WHERE (jp.id >=341 AND jp.id<=371) GROUP BY jp.nama ORDER BY jp.id";
+		//TODO-add jumlah per kolom
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
 	}
@@ -689,9 +691,7 @@ class Laporan_model extends CI_Model
 					SUM(CASE WHEN DATE_FORMAT(dimulai_mediasi,'%Y-%m')<'$periode' AND (DATE_FORMAT(keputusan_mediasi,'%Y-%m')>= '$periode' OR hasil_mediasi IS NULL) AND jenis_pengadilan=4 THEN 1 ELSE 0 END) 
 					AS sisa_mediasi_lalu,
 					SUM(CASE WHEN DATE_FORMAT(dimulai_mediasi,'%Y-%m')='$periode' AND jenis_pengadilan=4 THEN 1 ELSE 0 END)  AS perkara_mediasi,
-					SUM(CASE WHEN DATE_FORMAT(keputusan_mediasi,'%Y-%m')='$periode' AND jenis_pengadilan=4  AND hasil_mediasi='Y1' THEN 1 ELSE 0 END) AS berhasil_akta,
-					SUM(CASE WHEN DATE_FORMAT(keputusan_mediasi,'%Y-%m')='$periode' AND jenis_pengadilan=4  AND hasil_mediasi='S' THEN 1 ELSE 0 END) AS berhasil_sebagian,
-					SUM(CASE WHEN DATE_FORMAT(keputusan_mediasi,'%Y-%m')='$periode' AND jenis_pengadilan=4 AND hasil_mediasi='Y2' THEN 1 ELSE 0 END) AS berhasil_cabut,
+					SUM(CASE WHEN DATE_FORMAT(keputusan_mediasi,'%Y-%m')='$periode' AND jenis_pengadilan=4  AND hasil_mediasi IN ('Y1','S','Y2') THEN 1 ELSE 0 END) AS berhasil,
 					SUM(CASE WHEN DATE_FORMAT(keputusan_mediasi,'%Y-%m')='$periode' AND jenis_pengadilan=4 AND hasil_mediasi='T' THEN 1 ELSE 0 END) AS tidak_berhasil,
 					SUM(CASE WHEN DATE_FORMAT(keputusan_mediasi,'%Y-%m')='$periode' AND hasil_mediasi='D' THEN 1 ELSE 0 END) AS gagal,
 					SUM(CASE WHEN DATE_FORMAT(dimulai_mediasi,'%Y-%m')='$periode' AND jenis_pengadilan=4 AND (DATE_FORMAT(keputusan_mediasi,'%Y-%m')>'$periode' or hasil_mediasi IS NULL) THEN 1 ELSE 0 END)  AS perkara_proses_mediasi,
@@ -707,12 +707,12 @@ class Laporan_model extends CI_Model
 	{
 		$periode = $tahun . '-' . $bulan;
 		$sql = "SELECT pac.nomor_akta_cerai,
-				DATE_FORMAT(pac.tgl_akta_cerai, '%d/%m/%Y') AS tgl_terbit_ac,
+				pac.tgl_akta_cerai AS tgl_terbit_ac,
 				pac.no_seri_akta_cerai,
 				vpk.nomor_perkara, 
-				DATE_FORMAT(vpk.tanggal_putusan, '%d/%m/%Y') AS tanggal_putusan,
-				DATE_FORMAT(vpk.tanggal_bht, '%d/%m/%Y') AS tanggal_bht,
-				DATE_FORMAT(pit.tgl_ikrar_talak, '%d/%m/%Y') AS tgl_ikrar_talak
+				vpk.tanggal_putusan AS tanggal_putusan,
+				vpk.tanggal_bht AS tanggal_bht,
+				pit.tgl_ikrar_talak AS tgl_ikrar_talak
 				FROM perkara_akta_cerai pac 
 				LEFT JOIN v_perkara vpk ON pac.perkara_id=vpk.perkara_id
 				LEFT JOIN perkara_ikrar_talak pit ON pac.perkara_id=pit.perkara_id 
@@ -857,10 +857,10 @@ class Laporan_model extends CI_Model
 	{
 		$periode = $tahun . '-' . $bulan;
 		$sql = " SELECT perkara.nomor_perkara, perkara_penetapan.majelis_hakim_text AS majelis_hakim,
-		CASE WHEN perkara.alur_perkara_id =15 OR perkara.alur_perkara_id =17  THEN DATE_FORMAT(perkara_putusan.tanggal_putusan,'%d/%m/%Y') ELSE '' END  AS putus_g,
-		CASE WHEN perkara.alur_perkara_id =16  THEN DATE_FORMAT(perkara_putusan.tanggal_putusan,'%d/%m/%Y') ELSE '' END  AS putus_p,
-		CASE WHEN perkara.alur_perkara_id =15 OR perkara.alur_perkara_id =17 THEN DATE_FORMAT(perkara_putusan.tanggal_minutasi,'%d/%m/%Y') ELSE '' END  AS minutasi_g,
-		CASE WHEN perkara.alur_perkara_id =16  THEN DATE_FORMAT(perkara_putusan.tanggal_minutasi,'%d/%m/%Y') ELSE '' END  AS minutasi_p
+		CASE WHEN perkara.alur_perkara_id =15 OR perkara.alur_perkara_id =17  THEN perkara_putusan.tanggal_putusan ELSE '' END  AS putus_g,
+		CASE WHEN perkara.alur_perkara_id =16  THEN perkara_putusan.tanggal_putusan ELSE '' END  AS putus_p,
+		CASE WHEN perkara.alur_perkara_id =15 OR perkara.alur_perkara_id =17 THEN perkara_putusan.tanggal_minutasi ELSE '' END  AS minutasi_g,
+		CASE WHEN perkara.alur_perkara_id =16  THEN perkara_putusan.tanggal_minutasi ELSE '' END  AS minutasi_p
 		FROM perkara_putusan
 		LEFT JOIN perkara ON perkara.perkara_id=perkara_putusan.perkara_id
 		LEFT JOIN perkara_penetapan ON perkara_penetapan.perkara_id=perkara_putusan.perkara_id
@@ -896,13 +896,13 @@ class Laporan_model extends CI_Model
 		$sql = " SELECT 
 					vpk.nomor_perkara AS nomor_perkara,
 					vpk.jenis_perkara_nama AS kode_perkara,
-					pv.majelis_hakim_nama AS majelis_hakim,
+					pv.majelis_hakim_text AS majelis_hakim,
 					SUBSTRING_INDEX(pv.panitera_pengganti_text,': ',-1) AS panitera_pengganti,
-					DATE_FORMAT(pv.tanggal_pendaftaran_verzet,'%d/%m/%Y') AS penerimaan,
-					DATE_FORMAT(pv.penetapan_majelis_hakim,'%d/%m/%Y') AS pmh,
-					DATE_FORMAT(pv.tanggal_penetapan_sidang_verzet,'%d/%m/%Y') AS phs,
-					DATE_FORMAT(pv.tanggal_sidang_pertama_verzet,'%d/%m/%Y') AS sidang_pertama,
-					DATE_FORMAT(pv.putusan_verzet,'%d/%m/%Y') AS diputus,
+					pv.tanggal_pendaftaran_verzet AS penerimaan,
+					pv.penetapan_majelis_hakim AS pmh,
+					pv.tanggal_penetapan_sidang_verzet AS phs,
+					pv.tanggal_sidang_pertama_verzet AS sidang_pertama,
+					pv.putusan_verzet AS diputus,
 					sp.nama AS jenis_putusan,   
 					CASE WHEN pv.penetapan_majelis_hakim  IS NULL THEN vpk.nomor_perkara  END AS belum_dibagi,
 					CASE WHEN pv.putusan_verzet IS NULL THEN vpk.nomor_perkara END AS belum_putus,
@@ -926,12 +926,12 @@ class Laporan_model extends CI_Model
 							delegasi_masuk.nomor_perkara,
 							REPLACE(SUBSTRING_INDEX(delegasi_masuk.pihak, '<br>', 1), 'Nama  :', '') AS pihak,
 							delegasi_masuk.nomor_surat,
-							DATE_FORMAT(delegasi_masuk.tgl_surat,'%d/%m/%Y') AS tgl_surat,
-							DATE_FORMAT(delegasi_masuk.tgl_sidang,'%d/%m/%Y') AS tgl_sidang,
-							DATE_FORMAT(delegasi_proses_masuk.tgl_surat_diterima,'%d/%m/%Y') AS tgl_surat_diterima,
-							DATE_FORMAT(delegasi_proses_masuk.tgl_penunjukan_jurusita,'%d/%m/%Y') AS tgl_disposisi,
-							DATE_FORMAT(delegasi_proses_masuk.tgl_relaas,'%d/%m/%Y') AS tgl_relaas,
-							DATE_FORMAT(delegasi_proses_masuk.tgl_pengiriman_relaas,'%d/%m/%Y') AS tgl_pengiriman_relaas,
+							delegasi_masuk.tgl_surat AS tgl_surat,
+							delegasi_masuk.tgl_sidang AS tgl_sidang,
+							delegasi_proses_masuk.tgl_surat_diterima AS tgl_surat_diterima,
+							delegasi_proses_masuk.tgl_penunjukan_jurusita AS tgl_disposisi,
+							delegasi_proses_masuk.tgl_relaas AS tgl_relaas,
+							delegasi_proses_masuk.tgl_pengiriman_relaas AS tgl_pengiriman_relaas,
 							delegasi_proses_masuk.jurusita_nama,
 							delegasi_masuk.id_jenis_delegasi       
 						FROM 
@@ -948,12 +948,12 @@ class Laporan_model extends CI_Model
 							delegasi_keluar.nomor_perkara,
 							REPLACE(SUBSTRING_INDEX(delegasi_keluar.pihak, '<br>', 1), 'Nama  :', '') AS pihak,
 							delegasi_keluar.nomor_surat,
-							DATE_FORMAT(delegasi_keluar.tgl_surat,'%d/%m/%Y') AS tgl_surat,
-							DATE_FORMAT(delegasi_keluar.tgl_sidang,'%d/%m/%Y') AS tgl_sidang,
-							DATE_FORMAT(delegasi_proses_keluar.tgl_surat_diterima,'%d/%m/%Y') AS tgl_surat_diterima,
-							DATE_FORMAT(delegasi_proses_keluar.tgl_penunjukan_jurusita,'%d/%m/%Y') AS tgl_disposisi,
-							DATE_FORMAT(delegasi_proses_keluar.tgl_relaas,'%d/%m/%Y') AS tgl_relaas,
-							DATE_FORMAT(delegasi_proses_keluar.tgl_pengiriman_relaas,'%d/%m/%Y') AS tgl_pengiriman_relaas,
+							delegasi_keluar.tgl_surat AS tgl_surat,
+							delegasi_keluar.tgl_sidang AS tgl_sidang,
+							delegasi_proses_keluar.tgl_surat_diterima AS tgl_surat_diterima,
+							delegasi_proses_keluar.tgl_penunjukan_jurusita AS tgl_disposisi,
+							delegasi_proses_keluar.tgl_relaas AS tgl_relaas,
+							delegasi_proses_keluar.tgl_pengiriman_relaas AS tgl_pengiriman_relaas,
 							TRIM(REPLACE(REPLACE(perkara_penetapan.jurusita_text, 'Jurusita:',''), 'Juru Sita Pengganti:','')) AS jurusita_nama,
 							delegasi_keluar.id_jenis_delegasi 
 						FROM 

@@ -8,7 +8,13 @@ function removeThousandSeparator(formattedNumber) {
 
 // Function to add Indonesian thousand separators
 function addThousandSeparator(number) {
-	return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+	if (number == null || number == "0") {
+		return "-";
+	} else {
+		let rawNumber = number.toString().replace(/,|\.00$/g, "");
+		return rawNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+	}
+	// return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
 // Function to format the input value

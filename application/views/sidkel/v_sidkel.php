@@ -28,7 +28,7 @@
                 <div class="x_panel">
                     <div class="x_title">
                         <div class="item form-group">
-                            <label class="col-form-label" for="tahun">
+                            <label class="col-form-label" for="filter">
                                 <h6>Filter :</h6>
                             </label>
                             <div style="min-width: 10rem;" class="ml-2">

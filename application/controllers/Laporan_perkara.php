@@ -60,7 +60,14 @@ class Laporan_perkara extends CI_Controller
             $datahasil = $data['hasil'];
             $rekap = $data['rekapitulasi'];
             $hasil = $this->export_excel_lipa1($datahasil, $rekap, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -76,7 +83,15 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa2($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -92,7 +107,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa3($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -109,7 +131,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa4($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -126,7 +155,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa5($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -142,7 +178,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa6($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -158,7 +201,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa7a($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -174,7 +224,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa7b($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -190,7 +247,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa8($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -206,7 +270,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa9($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -222,7 +293,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa10($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -238,7 +316,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa12($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -254,7 +339,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa13($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -270,7 +362,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa14($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -286,7 +385,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa15($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -302,7 +408,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa16($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -318,7 +431,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa17($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -334,7 +454,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa18($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -350,7 +477,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa19($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -366,7 +500,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa20($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -382,7 +523,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa21($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -400,7 +548,14 @@ class Laporan_perkara extends CI_Controller
             $masuk = $data['delegasi_masuk'];
             $keluar = $data['delegasi_keluar'];
             $hasil = $this->export_excel_lipa22($masuk, $keluar, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -416,7 +571,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa23($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -432,7 +594,14 @@ class Laporan_perkara extends CI_Controller
           if (count($data) != 0) {
             $encoded = json_encode($data);
             $hasil = $this->export_excel_lipa24($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-            echo json_encode($hasil);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
+            echo json_encode($response);
           } else {
             $response = [
               'kode' => '201',
@@ -462,11 +631,8 @@ class Laporan_perkara extends CI_Controller
     $namafile = $tahun . '_' . $bulan . '_' . $jenis_laporan . '.xlsx';
     $file = FCPATH . 'hasil/' . $namafile;
     $objWriter->save($file);
-    $response = [
-      'kode' => '200',
-      'data' => base_url() . 'hasil/' . $namafile
-    ];
-    return $response;
+    $link = base_url() . 'hasil/' . $namafile;
+    return $link;
   }
   //----------------------------------------------------------------------------------------------
   //--------------------------------Function Write Kolom Ttd--------------------------------------
@@ -749,11 +915,11 @@ class Laporan_perkara extends CI_Controller
         ->setCellValue('E' . $row, tgl_dari_mysql($item['permohonan_banding']))
         ->setCellValue('F' . $row, tgl_dari_mysql($item['pbt_inzage_p']) . chr(13) . tgl_dari_mysql($item['pbt_inzage_t']))
         ->setCellValue('G' . $row, tgl_dari_mysql($item['pengiriman_berkas_banding']))
-        ->setCellValue('H' . $row, tgl_dari_mysql(($item['tanggal_cabut'] === null) ? $item['putusan_banding'] : $item['tanggal_cabut']))
+        ->setCellValue('H' . $row, tgl_dari_mysql($item['putusan_banding']))
         ->setCellValue('I' . $row, tgl_dari_mysql($item['penerimaan_kembali_berkas_banding']))
         ->setCellValue('J' . $row, tgl_dari_mysql($item['pbt_banding_p']) . chr(13) . tgl_dari_mysql($item['pbt_banding_t']))
         ->setCellValue('K' . $row,  '')
-        ->setCellValue('L' . $row, ($item['tanggal_cabut'] === null) ? '' : 'cabut')
+        ->setCellValue('L' . $row, ($item['tanggal_cabut'] === null) ? '' : 'cabut tgl : ' . tgl_dari_mysql($item['tanggal_cabut']))
         ->getRowDimension($row)->setRowHeight(46);
 
       //$objPHPExcel->getActiveSheet()->insertNewRowAfter($row); 
@@ -826,10 +992,10 @@ class Laporan_perkara extends CI_Controller
         ->setCellValue('E' . $row, tgl_dari_mysql($item['penerimaan_memori_kasasi']))
         ->setCellValue('F' . $row, tgl_dari_mysql($item['tidak_memenuhi_syarat']))
         ->setCellValue('G' . $row, tgl_dari_mysql($item['pengiriman_berkas_kasasi']))
-        ->setCellValue('H' . $row, tgl_dari_mysql(($item['tanggal_cabut'] === null) ? $item['putusan_kasasi'] : $item['tanggal_cabut']))
+        ->setCellValue('H' . $row, tgl_dari_mysql($item['putusan_kasasi']))
         ->setCellValue('I' . $row, tgl_dari_mysql($item['penerimaan_berkas_kasasi']))
         ->setCellValue('J' . $row, tgl_dari_mysql($item['pbt_putusan_p']) . chr(13) . tgl_dari_mysql($item['pbt_putusan_t']))
-        ->setCellValue('K' . $row, ($item['tanggal_cabut'] !== null) ? 'cabut' : null)
+        ->setCellValue('K' . $row, ($item['tanggal_cabut'] !== null) ? 'cabut tgl: ' . tgl_dari_mysql($item['tanggal_cabut']) : null)
         ->getRowDimension($row)->setRowHeight(35);
 
       //$objPHPExcel->getActiveSheet()->insertNewRowAfter($row); 
@@ -901,10 +1067,10 @@ class Laporan_perkara extends CI_Controller
         ->setCellValue('D' . $row, $item['nomor_putusan_kasasi'])
         ->setCellValue('E' . $row, tgl_dari_mysql($item['permohonan_pk']))
         ->setCellValue('F' . $row, tgl_dari_mysql($item['pengiriman_berkas_pk']))
-        ->setCellValue('G' . $row, tgl_dari_mysql(($item['tanggal_cabut'] === null) ? $item['putusan_pk'] : $item['tanggal_cabut']))
+        ->setCellValue('G' . $row, tgl_dari_mysql($item['putusan_pk']))
         ->setCellValue('H' . $row, tgl_dari_mysql($item['penerimaan_berkas_pk']))
         ->setCellValue('I' . $row, tgl_dari_mysql($item['pbt_pk_p']) . chr(13) . tgl_dari_mysql($item['pbt_pk_t']))
-        ->setCellValue('J' . $row, ($item['tanggal_cabut'] !== null) ? 'cabut' : null)
+        ->setCellValue('J' . $row, ($item['tanggal_cabut'] !== null) ? 'cabut tgl: ' . tgl_dari_mysql($item['tanggal_cabut']) : null)
         ->getRowDimension($row)->setRowHeight(35);
 
       //$objPHPExcel->getActiveSheet()->insertNewRowAfter($row); 
@@ -982,7 +1148,7 @@ class Laporan_perkara extends CI_Controller
         ->setCellValue('J' . $row, tgl_dari_mysql(($item['pelaksanaan_eksekusi_rill']) === '0000-00-00' ? null : $item['pelaksanaan_eksekusi_rill']))
         ->setCellValue('K' . $row, tgl_dari_mysql(($item['penetapan_noneksekusi']) === '0000-00-00' ? null : $item['penetapan_noneksekusi']))
         ->setCellValue('L' . $row, '')
-        ->setCellValue('M' . $row, '')
+        ->setCellValue('M' . $row, $item['alasan'])
         ->setCellValue('N' . $row, '')
         ->getRowDimension($row)->setRowHeight(25);
 
@@ -1518,7 +1684,7 @@ class Laporan_perkara extends CI_Controller
         ->setCellValue('D' . $row, intval($item['sisa_lalu']) + intval($item['diterima_bulan_ini']) - $perkara_mediasi)
         ->setCellValue('E' . $row, $perkara_mediasi)
         ->setCellValue('F' . $row, $item['tidak_berhasil'])
-        ->setCellValue('G' . $row, intval($item['berhasil_akta']) + intval($item['berhasil_sebagian']) + intval($item['berhasil_cabut']))
+        ->setCellValue('G' . $row, $item['berhasil'])
         ->setCellValue('H' . $row, $item['gagal'])
         ->setCellValue('I' . $row, $item['perkara_proses_mediasi'])
         ->setCellValue('J' . $row, intval($item['sisa_lalu']) + intval($item['diterima_bulan_ini']) - intval($item['putus_bulan_ini']))
@@ -1586,12 +1752,12 @@ class Laporan_perkara extends CI_Controller
       $objPHPExcel->getActiveSheet()
         ->setCellValue('A' . $row, $no)
         ->setCellValue('B' . $row, $item['nomor_akta_cerai'])
-        ->setCellValue('C' . $row, $item['tgl_terbit_ac'])
+        ->setCellValue('C' . $row, tgl_dari_mysql($item['tgl_terbit_ac']))
         ->setCellValue('D' . $row, $item['no_seri_akta_cerai'])
         ->setCellValue('E' . $row, $item['nomor_perkara'])
-        ->setCellValue('F' . $row, $item['tanggal_putusan'])
-        ->setCellValue('G' . $row, $item['tanggal_bht'])
-        ->setCellValue('H' . $row, ($item['tgl_ikrar_talak'] == null ? '-' : $item['tgl_ikrar_talak']))
+        ->setCellValue('F' . $row, tgl_dari_mysql($item['tanggal_putusan']))
+        ->setCellValue('G' . $row, tgl_dari_mysql($item['tanggal_bht']))
+        ->setCellValue('H' . $row, ($item['tgl_ikrar_talak'] == null ? '-' : tgl_dari_mysql($item['tgl_ikrar_talak'])))
         ->setCellValue('I' . $row, '-')
         ->getRowDimension($row)->setRowHeight(19.80);
 
@@ -2027,14 +2193,26 @@ class Laporan_perkara extends CI_Controller
     $objPHPExcel->getActiveSheet()->setCellValue('A3', "BULAN " . strtoupper(pilihbulan($bulan)) . " " . $tahun);
     foreach ($obj as $item) {
       $row = $baseRow + $no;
+      $sisa_g = null;
+      $sisa_p = null;
+
+      if ($item['minutasi_g'] == null && $item['putus_g'] != null) {
+        $sisa_g = 1;
+        $sisa_p = null;
+      } else if ($item['minutasi_p'] == null && $item['putus_p'] != null) {
+        $sisa_p = 1;
+        $sisa_g = null;
+      }
       $objPHPExcel->getActiveSheet()
         ->setCellValue('A' . $row, $no)
         ->setCellValue('B' . $row, $item['nomor_perkara'])
         ->setCellValue('C' . $row, str_replace('<br/>', chr(13), str_replace('</br>', chr(13), $item['majelis_hakim'])))
-        ->setCellValue('D' . $row, ($item['putus_p']))
-        ->setCellValue('E' . $row, $item['putus_g'])
-        ->setCellValue('F' . $row, $item['minutasi_p'])
-        ->setCellValue('G' . $row, $item['minutasi_g'])
+        ->setCellValue('D' . $row, tgl_dari_mysql($item['putus_p']))
+        ->setCellValue('E' . $row, tgl_dari_mysql($item['putus_g']))
+        ->setCellValue('F' . $row, tgl_dari_mysql($item['minutasi_p']))
+        ->setCellValue('G' . $row, tgl_dari_mysql($item['minutasi_g']))
+        ->setCellValue('H' . $row, $sisa_p)
+        ->setCellValue('I' . $row, $sisa_g)
         ->getRowDimension($row)->setRowHeight(44.5);
       $no++;
     }
@@ -2165,15 +2343,15 @@ class Laporan_perkara extends CI_Controller
         ->setCellValue('C' . $row, $item['kode_perkara'])
         ->setCellValue('D' . $row, str_replace('<br/>', chr(13), str_replace('</br>', chr(13), $item['majelis_hakim'])))
         ->setCellValue('E' . $row, $item['panitera_pengganti'])
-        ->setCellValue('F' . $row, $item['penerimaan'])
-        ->setCellValue('G' . $row, $item['pmh'])
-        ->setCellValue('H' . $row, $item['phs'])
-        ->setCellValue('I' . $row, $item['sidang_pertama'])
-        ->setCellValue('J' . $row, $item['diputus'])
+        ->setCellValue('F' . $row, tgl_dari_mysql($item['penerimaan']))
+        ->setCellValue('G' . $row, tgl_dari_mysql($item['pmh']))
+        ->setCellValue('H' . $row, tgl_dari_mysql($item['phs']))
+        ->setCellValue('I' . $row, tgl_dari_mysql($item['sidang_pertama']))
+        ->setCellValue('J' . $row, tgl_dari_mysql($item['diputus']))
         ->setCellValue('K' . $row, $item['jenis_putusan'])
-        ->setCellValue('L' . $row, ($item['belum_dibagi'] === null ? "" : 'v'))
-        ->setCellValue('M' . $row, ($item['belum_putus'] === null ? "" : 'v'))
-        ->setCellValue('N' . $row, ($item['belum_minutasi'] === null ? "" : 'v'))
+        ->setCellValue('L' . $row, ($item['belum_dibagi'] === null ? "-" : 'v'))
+        ->setCellValue('M' . $row, ($item['belum_putus'] === null ? "-" : 'v'))
+        ->setCellValue('N' . $row, ($item['belum_minutasi'] === null ? "-" : 'v'))
         ->getRowDimension($row)->setRowHeight(45.75);
       $no++;
     }
@@ -2243,12 +2421,12 @@ class Laporan_perkara extends CI_Controller
         ->setCellValue('C' . $row, $item->nomor_perkara)
         ->setCellValue('D' . $row, $item->pihak)
         ->setCellValue('E' . $row, $item->nomor_surat)
-        ->setCellValue('F' . $row, $item->tgl_surat)
-        ->setCellValue('G' . $row, $item->tgl_sidang)
-        ->setCellValue('H' . $row, $item->tgl_surat_diterima)
-        ->setCellValue('I' . $row, $item->tgl_disposisi)
-        ->setCellValue('J' . $row, $item->tgl_relaas)
-        ->setCellValue('K' . $row, $item->tgl_pengiriman_relaas)
+        ->setCellValue('F' . $row, tgl_dari_mysql($item->tgl_surat))
+        ->setCellValue('G' . $row, tgl_dari_mysql($item->tgl_sidang))
+        ->setCellValue('H' . $row, tgl_dari_mysql($item->tgl_surat_diterima))
+        ->setCellValue('I' . $row, tgl_dari_mysql($item->tgl_disposisi))
+        ->setCellValue('J' . $row, tgl_dari_mysql($item->tgl_relaas))
+        ->setCellValue('K' . $row, tgl_dari_mysql($item->tgl_pengiriman_relaas))
         ->setCellValue('L' . $row, $item->jurusita_nama)
         ->setCellValue('M' . $row, kode_delegasi($item->id_jenis_delegasi))
         ->getRowDimension($row)->setRowHeight(-1);

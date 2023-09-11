@@ -3,19 +3,19 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Tambah Laporan Pelaksanaan Sidang Keliling</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Tambah Laporan Pelaksanaan Prodeo</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form id="add_form" action="<?php echo base_url() . 'LIPA_15/prodeo/tambah_aksi' ?>" method="post" class="form-horizontal form-label-left needs-validation" novalidate>
                 <div class="modal-body">
-                    <div class="item form-group">
-                        <label id="periode_label" class="col-form-label col-md-2 col-sm-2 label-align" for="bulan_modal">Periode <span class="required text-danger">*</span>
+                    <div class="row form-group">
+                        <label id="periode_label" class="col-form-label col-md-2 d-flex justify-content-md-end" for="bulan_modal">Periode <span class="required text-danger">*</span>
                         </label>
-                        <div class="col-md-10 col-sm-10">
+                        <div id="periode_item" class="col-md-10">
                             <div class="row">
-                                <div class="col-md-6 col-sm-6 ">
+                                <div class="col-md-6 mb-2 mb-md-0 ">
                                     <select class="form-control" name="bulan_modal" id="bulan_modal" style="padding:8px 0;">
                                         <?php for ($i = 1; $i <= 12; $i++) { ?>
                                             <option value="<?php if (strlen($i) == 2) {
@@ -32,7 +32,7 @@
                                     </div>
                                     <input type="hidden" name="bulan_hidden" id="bulan_hidden" value="">
                                 </div>
-                                <div class="col-md-3 col-sm-3">
+                                <div id="tahun_item" class="col-md-3 mb-2 mb-md-0">
                                     <select class="form-control" name="tahun_modal" id="tahun_modal" style="padding:8px 0;">
                                         <?php $thn1 = date("Y");
                                         $thn2 = 2015;
@@ -45,7 +45,7 @@
                                     </select>
                                     <input type="hidden" name="tahun_hidden" id="tahun_hidden" value="">
                                 </div>
-                                <div class="col-md-1 col-sm-1">
+                                <div class="col-md-1">
                                     <button type="button" id="btn_cek" class="btn btn-info">Cek</button>
                                 </div>
                             </div>
@@ -53,27 +53,27 @@
                     </div>
 
                     <div id="form_hide" style="display: none;">
-                        <div class="item form-group">
-                            <label for="pagu_awal" class="col-form-label col-md-4 col-sm-4 label-align">Pagu Awal<span class="required text-danger">*</span></label>
-                            <div class="col-md-8 col-md-8 input-group mb-2">
+                        <div class="row form-group">
+                            <label for="pagu_awal" class="col-form-label col-md-4 d-flex justify-content-md-end">Pagu Awal<span class="required text-danger">*</span></label>
+                            <div class="col-md-8 input-group mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Rp.</div>
                                 </div>
                                 <input type="text" id="pagu_awal" name="pagu_awal" disabled class="form-control">
                             </div>
                         </div>
-                        <div class="item form-group">
-                            <label for="sisa_pagu" class="col-form-label col-md-4 col-sm-4 label-align">Sisa Pagu<span class="required text-danger">*</span></label>
-                            <div class="col-md-8 col-md-8 input-group mb-2">
+                        <div class="row form-group">
+                            <label for="sisa_pagu" class="col-form-label col-md-4 d-flex justify-content-md-end">Sisa Pagu<span class="required text-danger">*</span></label>
+                            <div class="col-md-8 input-group mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Rp.</div>
                                 </div>
                                 <input type="text" id="sisa_pagu" name="sisa_pagu" disabled class="form-control">
                             </div>
                         </div>
-                        <div class="item form-group">
-                            <label for="realisasi" class="col-form-label col-md-4 col-sm-4 label-align">Realisasi Bulan Ini<span class="required text-danger">*</span></label>
-                            <div class="col-md-8 col-md-8 input-group mb-2">
+                        <div class="row form-group">
+                            <label for="realisasi" class="col-form-label col-md-4 d-flex justify-content-md-end">Realisasi Bulan Ini<span class="required text-danger">*</span></label>
+                            <div class="col-md-8 input-group mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Rp.</div>
                                 </div>
@@ -83,20 +83,23 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="item form-group">
-                            <label for="jml_perkara" class="col-form-label col-md-4 col-sm-4 label-align">Jumlah Perkara<span class="required text-danger">*</span></label>
-                            <div class="col-md-8 col-md-8">
+                        <div class="row form-group">
+                            <label for="jml_perkara" class="col-form-label col-md-4 d-flex justify-content-md-end">Jumlah Perkara<span class="required text-danger">*</span></label>
+                            <div class="col-md-8">
                                 <input type="number" id="jml_perkara" name="jml_perkara" required="required" class="form-control">
                                 <div class="invalid-feedback">
                                     Silahkan input Jumlah Perkara yang Benar
                                 </div>
                             </div>
                         </div>
-                        <div class="item form-group">
-                            <label for="keterangan" class="col-form-label col-md-4 col-sm-4 label-align">Keterangan</label>
-                            <div class="col-md-8 col-md-8">
+                        <div class="row form-group">
+                            <label for="keterangan" class="col-form-label col-md-4 d-flex justify-content-md-end">Keterangan</label>
+                            <div class="col-md-8">
                                 <input type="text" id="keterangan" name="keterangan" class="form-control">
                             </div>
+                        </div>
+                        <div class="item form-group pt-3">
+                            <div class="text-danger">* Isian harus dilengkapi, tidak boleh kosong!</div>
                         </div>
                     </div>
                 </div>
@@ -123,7 +126,9 @@
             $('#jml_perkara').val('');
             $('#keterangan').val('');
             $('#add_form').removeClass('was-validated')
-            $('#periode_label').removeClass('col-md-4').removeClass('col-sm-4').addClass('col-md-2').addClass('col-sm-2');
+            $('#periode_label').removeClass('col-md-4').addClass('col-md-2');
+            $('#periode_item').removeClass('col-md-8').addClass('col-md-10');
+            $('#tahun_item').removeClass('col-md-6').addClass('col-md-3');
         })
 
         //---------------------------hidden input field (Add Modal) Handle script -------------
@@ -164,7 +169,9 @@
                 success: function(data) {
                     if (data.kode == "200") {
                         $('#bulan_modal').removeClass('is-invalid').addClass('is-valid');
-                        $('#periode_label').removeClass('col-md-2').removeClass('col-sm-2').addClass('col-md-4').addClass('col-sm-4');
+                        $('#periode_label').removeClass('col-md-2').addClass('col-md-4');
+                        $('#periode_item').removeClass('col-md-10').addClass('col-md-8');
+                        $('#tahun_item').removeClass('col-md-3').addClass('col-md-6');
                         $('#form_hide').show();
                         $('#btn_simpan').prop('disabled', false);
                         $('#btn_cek').hide();

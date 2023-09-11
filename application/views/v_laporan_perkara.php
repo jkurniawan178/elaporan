@@ -11,15 +11,15 @@
 			<div class="col-md-12 col-sm-12 ">
 				<div class="x_panel">
 					<div class="x_title">
-						<h2>Cetak Laporan <small>Silahkan Pilih Jenis, Periode dan Tanggal Laporan</small></h2>
+						<h2>Cetak Laporan <small>Pilih Jenis, Periode dan Tanggal Laporan</small></h2>
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
 						<br />
 						<form id="form-laporan" data-parsley-validate class="form-horizontal form-label-left">
-							<div class="item form-group">
-								<label class="col-form-label col-md-3 col-sm-3 label-align">Jenis Laporan</label>
-								<div class="col-md-8 col-sm-8 ">
+							<div class="form-group row">
+								<label class="col-form-label col-md-3 col-sm-3 d-flex justify-content-md-end" for="jenis_laporan">Jenis Laporan <span class="required text-danger">*</span></label>
+								<div class="col-md-8 col-sm-8">
 									<select class="form-control" id="jenis_laporan">
 										<option value="-" disabled selected>====== Silahkan Pilih Jenis Laporan ======</option>
 										<option value="lipa_1">LAPORAN KEADAAN PERKARA (LIPA.1) </option>
@@ -51,12 +51,12 @@
 									</select>
 								</div>
 							</div>
-							<div class="item form-group">
-								<label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Periode <span class="required">*</span>
+							<div class="form-group row">
+								<label class="col-form-label col-md-3 col-sm-3 d-flex justify-content-md-end" for="bulan">Periode <span class="required text-danger">*</span>
 								</label>
 								<div class="col-md-8 col-sm-8">
 									<div class="row">
-										<div class="col-md-3 col-sm-4 ">
+										<div class="col-md-3 col-sm-4 mb-2 mb-md-0">
 											<select class="form-control" name="bulan" id="bulan" style="padding:8px 0;">
 												<?php for ($i = 1; $i <= 12; $i++) { ?>
 													<option value="<?php if (strlen($i) == 2) {
@@ -84,13 +84,13 @@
 									</div>
 								</div>
 							</div>
-							<div class="item form-group">
-								<label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Tanggal Laporan</label>
-								<fieldset>
+							<div class="form-group row">
+								<label for="date_lapor" class="col-form-label col-md-3 col-sm-3 d-flex justify-content-md-end">Tanggal Laporan<span class="required text-danger">*</span></label>
+								<fieldset class="col-md-5 col-sm-5">
 									<div class="control-group">
 										<div class="controls">
-											<div class="col-md-11 xdisplay_inputx form-group row has-feedback">
-												<input type="text" class="form-control has-feedback-left" id="date_lapor" placeholder="First Name" aria-describedby="inputSuccess2Status2">
+											<div class="xdisplay_inputx form-group row has-feedback">
+												<input type="text" class="form-control has-feedback-left" id="date_lapor" placeholder="Tanggal laporan" aria-describedby="inputSuccess2Status2">
 												<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
 												<span id="inputSuccess2Status2" class="sr-only">(success)</span>
 											</div>
@@ -122,45 +122,19 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
-						<br />
 						<form id="form-verifikasi" data-parsley-validate class="form-horizontal form-label-left">
 							<div class="item form-group">
 								<a href="#" id="btn-download-laporan" class="btn btn-primary pull-right btn-sm"><i class="fa fa-download"></i> Download Laporan</a>
 								<!-- <button type="button" class="btn btn-info btn-sm" style="display: none;">Verifikasi Laporan</button> -->
 							</div>
 						</form>
-						<div class="ln_solid"></div>
-						<!-- <div>
-							<h2 class="text-center">PREVIEW LAPORAN YANG DIMOHONKAN BANDING</h2>
-							<h2 class="text-center">PADA PENGADILAN AGAMA TERNATE</h2>
-							<h2 class="text-center">BULAN JANUARI 2023</h2>
-							<h4 class="text-right">Lipa.2</h4>
-							<table class="table table table-bordered text-center">
-								<col>
-								<col>
-								<col>
-								<colgroup span="8"></colgroup>
-								<thead class="table-success">
-									<tr>
-										<th scope="col" rowspan="2">No</th>
-										<th scope="col" rowspan="2">Nomor Perkara PA</th>
-										<th scope="col" rowspan="2">Nama Majelis Hakim</th>
-										<th colspan="8" scope="colgroup">Tanggal</th>
-										<th scope="col" rowspan="2">Ket</th>
-									</tr>
-									<tr>
-										<th scope="col">Putusan PA</th>
-										<th scope="col">Permohonan Banding</th>
-										<th scope="col">Pemberitahuan Inzage</th>
-										<th scope="col">Pengiriman Berkas PTA</th>
-										<th scope="col">Putusan Banding</th>
-										<th scope="col">Penerimaan Kembali di PA</th>
-										<th scope="col">Pemberitahuan ke Para Pihak</th>
-										<th scope="col">Penyampaian Fotocopy Relas PBT ke PTA</th>
-									</tr>
-								</thead>
-								<tbody id="show_data"></tbody>
-							</table> -->
+						<div class="ln_solid my-1"></div>
+
+						<h2 class="text-center" id="judul_laporan"></h2>
+						<h2 class="text-center" id="nama_pengadilan"></h2>
+						<h2 class="text-center" id="periode_laporan"></h2>
+
+						<div id="table-content"></div>
 					</div>
 				</div>
 			</div>
@@ -172,9 +146,14 @@
 
 <!-- jQuery -->
 <script src="<?php echo base_url() ?>resources/jquery/dist/jquery.min.js"></script>
+<script src="<?php echo base_url() ?>resources/js/helper.js"></script>
+<script src="<?php echo base_url() ?>resources/js/thousandSeparator.js"></script>
+<!-- <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script> -->
+
 
 <script type="text/javascript">
 	$(document).ready(function() {
+		//datetime picker
 		const formatDate = 'DD/MM/YYYY'
 		$("#date_lapor").daterangepicker({
 				singleDatePicker: true,
@@ -187,13 +166,18 @@
 				// console.log(start.toISOString(), end.toISOString());
 			}
 		);
+
 		$('#btn_generate').on('click', function() {
-			var jenis_laporan = $('#jenis_laporan').val();
-			var bulan = $('#bulan').val();
-			var tahun = $('#tahun').val();
-			var tanggal_laporan = $('#date_lapor').val();
+			const jenis_laporan = $('#jenis_laporan').val();
+			const bulan = $('#bulan').val();
+			const tahun = $('#tahun').val();
+			const tanggal_laporan = $('#date_lapor').val();
+			const jenis_text = $('#jenis_laporan option:selected').text();
+			const nama_PA = $('#nama_PA').text();
 			$('#btn-download-laporan').attr("href", '')
 			$('#panel-verifikasi').hide();
+
+
 			$.ajax({
 				type: "POST",
 				url: "<?php echo base_url('index.php/laporan_perkara/get_lipa') ?>",
@@ -207,18 +191,24 @@
 				beforeSend: function() {
 					$('#spinner').show();
 				},
-				success: function(data) {
-					if (data.kode == "200") {
+				success: function(response) {
+					if (response.kode == "200") {
 						var jenis = jenis_laporan.replace("_", " ").toUpperCase();
 						$('#panel-verifikasi').show();
-						$('#btn-download-laporan').attr("href", data.data)
-						$('#preview_laporan').html('Preview Laporan ' + jenis + '<small>Periksa Laporan Terlebih Dahulu Sebelum anda verifikasi</small>');
-					} else if (data.kode == "201" || data.kode == '202') {
-						//create something here
-						// alert(data.data)
+						$('#btn-download-laporan').attr("href", response.link)
+						$('#preview_laporan').html('Preview Laporan ' + jenis + ' Periode ' + pilihBulan(bulan) + ' ' + tahun + '<small>Periksa Laporan Terlebih Dahulu Sebelum anda verifikasi</small>');
+
+						//table view
+						$('#judul_laporan').text(jenis_text);
+						$('#nama_pengadilan').text(`PADA ${nama_PA.toUpperCase()}`);
+						$('#periode_laporan').text(`PERIODE ${pilihBulan(bulan).toUpperCase()} ${tahun}`);
+						$('#kode_lipa').text(jenis_laporan);
+						$('#table-content').html(response.table);
+						generateTableRows(response.data);
+					} else if (response.kode == "201" || response.kode == '202') {
 						iziToast.error({
 							title: 'Error!',
-							message: data.data,
+							message: response.data,
 							position: 'topCenter'
 						});
 					}

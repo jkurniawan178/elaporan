@@ -10,8 +10,8 @@
             </div>
             <form id="add_form" action="<?php echo base_url() . 'LIPA_24/elitigasi/tambah_aksi'; ?>" method="post" class="form-horizontal form-label-left needs-validation" novalidate>
                 <div class="modal-body">
-                    <div class="item form-group">
-                        <label for="lokasi" class="col-form-label col-md-3 col-sm-3 label-align">Nomor Perkara <span class="required text-danger">*</span></label>
+                    <div class="row form-group">
+                        <label for="nomor_perkara" class="col-form-label col-md-3 col-sm-3 d-flex justify-content-md-end">Nomor Perkara <span class="required text-danger">*</span></label>
                         <div class="col-md-8 col-md-8">
                             <input type="search" id="nomor_perkara" name="nomor_perkara" required class="form-control" placeholder="Cari nomor perkara...">
                             <div class="invalid-feedback">

@@ -10,10 +10,10 @@
             </div>
             <form id="add_form" action="<?php echo base_url() . 'LIPA_7/saldo_awal/tambah_aksi'; ?>" method="post" class="form-horizontal form-label-left needs-validation" novalidate>
                 <div class="modal-body">
-                    <div class="item form-group">
-                        <label class="col-form-label col-md-4 col-sm-4 label-align" for="tahun">Tahun<span class="required text-danger">*</span>
+                    <div class="row form-group">
+                        <label class="col-form-label col-md-4 d-flex justify-content-md-end" for="tahun">Tahun<span class="required text-danger">*</span>
                         </label>
-                        <div class="col-md-8 col-md-8">
+                        <div class="col-md-8">
                             <select class="form-control" name="tahun" id="tahun" required style="padding:8px 0;">
                                 <?php $thn1 = date("Y");
                                 $thn2 = 2015;
@@ -26,9 +26,9 @@
                             </select>
                         </div>
                     </div>
-                    <div class="item form-group">
-                        <label for="awal_7a" class="col-form-label col-md-4 col-sm-4 label-align">Saldo Awal LIPA 7.A <span class="required text-danger">*</span></label>
-                        <div class="col-md-8 col-md-8 input-group mb-2">
+                    <div class="row form-group">
+                        <label for="awal_7a" class="col-form-label col-md-4 d-flex justify-content-md-end">Saldo Awal LIPA 7.A <span class="required text-danger">*</span></label>
+                        <div class="col-md-8 input-group mb-2">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Rp.</div>
                             </div>
@@ -38,9 +38,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="item form-group">
-                        <label for="awal_7b" class="col-form-label col-md-4 col-sm-4 label-align">Saldo Awal LIPA 7.B <span class="required text-danger">*</span></label>
-                        <div class="col-md-8 col-md-8 input-group mb-2">
+                    <div class="row form-group">
+                        <label for="awal_7b" class="col-form-label col-md-4 d-flex justify-content-md-end">Saldo Awal LIPA 7.B <span class="required text-danger">*</span></label>
+                        <div class="col-md-8 input-group mb-2">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Rp.</div>
                             </div>
@@ -50,8 +50,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="item form-group">
-                        <label for="awal_7c" class="col-form-label col-md-4 col-sm-4 label-align">Saldo Awal LIPA 7.C <span class="required text-danger">*</span></label>
+                    <div class="row form-group">
+                        <label for="awal_7c" class="col-form-label col-md-4 d-flex justify-content-md-end">Saldo Awal LIPA 7.C <span class="required text-danger">*</span></label>
                         <div class="col-md-8 col-md-8 input-group mb-2">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Rp.</div>
@@ -62,14 +62,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="item form-group">
-                        <label for="keterangan" class="col-form-label col-md-4 col-sm-4 label-align">Keterangan</label>
-                        <div class="col-md-8 col-md-8">
+                    <div class="row form-group">
+                        <label for="keterangan" class="col-form-label col-md-4 d-flex justify-content-md-end">Keterangan</label>
+                        <div class="col-md-8">
                             <input type="text" id="keterangan" name="keterangan" class="form-control">
                         </div>
                     </div>
                     <div class="item form-group pt-3">
-                        <label class="text-danger">* Isian harus dilengkapi, tidak boleh kosong!</label>
+                        <div class="text-danger">* Isian harus dilengkapi, tidak boleh kosong!</div>
                     </div>
                 </div>
                 <div class="modal-footer">
