@@ -58,3 +58,62 @@ function formatDate(dateString) {
 		return `${day}/${month}/${year}`;
 	}
 }
+
+function jenisDelegasi(kodeDelegasi) {
+	switch (kodeDelegasi) {
+		case "1":
+			return "Panggilan";
+			break;
+		case "2":
+			return "Pemberitahuan";
+			break;
+		case "3":
+			return "Pbt Akta Bdg";
+			break;
+		case "4":
+			return "Pbt Mem Bdg";
+			break;
+		case "5":
+			return "Pbt Inz Bdg";
+			break;
+		case "6":
+			return "Pbt Put Bdg";
+			break;
+		case "7":
+			return "Pbt Akta Kas";
+			break;
+		case "8":
+			return "Pbt Mem Kas";
+			break;
+		case "9":
+			return "Pbt Kon Mem Kas";
+			break;
+		case "10":
+			return "Pbt Put Kas";
+			break;
+		case "11":
+			return "Pbt Akta PK";
+			break;
+		case "12":
+			return "Pbt Mem PK";
+			break;
+		case "13":
+			return "Pbt Kon Mem PK";
+			break;
+		case "14":
+			return "Pbt Put PK";
+			break;
+		case "15":
+			return "Lain-Lain";
+			break;
+		case "16":
+			return "Pbt Kon Mem Bdg";
+			break;
+		case "17":
+			return "Penawaran Konsinyasi";
+			break;
+		default:
+			return "";
+			break;
+	}
+}
