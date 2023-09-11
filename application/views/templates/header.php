@@ -7,26 +7,25 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="images/favicon.ico" type="image/ico" />
+  <link rel="icon" href="<?php echo base_url() ?>resources/images/favicon.ico" type="image/ico" />
 
   <title>E-Laporan</title>
 
+  <!-- iziToast CSS -->
+  <link href="<?php echo base_url() ?>resources/iziToast/dist/css/iziToast.css" rel="stylesheet">
   <!-- Bootstrap -->
   <link href="<?php echo base_url() ?>resources/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome -->
   <link href="<?php echo base_url() ?>resources/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-  <!-- NProgress -->
-  <link href="<?php echo base_url() ?>resources/nprogress/nprogress.css" rel="stylesheet">
-  <!-- iCheck -->
-  <link href="<?php echo base_url() ?>resources/iCheck/skins/flat/green.css" rel="stylesheet">
-
-  <!-- bootstrap-progressbar -->
-  <link href="<?php echo base_url() ?>resources/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-  <!-- JQVMap -->
-  <link href="<?php echo base_url() ?>resources/jqvmap/dist/jqvmap.min.css" rel="stylesheet" />
+  <!-- Datatables -->
+  <!-- Custom styles for this page -->
+  <link href="<?php echo base_url() ?>resources/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>resources/datatables-responsive/css/responsive.dataTables.min.css">
   <!-- bootstrap-daterangepicker -->
   <link href="<?php echo base_url() ?>resources/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-
   <!-- Custom Theme Style -->
-  <link href="<?php echo base_url() ?>resources/css/custom.min.css" rel="stylesheet">
+  <link href="<?php echo base_url() ?>resources/css/custom.css" rel="stylesheet">
+  <link rel="stylesheet" href="<?php echo base_url() ?>resources/autocomplete/jquery-ui.css">
+  <link href="<?php echo base_url() ?>resources/autocomplete/jquery-ui-custom.css" rel="stylesheet">
+
 </head>

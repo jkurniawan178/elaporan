@@ -1,0 +1,42 @@
+/* .autocomplete-suggestions {
+	border: 1px solid #999;
+	background: #fff;
+	overflow: auto;
+	border-radius: 5px;
+}
+.autocomplete-suggestion {
+	padding: 2px 5px;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.autocomplete-selected {
+	background: #f0f0f0;
+}
+.autocomplete-suggestions strong {
+	font-weight: normal;
+	color: #3399ff;
+} */
+
+.ui-autocomplete {
+	position: absolute;
+	top: 100%; /* Atur posisi autocomplete dibawah input */
+	left: 0;
+	cursor: default;
+	z-index: 9999; /* Nilai z-index yang lebih tinggi dari modal */
+	border: 1px solid #999;
+	background: #fff;
+	overflow: auto;
+	border-radius: 5px;
+}
+
+/* .ui-autocomplete-loading {
+    background: white url("images/ui-anim_basic_16x16.gif") right center no-repeat;
+  } */
+
+.ui-autocomplete .ui-menu-item {
+	padding: 2px 5px;
+	white-space: nowrap;
+	overflow: hidden;
+	font-size: 1rem;
+	color: #495057;
+}

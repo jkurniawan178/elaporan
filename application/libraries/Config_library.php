@@ -109,7 +109,7 @@ class Config_library
     $settingSIPP = array(
       'KodePN' => $KodePN, 'NamaPN' => $NamaPN, 'AlamatPN' => $AlamatPN,
       'KetuaPNNIP' => $KetuaPNNIP, 'KetuaPNNama' => $KetuaPNNama, 'PanSekNama' => $PanSekNama,
-      'PanSekNIP' => $PanSekNIP
+      'PanSekNIP' => $PanSekNIP, 'NamaPT' => $NamaPT
     );
     return $settingSIPP;
   }
