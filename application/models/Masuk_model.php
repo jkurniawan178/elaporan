@@ -32,12 +32,42 @@ class Masuk_model extends CI_Model
     return $q;
   }
 
-  public function sequrity()
+  public function sequrity($menu)
   {
     if ($this->session->userdata('userid') == NULL or $this->session->userdata('userid') == "") {
       $this->session->sess_destroy();
       redirect('masuk');
     } else {
+      $group_id = $this->session->userdata('group_id');
+
+      if ($group_id <= '10' || $group_id == '30' || $group_id == '430') { // Admin, Ketua, Wakil, Panitera, panmud hukum
+        // Admin, Ketua, Wakil, Panitera
+      } else if ($group_id == '431' || $group_id == '1003') { //Staff panmud hukum, meja 3 gugatan
+        if ($menu == 'mn_saldo') {
+          redirect('error/forbidden');
+        }
+      } else if ($group_id == '20' || $group_id == '1000' || $group_id == '1010' || $group_id == '1020' || $group_id == '500') // Hakim, Panmud, PP
+      {
+        if ($menu == 'mn_saldo' || $menu == 'mn_pagu' || $menu == 'mn_input') {
+          redirect('error/forbidden');
+        }
+      } else if ($group_id == '702') { // KASIR
+
+        if ($menu == 'mn_pagu' || $menu == 'mn_input') {
+          redirect('error/forbidden');
+        }
+      } else {
+        $this->session->sess_destroy();
+        redirect('masuk');
+        return;
+      }
+    }
+  }
+
+  // ------------------------------------------------------------------------
+  public function getMenu()
+  {
+    if ($this->session->userdata('userid') != NULL or $this->session->userdata('userid') != "") {
       //set menu berdasarkan user
       $menu = array(
         'mn_pagu' => true,
@@ -61,10 +91,7 @@ class Masuk_model extends CI_Model
         $menu['mn_input'] = false;
         $menu['mn_pagu'] = false;
       } else {
-        $this->session->set_flashdata('error_msg', '<div class="alert alert-danger alert-dismissible fade in show mt-2 text-center">Anda Tidak Memiliki Akses
-                                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                      </button></div>');
+        $this->session->sess_destroy();
         redirect('masuk');
         return;
       }
@@ -72,9 +99,6 @@ class Masuk_model extends CI_Model
       return $menu;
     }
   }
-
-  // ------------------------------------------------------------------------
-
 
   // ------------------------------------------------------------------------
   public function index()

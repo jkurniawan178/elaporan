@@ -31,7 +31,8 @@ class Saldo_awal extends CI_Controller
 
   public function index()
   {
-    $menu = $this->masuk_model->sequrity();
+    $this->masuk_model->sequrity('mn_saldo');
+    $menu = $this->masuk_model->getMenu();
     $data['menu'] = $menu;
     $data['contents'] = 'saldo_awal/v_saldo_awal';
     $data['saldo_awal'] = $this->keuangan_model->getSaldoAwalAll();
