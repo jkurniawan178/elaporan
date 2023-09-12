@@ -37,7 +37,7 @@
         </li>
       <?php } ?>
       <?php if ($menu['mn_saldo']) { ?>
-        <li><a href="<?php echo site_url() ?>LIPA_7/Saldo_Awal"><i class="fa fa-money"></i> Saldo Awal</span></a>
+        <li><a href="<?php echo site_url() ?>LIPA_7/saldo_awal"><i class="fa fa-money"></i> Saldo Awal</span></a>
           <!-- TODO-Tambah menu untuk menyimpan data saldo bank dan cash -->
         </li>
       <?php } ?>
