@@ -94,7 +94,7 @@
     </div>
 
     <div class="footer">
-        <p>Hak Cipta © Pengadilan Tinggi Agama Maluku Utara 2023</p>
+        <p>Hak Cipta © Pengadilan Agama Ternate 2023</p>
     </div>
 
     <script src="<?php echo base_url() ?>resources/jquery/dist/jquery.min.js"></script>
