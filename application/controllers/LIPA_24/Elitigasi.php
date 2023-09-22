@@ -49,10 +49,19 @@ class Elitigasi extends CI_Controller
     // Return suggestions in JSON format
     echo json_encode($suggestions);
   }
+  //------------------------------------------------------------------------
+  public function cek_tgl_perkara()
+  {
+    $nomor_perkara = $this->input->post('nomor_perkara');
+    $tgl_pendaftaran = $this->elitigasi_model->getTglPendaftaran($nomor_perkara);
+    // var_dump(json_encode($tgl_pendaftaran));
+    echo json_encode($tgl_pendaftaran);
+  }
   //----------------------------------------------------------------------------------------------------
   protected function _rules()
   {
     $this->form_validation->set_rules('nomor_perkara', 'nomor perkara', 'required|trim');
+    $this->form_validation->set_rules('tgl_elitigasi', 'tanggal elitigasi', 'required|trim');
   }
   //----------------------------------------------------------------------------------------------------
   public function tambah_aksi()
@@ -63,16 +72,14 @@ class Elitigasi extends CI_Controller
       redirect('LIPA_24/elitigasi');
     } else {
       $perkara = $this->input->post('nomor_perkara');
+      $tgl_elitigasi = $this->input->post('tgl_elitigasi');
       $perkara_id = $this->elitigasi_model->getPerkaraId($perkara);
 
       $data = array(
-        'perkara_id' => $perkara_id->perkara_id
+        'perkara_id' => $perkara_id->perkara_id,
+        'tgl_elitigasi' => tgl_ke_mysql($tgl_elitigasi)
       );
 
-      // var_dump($perkara_id);
-
-      //validasi
-      //cek apabila nomor perkara valid dan terdaptar di sipp di tahun yang sama sudah diinput
 
       if (!is_null($perkara_id)) {
         $id = $this->elitigasi_model->cekPerkaraId($perkara_id->perkara_id);
@@ -81,12 +88,16 @@ class Elitigasi extends CI_Controller
           $this->elitigasi_model->inputElitigasi($data);
           $this->session->set_flashdata('success', '<strong>Perkara Elitigasi berhasil ditambahkan!</strong>');
           redirect('LIPA_24/elitigasi');
+        } else {
+          $this->session->set_flashdata('error', '
+          <strong>Perkara Elitigasi Gagal ditambahkan!</strong> Nomor Perkara ' . $perkara . '; Sudah Pernah di Input');
+          redirect('LIPA_24/elitigasi');
         }
+      } else {
+        $this->session->set_flashdata('error', '
+        <strong>Perkara Elitigasi Gagal ditambahkan!</strong> Nomor Perkara ' . $perkara . '; salah / tidak ditemukan');
+        redirect('LIPA_24/elitigasi');
       }
-
-      $this->session->set_flashdata('error', '
-       <strong>Perkara Elitigasi Gagal ditambahkan!</strong> Nomor Perkara ' . $perkara . '; salah / tidak ditemukan / Sudah Pernah Diinput!');
-      redirect('LIPA_24/elitigasi');
     }
   }
 

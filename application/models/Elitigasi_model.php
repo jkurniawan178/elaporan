@@ -29,12 +29,19 @@ class Elitigasi_model extends CI_Model
   }
 
   // ------------------------------------------------------------------------
-
+  public function getTglPendaftaran($nomor_perkara)
+  {
+    $sql = "SELECT tanggal_pendaftaran
+            FROM perkara
+            WHERE nomor_perkara = '$nomor_perkara'";
+    $hasil = $this->db->query($sql);
+    return $hasil->row();
+  }
 
   // ------------------------------------------------------------------------
   public function getLitigasiAll()
   {
-    $sql = "SELECT lit.id, p.perkara_id, p.nomor_perkara, p.jenis_perkara_nama, p.`tanggal_pendaftaran`,
+    $sql = "SELECT lit.id, p.perkara_id, p.nomor_perkara, p.jenis_perkara_nama, p.`tanggal_pendaftaran`, lit.tgl_elitigasi,
             pen.majelis_hakim_nama,
             SUBSTRING_INDEX(pen.panitera_pengganti_text,': ',-1) AS panitera_pengganti,
             put.`tanggal_putusan`, st.`nama` AS jenis_putusan,
@@ -44,7 +51,7 @@ class Elitigasi_model extends CI_Model
             LEFT JOIN perkara_penetapan pen USING(perkara_id)
             LEFT JOIN status_putusan st ON st.id=put.`status_putusan_id`
             INNER JOIN dbelaporan.`elaporan_lipa_24` lit USING(perkara_id)
-            ORDER BY p.alur_perkara_id ASC, p.perkara_id ASC";
+            ORDER BY p.alur_perkara_id ASC, p.perkara_id DESC";
     $hasil = $this->db->query($sql);
     $data = $hasil->result();
 
@@ -103,7 +110,7 @@ class Elitigasi_model extends CI_Model
     }
 
     $sql = "SELECT lit.id, p.perkara_id, p.nomor_perkara, p.jenis_perkara_nama, p.`tanggal_pendaftaran`,
-            pen.majelis_hakim_nama,
+            lit.tgl_elitigasi, pen.majelis_hakim_nama,
             SUBSTRING_INDEX(pen.panitera_pengganti_text,': ',-1) AS panitera_pengganti,
             put.`tanggal_putusan`, st.`nama` AS jenis_putusan,
             IF(tanggal_putusan IS NULL,'v','') AS belum_diputus
@@ -113,7 +120,7 @@ class Elitigasi_model extends CI_Model
             LEFT JOIN status_putusan st ON st.id=put.`status_putusan_id`
             INNER JOIN dbelaporan.`elaporan_lipa_24` lit USING(perkara_id)
             $where
-            ORDER BY p.alur_perkara_id ASC, p.perkara_id ASC";
+            ORDER BY p.alur_perkara_id ASC, p.perkara_id DESC";
     $hasil = $this->db->query($sql);
     $data = $hasil->result();
 

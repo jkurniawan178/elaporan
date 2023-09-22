@@ -171,7 +171,7 @@ class Sidkel extends CI_Controller
   {
     $this->_rules('ubah');
     if ($this->form_validation->run() == false) {
-      $this->session->set_flashdata('error', '<strong>Data LIPA 14 Gagal ditambahkan!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
+      $this->session->set_flashdata('error', '<strong>Data LIPA 14 Gagal diubah!</strong> Isi kembali dengan benar dan silahkan coba lagi!');
       redirect('LIPA_14/sidkel');
     } else {
       $encodedId = $this->input->post('edit_id');
@@ -205,7 +205,7 @@ class Sidkel extends CI_Controller
       }
 
       $this->session->set_flashdata('error', '
-        <strong>Data Sidang Keliling Gagal ditambahkan!</strong> Realisasi lebih besar daripada Saldo Pagu saat ini!');
+        <strong>Data Sidang Keliling Gagal diubah!</strong> Realisasi lebih besar daripada Saldo Pagu saat ini!');
       redirect('LIPA_14/sidkel');
     }
   }
