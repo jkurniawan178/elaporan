@@ -1000,15 +1000,16 @@ class Laporan_model extends CI_Model
 	public function getLIPA24($bulan, $tahun)
 	{
 		$periode = $tahun . '-' . $bulan;
+		$dblitigasi = getenv('DB_DATABASE2') . '.elaporan_lipa_24';
 		$sql = "SELECT
-				SUM(CASE WHEN DATE_FORMAT(vpk.tanggal_pendaftaran,'%Y-%m') < '$periode' AND ((vpk.tanggal_putusan IS NULL) OR (DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m') >= '$periode')) THEN 1 ELSE 0 END) AS sisa_lalu,
-				SUM(CASE WHEN DATE_FORMAT(vpk.tanggal_pendaftaran,'%Y-%m') = '$periode' THEN 1 ELSE 0 END) AS diterima_bulan_ini,
+				SUM(CASE WHEN DATE_FORMAT(lit.tgl_elitigasi,'%Y-%m') < '$periode' AND ((vpk.tanggal_putusan IS NULL) OR (DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m') >= '$periode')) THEN 1 ELSE 0 END) AS sisa_lalu,
+				SUM(CASE WHEN DATE_FORMAT(lit.tgl_elitigasi,'%Y-%m') = '$periode' THEN 1 ELSE 0 END) AS diterima_bulan_ini,
 				SUM( CASE WHEN ((DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m')='$periode'  AND vpk.`status_putusan_id` IN (7,67,85)) OR DATE_FORMAT(vpk.tanggal_cabut,'%Y-%m')='$periode') THEN 1 ELSE 0 END) AS dicabut,
 				SUM(CASE WHEN DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m')='$periode'  AND vpk.status_putusan_id IS NOT NULL THEN 1 ELSE 0 END) AS putus_bulan_ini,
-				(SUM(CASE WHEN DATE_FORMAT(vpk.tanggal_pendaftaran, '%Y-%m') < '$periode' AND ((vpk.tanggal_putusan IS NULL) OR (DATE_FORMAT(vpk.tanggal_putusan, '%Y-%m') >= '$periode')) THEN 1 ELSE 0 END) + 
-					SUM(CASE WHEN DATE_FORMAT(vpk.tanggal_pendaftaran, '%Y-%m') = '$periode' THEN 1 ELSE 0 END)) - 
+				(SUM(CASE WHEN DATE_FORMAT(lit.tgl_elitigasi, '%Y-%m') < '$periode' AND ((vpk.tanggal_putusan IS NULL) OR (DATE_FORMAT(vpk.tanggal_putusan, '%Y-%m') >= '$periode')) THEN 1 ELSE 0 END) + 
+					SUM(CASE WHEN DATE_FORMAT(lit.tgl_elitigasi, '%Y-%m') = '$periode' THEN 1 ELSE 0 END)) - 
 					SUM(CASE WHEN DATE_FORMAT(vpk.tanggal_putusan, '%Y-%m') = '$periode' AND vpk.status_putusan_id IS NOT NULL THEN 1 ELSE 0 END) AS sisa_bulan_ini
-				FROM v_perkara vpk INNER JOIN dbelaporan.`elaporan_lipa_24` USING (perkara_id) 
+				FROM v_perkara vpk INNER JOIN $dblitigasi lit USING (perkara_id) 
 				";
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
