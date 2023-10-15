@@ -72,6 +72,7 @@
                                     <th class="align-middle" scope="col">Nama Majelis Hakim</th>
                                     <th class="align-middle" scope="col">Nama Panitera</th>
                                     <th class="align-middle" scope="col" data-priority="1">Tgl Pendaftaran</th>
+                                    <th class="align-middle" scope="col" data-priority="1">Tgl Elitigasi</th>
                                     <th class="align-middle" scope="col" data-priority="1">Tgl Putus</th>
                                     <th class="align-middle" scope="col">Jenis Putusan</th>
                                     <th class="align-middle" scope="col">Belum Diputus</th>
@@ -88,6 +89,7 @@
                                         <td><?= $value->majelis_hakim_nama ?></td>
                                         <td><?= $value->panitera_pengganti ?></td>
                                         <td><?= tgl_dari_mysql($value->tanggal_pendaftaran) ?></td>
+                                        <td><?= tgl_dari_mysql($value->tgl_elitigasi) ?></td>
                                         <td><?= tgl_dari_mysql($value->tanggal_putusan) ?></td>
                                         <td><?= $value->jenis_putusan ?></td>
                                         <td><?= $value->belum_diputus ?></td>
@@ -108,7 +110,7 @@
         </div>
     </div>
 </div>
-</div>
+
 <!-- /page content -->
 
 <!-- jQuery -->
@@ -163,6 +165,7 @@
                             response[i].majelis_hakim_nama,
                             response[i].panitera_pengganti,
                             formatDate(response[i].tanggal_pendaftaran),
+                            formatDate(response[i].tgl_elitigasi),
                             formatDate(response[i].tanggal_putusan),
                             response[i].jenis_putusan,
                             response[i].belum_diputus,

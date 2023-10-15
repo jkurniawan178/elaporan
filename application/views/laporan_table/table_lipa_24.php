@@ -30,7 +30,7 @@
 </div>
 <script>
     function generateTableRows(data) {
-        const table = $('#table_lipa23').DataTable({
+        const table = $('#table_lipa24').DataTable({
             order: [
                 [0, 'asc']
             ],

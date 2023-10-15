@@ -31,7 +31,8 @@ class Prodeo extends CI_Controller
   //-------------------------------------------------------------------------
   public function index()
   {
-    $menu = $this->masuk_model->sequrity();
+    $this->masuk_model->sequrity('mn_input');
+    $menu = $this->masuk_model->getMenu();
     $data['menu'] = $menu;
     $data['contents'] = 'prodeo/v_prodeo';
     $data['nm_bulan'] = $this->config_library->get_nm_bulan();

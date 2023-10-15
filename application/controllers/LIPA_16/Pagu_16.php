@@ -31,7 +31,8 @@ class Pagu_16 extends CI_Controller
     //----------------------------------------------------------------------------------------------------
     public function index()
     {
-        $menu = $this->masuk_model->sequrity();
+        $this->masuk_model->sequrity('mn_pagu');
+        $menu = $this->masuk_model->getMenu();
         $data['menu'] = $menu;
         $data['contents'] = 'pagu_16/v_pagu_16';
         $data['pagu_16'] = $this->posbakum_model->getPagu16All();

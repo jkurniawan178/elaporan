@@ -28,7 +28,8 @@ class Dashboard extends CI_Controller
 	}
 	public function index()
 	{
-		$menu = $this->masuk_model->sequrity();
+		$this->masuk_model->sequrity('dashboard');
+		$menu = $this->masuk_model->getMenu();
 		$data['menu'] = $menu;
 		$data['contents'] = 'v_dashboard';
 		$data['dashboard'] = $this->getDashboard();

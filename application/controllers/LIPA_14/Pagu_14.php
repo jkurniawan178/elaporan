@@ -31,7 +31,8 @@ class Pagu_14 extends CI_Controller
 
   public function index()
   {
-    $menu = $this->masuk_model->sequrity();
+    $this->masuk_model->sequrity('mn_pagu');
+    $menu = $this->masuk_model->getMenu();
     $data['menu'] = $menu;
     $data['contents'] = 'pagu_14/v_pagu_14';
     $data['pagu_14'] = $this->sidkel_model->getPagu14All();

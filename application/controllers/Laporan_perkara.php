@@ -32,7 +32,8 @@ class Laporan_perkara extends CI_Controller
   //-----------------------------------------------------------------------------------------------
   public function index()
   {
-    $menu = $this->masuk_model->sequrity();
+    $this->masuk_model->sequrity('mn_laporan');
+    $menu = $this->masuk_model->getMenu();
     $data['menu'] = $menu;
     $data['contents'] = 'v_laporan_perkara';
     $data['nm_bulan'] = $this->config_library->get_nm_bulan();

@@ -68,8 +68,21 @@ class Masuk extends CI_Controller
                     'last_activity'    => time(),
                 );
 
-                $this->session->set_userdata($user);
-                redirect('/dashboard');
+                $group_id = $query[0]->group_id;
+                $whitelist = array('30', '430', '431', '1003', '20', '1000', '1010', '1020', '500', '702');
+
+                if (in_array($group_id, $whitelist) || $group_id <= '10') {
+                    $this->session->set_userdata($user);
+                    redirect('/dashboard');
+                } else {
+                    $this->session->set_flashdata('error_msg', '<div class="alert alert-danger alert-dismissible fade in show mt-2 text-center">Anda Tidak Memiliki Akses
+                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                  </button></div>');
+
+                    redirect('masuk');
+                    return;
+                }
             } else {
                 $this->form_validation->set_message('validateUser', 'Username atau password salah');
                 $this->session->set_flashdata('error_msg', '<div class="alert alert-danger alert-dismissible fade in show mt-2 text-center">Username atau Password salah

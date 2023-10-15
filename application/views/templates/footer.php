@@ -1,7 +1,7 @@
 <!-- footer content -->
 <footer>
   <div class="pull-right">
-    Hak Cipta © Pengadilan Tinggi Agama Maluku Utara 2023
+    Hak Cipta © Pengadilan Agama Ternate 2023
   </div>
   <div class="clearfix"></div>
 </footer>
