@@ -33,6 +33,7 @@
         <li><a><i class="fa fa-desktop"></i> Laporan <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             <li><a href="<?php echo site_url() ?>laporan_perkara">Laporan Perkara</a></li>
+            <li><a href="<?php echo site_url() ?>laporan_penyerahan">Laporan Produk Pengadilan</a></li>
           </ul>
         </li>
       <?php } ?>

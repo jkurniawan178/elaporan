@@ -1014,6 +1014,29 @@ class Laporan_model extends CI_Model
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
 	}
+	// ------------------------------------------------------------------------
+	// -----------------------------Ambil Data Penyerahan AC--------------------------
+	public function getPenyerahanAC($bulan, $tahun)
+	{
+		$periode = $tahun . '-' . $bulan;
+		$sql = "SELECT p.nomor_perkara, a.nomor_akta_cerai, a.jenis_cerai, pp.tanggal_putusan, i.tgl_ikrar_talak, 
+					a.tgl_penyerahan_akta_cerai AS tgl_penyerahan, pp.tanggal_bht,
+					(SELECT (CASE WHEN alur_perkara_id=16 OR jenis_perkara_id=346 OR jenis_perkara_id=341 THEN 'Pemohon' ELSE 'Penggugat' END)) AS penerima
+					FROM perkara p LEFT JOIN perkara_putusan pp USING(perkara_id) LEFT JOIN perkara_ikrar_talak i USING(perkara_id)
+					LEFT JOIN perkara_akta_cerai a USING(perkara_id)
+					WHERE DATE_FORMAT(a.tgl_penyerahan_akta_cerai,'%Y-%m') = '$periode'
+				UNION
+				SELECT p.nomor_perkara, a.nomor_akta_cerai, a.jenis_cerai, pp.tanggal_putusan, i.tgl_ikrar_talak, 
+					a.tgl_penyerahan_akta_cerai_pihak2 AS tgl_penyerahan, pp.tanggal_bht,
+					(SELECT (CASE WHEN alur_perkara_id=16 OR jenis_perkara_id=346 OR jenis_perkara_id=341 THEN 'Termohon' ELSE 'Tergugat' END)) AS penerima
+					FROM perkara p LEFT JOIN perkara_putusan pp USING(perkara_id) LEFT JOIN perkara_ikrar_talak i USING(perkara_id)
+					LEFT JOIN perkara_akta_cerai a USING(perkara_id)
+					WHERE DATE_FORMAT(a.tgl_penyerahan_akta_cerai_pihak2,'%Y-%m') = '$periode'
+				ORDER BY tgl_penyerahan";
+
+		$hasil = $this->db->query($sql);
+		return $hasil->result();
+	}
 }
 
 /* End of file Laporan_model.php */
