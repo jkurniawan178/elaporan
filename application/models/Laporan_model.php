@@ -1037,6 +1037,43 @@ class Laporan_model extends CI_Model
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
 	}
+	// --------------------------------------------------------------------------------------------
+	// -----------------------------Ambil Data Penyerahan Salinan Putusan--------------------------
+	public function getPenyerahanSalinan($bulan, $tahun)
+	{
+		$periode = $tahun . '-' . $bulan;
+		$sql = "SELECT
+				hasil.nomor_perkara,
+				p.jenis_perkara_nama,
+				p.alur_perkara_id,
+				p.jenis_perkara_id,
+				p.tanggal_pendaftaran,
+				pp.tanggal_putusan,
+				pp.tanggal_bht,
+				hasil.tanggal_transaksi,
+				hasil.uraian,
+				hasil.penerima
+			FROM
+				(
+					SELECT
+						(SELECT nomor_perkara FROM perkara WHERE CAST(SUBSTRING_INDEX(nomor_perkara,'/','1') AS UNSIGNED) = CAST(LEFT(SUBSTRING_INDEX(b.keterangan,'/','1'),LENGTH(b.uraian)-3) AS UNSIGNED)
+						AND CAST(RIGHT(SUBSTRING_INDEX(nomor_perkara,'/','3'),2) AS CHAR) = CAST(RIGHT(SUBSTRING_INDEX(b.keterangan,'/','1'),2) AS CHAR) 
+						AND CAST(RIGHT(SUBSTRING_INDEX(nomor_perkara,'/','2'),1) AS CHAR) = UPPER( CAST(LEFT(RIGHT(SUBSTRING_INDEX(b.keterangan,'/','1'),3),1)AS CHAR))) AS nomor_perkara,
+						b.tanggal_transaksi, b.uraian,
+						TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(b.keterangan, '/', -1), '#', 1)) AS penerima
+					FROM
+						perkara_biaya b
+					LEFT JOIN jenis_biaya c ON b.jenis_biaya_id = c.id
+					WHERE
+						DATE_FORMAT(b.tanggal_transaksi,'%Y-%m')='$periode'
+						AND b.tahapan_id='99'
+						AND b.`jenis_biaya_id` IN (348,376,363)
+				) AS hasil
+			LEFT JOIN perkara p ON hasil.nomor_perkara = p.nomor_perkara LEFT JOIN perkara_putusan pp USING(perkara_id);";
+
+		$hasil = $this->db->query($sql);
+		return $hasil->result();
+	}
 }
 
 /* End of file Laporan_model.php */

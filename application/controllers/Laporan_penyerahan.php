@@ -70,36 +70,36 @@ class Laporan_penyerahan extends CI_Controller
           } else {
             $response = [
               'kode' => '201',
-              'data' => 'Laporan Lipa 1 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+              'data' => 'Laporan Penyerahan AC Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
             ];
             echo json_encode($response);
           }
           break;
           //-------------------------------------------------------------------------------------------------------
-          // case 'penyerahan_salinan':
-          //   $data = $this->laporan_model->getLIPA2($bulan, $tahun);
+        case 'penyerahan_salinan':
+          $data = $this->laporan_model->getPenyerahanSalinan($bulan, $tahun);
 
-          //   if (count($data) != 0) {
-          //     $encoded = json_encode($data);
-          //     $hasil = $this->export_excel_lipa2($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
-          //     $view_table = 'laporan_table/table_' . $jenis_laporan;
-          //     $response = [
-          //       'kode' => '200',
-          //       'link' => $hasil,
-          //       'table' => $this->load->view($view_table, '', true),
-          //       'data' => $data
-          //     ];
+          if (count($data) != 0) {
+            $encoded = json_encode($data);
+            $hasil = $this->export_excel_penyerahanSalinan($encoded, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan);
+            $view_table = 'laporan_table/table_' . $jenis_laporan;
+            $response = [
+              'kode' => '200',
+              'link' => $hasil,
+              'table' => $this->load->view($view_table, '', true),
+              'data' => $data
+            ];
 
-          //     echo json_encode($response);
-          //   } else {
-          //     $response = [
-          //       'kode' => '201',
-          //       'data' => 'Laporan Lipa 2 Periode ' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
-          //     ];
-          //     echo json_encode($response);
-          //   }
-          //   break;
-          //   //-------------------------------------------------------------------------------------------------------
+            echo json_encode($response);
+          } else {
+            $response = [
+              'kode' => '201',
+              'data' => 'Laporan Penyerahan Salinan Putusan' . pilihbulan($bulan) . ' ' . $tahun . ' belum ada!'
+            ];
+            echo json_encode($response);
+          }
+          break;
+          //-------------------------------------------------------------------------------------------------------
           // case 'penyerahan_kuasa':
           // $data = $this->laporan_model->getLIPA3($bulan, $tahun);
 
@@ -255,6 +255,79 @@ class Laporan_penyerahan extends CI_Controller
     $objPHPExcel->getActiveSheet()->getStyle('A' . $baseRow . ':J' . $row)->applyFromArray($styleArray);
     $objPHPExcel->getActiveSheet()->getStyle('A' . $baseRow . ':J' . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
     $objPHPExcel->getActiveSheet()->getStyle('A' . $baseRow . ':J' . $row)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+    //tanda tangan 
+    $kolom_kpa = "C";
+    $kolom_pansek = "G";
+    $row = $row + 3;
+    $row_awal_ttd = $row;
+    //fungsi tanda tangan
+
+    //Fungsi untuk kolom TTD
+    $row = $this->write_kolom_TTD($objPHPExcel, $kolom_kpa, $kolom_pansek, $row, $row_awal_ttd, $settingSIPP, $tanggal_laporan);
+
+    $objPHPExcel->getActiveSheet()->removeRow($baseRow, 1);
+
+    return $this->writeExcel($objPHPExcel, $tahun, $bulan, $jenis_laporan);
+  }
+  //----------------------------------------------------------------------------------------------
+  //--------------------------------Export Data Penyerahan AC ke Excel-----------------------------------
+  protected function export_excel_penyerahanSalinan($data, $jenis_laporan, $settingSIPP, $bulan, $tahun, $tanggal_laporan)
+  {
+    if (!file_exists(FCPATH . "new_templates/" . $jenis_laporan . ".xls")) {
+      $response = [
+        'kode' => '202',
+        'data' => 'Template Belum Tersedia'
+      ];
+      return $response;
+      exit;
+    }
+
+    $objReader = PHPExcel_IOFactory::createReader('Excel5');
+    $objPHPExcel = $objReader->load(FCPATH . "new_templates/" . $jenis_laporan . ".xls");
+
+    $styleArray = array(
+      'borders' => array(
+        'allborders' => array(
+          'style' => PHPExcel_Style_Border::BORDER_THIN,
+        )
+      ),
+      'font' => array(
+        'name' => 'Arial Narrow'
+      ),
+      'alignment' => array(
+        'wrap' => true,
+      )
+    );
+
+    $obj = json_decode($data, true);
+    $no = 1;
+    $baseRow = 8;
+
+    $objPHPExcel->getActiveSheet()->setCellValue('A2', "PADA " . $settingSIPP['NamaPN']);
+    $objPHPExcel->getActiveSheet()->setCellValue('A3', "BULAN " . strtoupper(pilihbulan($bulan)) . " " . $tahun);
+    foreach ($obj as $item) {
+      $row = $baseRow + $no;
+
+      $objPHPExcel->getActiveSheet()
+        ->setCellValue('A' . $row, $no)
+        ->setCellValue('B' . $row, $item['nomor_perkara'])
+        ->setCellValue('C' . $row, $item['jenis_perkara_nama'])
+        ->setCellValue('D' . $row, tgl_dari_mysql($item['tanggal_pendaftaran']))
+        ->setCellValue('E' . $row, tgl_dari_mysql($item['tanggal_putusan']))
+        ->setCellValue('F' . $row, tgl_dari_mysql($item['tanggal_bht']))
+        ->setCellValue('G' . $row, tgl_dari_mysql($item['tanggal_transaksi']))
+        ->setCellValue('H' . $row, kode_pihak($item['alur_perkara_id'], $item['jenis_perkara_id'], $item['penerima']))
+        ->setCellValue('I' . $row,  '-')
+        ->getRowDimension($row)->setRowHeight(46);
+
+      //$objPHPExcel->getActiveSheet()->insertNewRowAfter($row); 
+      $no++;
+    }
+
+    $objPHPExcel->getActiveSheet()->getStyle('A' . $baseRow . ':I' . $row)->applyFromArray($styleArray);
+    $objPHPExcel->getActiveSheet()->getStyle('A' . $baseRow . ':I' . $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $objPHPExcel->getActiveSheet()->getStyle('A' . $baseRow . ':I' . $row)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
     //tanda tangan 
     $kolom_kpa = "C";
