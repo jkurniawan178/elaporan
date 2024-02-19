@@ -73,7 +73,8 @@ class Masuk_model extends CI_Model
         'mn_pagu' => true,
         'mn_input' => true,
         'mn_laporan' => true,
-        'mn_saldo' => true
+        'mn_saldo' => true,
+        'mn_monitoring' => true
       );
 
       $group_id = $this->session->userdata('group_id');
