@@ -49,6 +49,13 @@
           <!-- TODO-Tambah menu untuk menyimpan data saldo bank dan cash -->
         </li>
       <?php } ?>
+      <?php if ($menu['mn_other']) { ?>
+        <li><a><i class="fa fa-globe"></i>Lain-lain<span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="<?php echo site_url() ?>alamat">Input Alamat SIPP420</a></li>
+          </ul>
+        </li>
+      <?php } ?>
     </ul>
   </div>
 
