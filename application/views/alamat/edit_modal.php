@@ -38,15 +38,9 @@
                         </div>
                     </div>
                     <div class="row form-group">
-                        <label for="edit_propinsi" class="col-form-label col-md-4 d-flex justify-content-md-end">Propinsi<span class="required text-danger">*</span></label>
+                        <label for="edit_kelurahan" class="col-form-label col-md-4 d-flex justify-content-md-end">Desa/Kelurahan<span class="required text-danger">*</label>
                         <div class="col-md-8">
-                            <input type="text" id="edit_propinsi" name="propinsi" disabled required="required" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <label for="edit_kabupaten" class="col-form-label col-md-4 d-flex justify-content-md-end">Kabupaten/Kota<span class="required text-danger">*</label>
-                        <div class="col-md-8">
-                            <input type="text" id="edit_kabupaten" name="kabupaten" disabled required="required" class="form-control">
+                            <input type="text" id="edit_kelurahan" name="kelurahan" disabled required="required" class="form-control">
                         </div>
                     </div>
                     <div class="row form-group">
@@ -56,9 +50,15 @@
                         </div>
                     </div>
                     <div class="row form-group">
-                        <label for="edit_kelurahan" class="col-form-label col-md-4 d-flex justify-content-md-end">Desa/Kelurahan<span class="required text-danger">*</label>
+                        <label for="edit_kabupaten" class="col-form-label col-md-4 d-flex justify-content-md-end">Kabupaten/Kota<span class="required text-danger">*</label>
                         <div class="col-md-8">
-                            <input type="text" id="edit_kelurahan" name="kelurahan" disabled required="required" class="form-control">
+                            <input type="text" id="edit_kabupaten" name="kabupaten" disabled required="required" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label for="edit_propinsi" class="col-form-label col-md-4 d-flex justify-content-md-end">Propinsi<span class="required text-danger">*</span></label>
+                        <div class="col-md-8">
+                            <input type="text" id="edit_propinsi" name="propinsi" disabled required="required" class="form-control">
                         </div>
                     </div>
                 </div>
