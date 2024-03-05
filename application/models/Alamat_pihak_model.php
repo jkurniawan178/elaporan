@@ -50,8 +50,8 @@ class Alamat_pihak_model extends CI_Model
     $search_arr = array();
     $searchQuery = "";
     if ($searchValue != '') {
-      $search_arr[] = " (p1.nama like '%" . $searchValue . "%' or
-      p1.alamat like'%" . $searchValue . "%') ";
+      $search_arr[] = " (ph.nama like '%" . $searchValue . "%' or
+      ph.alamat like'%" . $searchValue . "%') ";
     }
 
     if ($searchYear != '') {
@@ -112,7 +112,7 @@ class Alamat_pihak_model extends CI_Model
       ) AS subquery";
     $totalRecordsWithFilter = $this->db->query($sqlcount2)->row()->allcount;
 
-    $sql = "SELECT p.`alur_perkara_id`, p.`perkara_id`, ph.id, p.nomor_perkara, p1.`nama`, p1.`alamat`, 
+    $sql = "SELECT p.`alur_perkara_id`, p.`perkara_id`, ph.id, p.nomor_perkara, ph.`nama`, ph.`alamat`, 
                   ph.`propinsi`,d.`provinsi_nama`, ph.`kabupaten`, c.`kabupaten_nama`, ph.`kecamatan`, b.`kecamatan_nama`, 
                   ph.`kelurahan`, a.`kelurahan_nama`
             FROM perkara_pihak1 p1 LEFT JOIN perkara p USING(perkara_id)
@@ -122,7 +122,7 @@ class Alamat_pihak_model extends CI_Model
             LEFT JOIN ref_kecamatan_new b ON b.`kecamatan_kode` = ph.kecamatan
             LEFT JOIN ref_kelurahan_new a ON a.`kelurahan_kode` = ph.kelurahan $whereClause
             UNION
-            SELECT p.`alur_perkara_id`, p.`perkara_id`, ph.id, p.nomor_perkara, p2.`nama`, p2.`alamat`, 
+            SELECT p.`alur_perkara_id`, p.`perkara_id`, ph.id, p.nomor_perkara, ph.`nama`, ph.`alamat`, 
                   ph.`propinsi`,d.`provinsi_nama`, ph.`kabupaten`, c.`kabupaten_nama`, ph.`kecamatan`, b.`kecamatan_nama`, 
                   ph.`kelurahan`, a.`kelurahan_nama`
             FROM perkara_pihak2 p2 LEFT JOIN perkara p USING(perkara_id)

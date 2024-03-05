@@ -28,6 +28,7 @@ class Alamat extends CI_Controller
     $this->load->model('masuk_model');
     $this->load->model('alamat_pihak_model');
     $this->load->library('config_library');
+    $this->load->helper('fungsi_helper');
   }
 
   public function index()
@@ -103,12 +104,16 @@ class Alamat extends CI_Controller
       $kab_kode = $this->input->post('kab_kode');
       $kec_kode = $this->input->post('kec_kode');
       $kel_kode = $this->input->post('kel_kode');
+      $user = $this->session->userdata('nama_user');
+      $ubah_tanggal = date('Y-m-d H:i:s');
 
       $data = array(
         'kelurahan' => $kel_kode,
         'kecamatan' => $kec_kode,
         'kabupaten' => $kab_kode,
         'propinsi' => $prov_kode,
+        'diperbaharui_oleh' => $user,
+        'diperbaharui_tanggal' => $ubah_tanggal
       );
 
       if ($id != null) {
