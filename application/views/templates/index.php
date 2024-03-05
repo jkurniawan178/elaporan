@@ -54,7 +54,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                   <a class="dropdown-item" href="javascript:;"> Profile</a>
-                  <a class="dropdown-item" href="<?php echo base_url() . 'masuk/logout' ?>"><i class="fa fa-sign-out text-danger pull-right"></i> Log Out</a>
+                  <a class="dropdown-item" id="logout" href="<?php echo base_url() . 'masuk/logout' ?>"><i class="fa fa-sign-out text-danger pull-right"></i> Log Out</a>
                 </div>
               </li>
             </ul>

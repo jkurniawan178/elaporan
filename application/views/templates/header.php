@@ -27,5 +27,7 @@
   <link href="<?php echo base_url() ?>resources/css/custom.css" rel="stylesheet">
   <link rel="stylesheet" href="<?php echo base_url() ?>resources/autocomplete/jquery-ui.css">
   <link href="<?php echo base_url() ?>resources/autocomplete/jquery-ui-custom.css" rel="stylesheet">
+  <!-- Select2 plugin -->
+  <link href="<?php echo base_url() ?>resources/select2/dist/css/select2.min.css" rel="stylesheet" />
 
 </head>

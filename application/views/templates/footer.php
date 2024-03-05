@@ -24,12 +24,15 @@
 <script src="<?php echo base_url() ?>resources/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <!-- bootstrap-daterangepicker -->
 <script src="<?php echo base_url() ?>resources/moment/min/moment.min.js"></script>
+<script src="<?php echo base_url() ?>resources/moment/min/locales.min.js"></script>
 <script src="<?php echo base_url() ?>resources/bootstrap-daterangepicker/daterangepicker.js"></script>
 
 <!-- Custom Theme Scripts -->
 <script src="<?php echo base_url() ?>resources/js/custom.js"></script>
 <script src="<?php echo base_url() ?>resources/js/helper.js"></script>
 <script src="<?php echo base_url() ?>resources/autocomplete/jquery-ui.js"></script>
+<!-- Select 2 -->
+<script src="<?php echo base_url() ?>resources/select2/dist/js/select2.min.js"></script>
 <script>
   //Function that using bootstrap validator
   (function() {

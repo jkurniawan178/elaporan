@@ -73,7 +73,9 @@ class Masuk_model extends CI_Model
         'mn_pagu' => true,
         'mn_input' => true,
         'mn_laporan' => true,
-        'mn_saldo' => true
+        'mn_saldo' => true,
+        'mn_monitoring' => true,
+        'mn_other' => true
       );
 
       $group_id = $this->session->userdata('group_id');
@@ -87,9 +89,13 @@ class Masuk_model extends CI_Model
         $menu['mn_input'] = false;
         $menu['mn_pagu'] = false;
         $menu['mn_saldo'] = false;
+        $menu['mn_other'] = false;
+        $menu['mn_monitoring'] = false;
       } else if ($group_id == '702') { // KASIR
         $menu['mn_input'] = false;
         $menu['mn_pagu'] = false;
+        $menu['mn_other'] = false;
+        $menu['mn_monitoring'] = false;
       } else {
         $this->session->sess_destroy();
         redirect('masuk');

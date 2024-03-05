@@ -15,6 +15,49 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 
 // ------------------------------------------------------------------------
+if (!function_exists('kode_pihak')) {
+  function kode_pihak($alur_perkara, $kode_jenis, $pihak)
+  {
+    if ($alur_perkara = '16' || $kode_jenis = '346' || $kode_jenis = '341') {
+      switch ($pihak) {
+        case 'p':
+          return 'Pemohon';
+          break;
+        case 'kp':
+          return 'Kuasa Pemohon';
+          break;
+        case 't':
+          return 'Termohon';
+          break;
+        case 'kt':
+          return 'Kuasa Termohon';
+          break;
+        default:
+          return 'Lainnya';
+          break;
+      }
+    } else {
+      switch ($pihak) {
+        case 'p':
+          return 'Penggugat';
+          break;
+        case 'kp':
+          return 'Kuasa Penggugat';
+          break;
+        case 't':
+          return 'Tergugat';
+          break;
+        case 'kt':
+          return 'Kuasa Tergugat';
+          break;
+        default:
+          return 'Lainnya';
+          break;
+      }
+    }
+  }
+}
+// ------------------------------------------------------------------------
 if (!function_exists('kode_delegasi')) {
   function kode_delegasi($jenis_delegasi)
   {

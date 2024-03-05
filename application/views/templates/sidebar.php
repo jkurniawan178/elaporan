@@ -33,12 +33,27 @@
         <li><a><i class="fa fa-desktop"></i> Laporan <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             <li><a href="<?php echo site_url() ?>laporan_perkara">Laporan Perkara</a></li>
+            <li><a href="<?php echo site_url() ?>laporan_penyerahan">Laporan Produk Pengadilan</a></li>
+          </ul>
+        </li>
+      <?php } ?>
+      <?php if ($menu['mn_monitoring']) { ?>
+        <li><a><i class="fa fa-book"></i> Monitoring Perkara <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="<?php echo site_url() ?>monitoring_lama_perkara">Monitoring Lama Perkara</a></li>
           </ul>
         </li>
       <?php } ?>
       <?php if ($menu['mn_saldo']) { ?>
         <li><a href="<?php echo site_url() ?>LIPA_7/saldo_awal"><i class="fa fa-money"></i> Saldo Awal</span></a>
           <!-- TODO-Tambah menu untuk menyimpan data saldo bank dan cash -->
+        </li>
+      <?php } ?>
+      <?php if ($menu['mn_other']) { ?>
+        <li><a><i class="fa fa-globe"></i>Lain-lain<span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="<?php echo site_url() ?>alamat">Input Alamat SIPP420</a></li>
+          </ul>
         </li>
       <?php } ?>
     </ul>
