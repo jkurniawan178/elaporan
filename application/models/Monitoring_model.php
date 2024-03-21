@@ -34,9 +34,9 @@ class Monitoring_model extends CI_Model
             p.perkara_id, p.nomor_perkara, ps.agenda, pt.majelis_hakim_nama, trim(substring_index(pt.panitera_pengganti_text,':',-1)) as panitera_pengganti,
           CASE
               WHEN pp.tanggal_putusan IS NULL THEN TIMESTAMPDIFF(day,p.tanggal_pendaftaran,CURDATE()) - 
-              coalesce(timestampdiff(day,pm.penetapan_penunjukan_mediator,pm.keputusan_mediasi),0) + 1
+              coalesce(timestampdiff(day,pm.penetapan_penunjukan_mediator,pm.tgl_laporan_mediator),0) + 1
               ELSE timestampdiff(day,p.tanggal_pendaftaran,pp.tanggal_putusan)- 
-              coalesce(timestampdiff(day,pm.penetapan_penunjukan_mediator,pm.keputusan_mediasi),0) + 1
+              coalesce(timestampdiff(day,pm.penetapan_penunjukan_mediator,pm.tgl_laporan_mediator),0) + 1
             END AS umur_perkara
           FROM
             perkara p left join perkara_putusan pp using(perkara_id)

@@ -101,7 +101,8 @@ class Monitoring_lama_perkara extends CI_Controller
         )
       ),
       'font' => array(
-        'name' => 'Arial Narrow'
+        'name' => 'Arial Narrow',
+        'size' => '12'
       ),
       'alignment' => array(
         'wrap' => true,
