@@ -27,6 +27,7 @@ class Monitoring_model extends CI_Model
   }
 
   // ------------------------------------------------------------------------
+  // ------------------Monitoring Lama Perkara-------------------------------
   function get_lama_perkara($tanggal_monitor)
   {
 
@@ -50,7 +51,39 @@ class Monitoring_model extends CI_Model
   }
 
   // ------------------------------------------------------------------------
+  // --------------------Monitoring Persidangan by PS------------------------
 
+  function get_pp()
+  {
+    $this->db->select('id, nama_gelar');
+    $this->db->from('panitera_pn');
+    $this->db->where('aktif', 'Y');
+    $hasil = $this->db->get()->result();
+    return $hasil;
+  }
+
+  function get_sidang_pp($ppid, $tanggal_start, $tanggal_end)
+  {
+
+    $sql = "SELECT pr.nomor_perkara, pr.jenis_perkara_text, js.agenda, pp.panitera_nama, js.tanggal_sidang, js.edoc_bas, js.diperbaharui_tanggal AS tgl_unggah_bas
+            FROM perkara pr INNER JOIN perkara_panitera_pn pp ON pp.perkara_id = pr.perkara_id
+            INNER JOIN perkara_jadwal_sidang js ON js.perkara_id = pp.perkara_id
+            WHERE js.tanggal_sidang >= '$tanggal_start' AND js.tanggal_sidang <= '$tanggal_end' 
+            AND pp.panitera_id ='$ppid' AND aktif = 'Y'
+            ORDER BY js.tanggal_sidang DESC";
+    $hasil = $this->db->query($sql);
+
+    $data = $hasil->result();
+    $server_ip = 'http://' . $_SERVER['HTTP_HOST'];
+    $sipp_folder = '/SIPP311/';
+
+    foreach ($data as $row) {
+      if ($row->edoc_bas != null) {
+        $row->edoc_bas = $server_ip . $sipp_folder . $row->edoc_bas;
+      }
+    }
+    return $data;
+  }
 }
 
 /* End of file Monitoring_model.php */
