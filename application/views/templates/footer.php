@@ -30,12 +30,15 @@
 <!-- Custom Theme Scripts -->
 <script src="<?php echo base_url() ?>resources/js/custom.js"></script>
 <script src="<?php echo base_url() ?>resources/js/helper.js"></script>
-<!-- <script src="<?php echo base_url() ?>resources/autocomplete/jquery-ui.js"></script> -->
+<script src="<?php echo base_url() ?>resources/autocomplete/jquery-ui.js"></script>
 
 <!-- shards datepicker-->
 <script src="<?php echo base_url() ?>resources/js/popper.min.js"></script>
 <script src="<?php echo base_url() ?>resources/js/shards.min.js"></script>
 <script src="<?php echo base_url() ?>resources/js/bootstrap-datepicker.id.js"></script>
+
+<!-- jquery autocomplete -->
+<!-- <script src="<?php echo base_url() ?>resources/jquery-autocomplete/jquery.autocomplete.js"></script> -->
 <!-- Select 2 -->
 <script src="<?php echo base_url() ?>resources/select2/dist/js/select2.min.js"></script>
 <script>

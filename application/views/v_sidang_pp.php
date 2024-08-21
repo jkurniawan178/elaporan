@@ -96,6 +96,8 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
+        var datepicker = $.fn.datepicker.noConflict(); // return $.fn.datepicker to previously assigned value
+        $.fn.bootstrapDP = datepicker;
         //bootsrap-datepicker
         // $('.tanggal').datepicker({
         //     format: "dd/mm/yyyy",
@@ -103,7 +105,7 @@
         //     todayHighlight: true,
         //     language: 'id'
         // });
-        $('#tgl_start').datepicker({
+        $('#tgl_start').bootstrapDP({
             format: "dd/mm/yyyy",
             autoclose: true,
             todayHighlight: true,
@@ -111,11 +113,11 @@
             orientation: "bottom left",
             endDate: '<?php echo date('d/m/Y'); ?>'
         }).on('changeDate', function(e) {
-            $('#tgl_finish').datepicker('update', this.value);
-            $('#tgl_finish').datepicker('setStartDate', this.value);
+            $('#tgl_finish').bootstrapDP('update', this.value);
+            $('#tgl_finish').bootstrapDP('setStartDate', this.value);
             console.log(this.value);
         });
-        $('#tgl_finish').datepicker({
+        $('#tgl_finish').bootstrapDP({
             format: "dd/mm/yyyy",
             autoclose: true,
             orientation: "bottom left",
