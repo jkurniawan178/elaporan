@@ -18,7 +18,7 @@
                         <br />
                         <form id="form-laporan" data-parsley-validate class="form-horizontal form-label-left">
                             <div class="form-group row">
-                                <label class="col-form-label col-md-3 col-sm-3 d-flex justify-content-md-end" for="panitera_sidang">Panitera Sidang <span class="required text-danger">*</span></label>
+                                <label class="col-form-label col-md-3 col-sm-3 d-flex justify-content-md-end" for="panitera_sidang">Panitera Pengganti <span class="required text-danger">*</span></label>
                                 <div class="col-md-5 col-sm-12">
                                     <select class="form-control" id="panitera_sidang">
                                         <option value="-" disabled selected>====== Silahkan Pilih Panitera Pengganti ======</option>
@@ -29,17 +29,18 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="date_lapor" class="col-form-label col-md-3 col-sm-3 d-flex justify-content-md-end">Periode Sidang<span class="required text-danger">*</span></label>
-                                <fieldset class="col-md-5 col-sm-12">
-                                    <div class="control-group">
-                                        <div class="controls">
-                                            <div class="xdisplay_inputx form-group row has-feedback">
-                                                <input type="text" class="form-control has-feedback-left" id="date_lapor" placeholder="Tanggal laporan">
-                                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
-                                            </div>
-                                        </div>
+                                <label for="tgl-start" class="col-form-label col-md-3 col-sm-3 d-flex justify-content-md-end">Periode Sidang<span class="required text-danger">*</span></label>
+                                <div class="row-md-9 row-sm-12">
+                                    <div class="col-md-9 input-group my-auto mr-sm-0">
+                                        <input type="text" class="input-sm form-control" id="tgl_start" name="tgl_start" value="<?php echo $dateNow ?>" autocomplete="off">
+                                        <input type="text" class="input-sm form-control" id="tgl_finish" name="tgl_finish" value="<?php echo $dateNow ?>" autocomplete="off">
+                                        <span class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                        </span>
                                     </div>
-                                </fieldset>
+                                </div>
                             </div>
                             <!-- <div class="ln_solid"></div> -->
                             <div class="item form-group">
@@ -95,26 +96,41 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        //datetime picker
-        const format = 'DD/MM/YYYY'
-        let startDate, endDate
-        $("#date_lapor").daterangepicker({
-                singleDatePicker: false,
-                locale: {
-                    format: format,
-                }
-            },
-            function(start, end, label) {
-                startDate = start.format("DD/MM/YYYY");
-                endDate = end.format("DD/MM/YYYY");
-            }
-        );
+        //bootsrap-datepicker
+        // $('.tanggal').datepicker({
+        //     format: "dd/mm/yyyy",
+        //     autoclose: true,
+        //     todayHighlight: true,
+        //     language: 'id'
+        // });
+        $('#tgl_start').datepicker({
+            format: "dd/mm/yyyy",
+            autoclose: true,
+            todayHighlight: true,
+            language: 'id',
+            orientation: "bottom left",
+            endDate: '<?php echo date('d/m/Y'); ?>'
+        }).on('changeDate', function(e) {
+            $('#tgl_finish').datepicker('update', this.value);
+            $('#tgl_finish').datepicker('setStartDate', this.value);
+            console.log(this.value);
+        });
+        $('#tgl_finish').datepicker({
+            format: "dd/mm/yyyy",
+            autoclose: true,
+            orientation: "bottom left",
+            todayHighlight: true,
+            language: 'id',
+            endDate: '<?php echo date('d/m/Y'); ?>'
+        });
 
         $('#btn_tampil').on('click', function() {
             const jenis_monitor = 'monitoring_sidang_pp';
             const ppid = $('#panitera_sidang').find(':selected').val();
             const ppnama = $('#panitera_sidang').find(':selected').text();
             const nama_PA = $('#nama_PA').text();
+            const startDate = $('#tgl_start').val();
+            const endDate = $('#tgl_finish').val();
             $('#panel-verifikasi').hide();
 
             $.ajax({
@@ -126,7 +142,6 @@
                     tanggal_start: startDate,
                     tanggal_end: endDate,
                     panitera_id: ppid,
-                    // tanggal_laporan: formatTanggal(tanggal_monitor).toUpperCase(),
                 },
                 beforeSend: function() {
                     $('#spinner').show();
@@ -160,8 +175,5 @@
             });
             return false;
         });
-        // $('#btn_tampil').on('click', function() {
-        //     console.log('tanggal mulai ' + startDate + ' tanggal akhir ' + endDate + ' pp id ' + $('#panitera_sidang').find(':selected').val())
-        // })
     })
 </script>

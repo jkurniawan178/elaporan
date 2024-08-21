@@ -34,6 +34,7 @@ class Monitoring_sidang_pp extends CI_Controller
     $this->masuk_model->sequrity('mn_monitoring');
     $menu = $this->masuk_model->getMenu();
     $data['menu'] = $menu;
+    $data['dateNow'] = date('d/m/Y');
     $data['contents'] = 'v_sidang_pp';
     $data['pp_list'] = $this->monitoring_model->get_pp();
     $data['nm_bulan'] = $this->config_library->get_nm_bulan();
@@ -60,7 +61,7 @@ class Monitoring_sidang_pp extends CI_Controller
     } else {
       $response = [
         'kode' => '201',
-        'data' => 'Jadwal Sidang Pada Tanggal ' . $tanggal_start . ' s/d ' . $tanggal_end . ' belum ada!'
+        'data' => 'Persidangan periode ' . tgl_panjang_dari_mysql($tanggal_start) . ' s/d ' . tgl_panjang_dari_mysql($tanggal_end) . ' belum ada!'
       ];
       echo json_encode($response);
     }
