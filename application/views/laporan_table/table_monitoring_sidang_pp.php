@@ -8,7 +8,6 @@
                 <th scope="col" class="align-middle p-2">Tanggal Sidang</th>
                 <th scope="col" class="align-middle p-2">Agenda Sidang</th>
                 <th scope="col" class="align-middle p-2">Edoc BAS</th>
-                <th scope="col" class="align-middle p-2">Tanggal Unggah Bas</th>
             </tr>
             <tr class="bg-warning">
                 <th scope="col" class="align-middle py-0 px-2">1</th>
@@ -17,7 +16,6 @@
                 <th scope="col" class="align-middle py-0 px-2">4</th>
                 <th scope="col" class="align-middle py-0 px-2">5</th>
                 <th scope="col" class="align-middle py-0 px-2">6</th>
-                <th scope="col" class="align-middle py-0 px-2">7</th>
             </tr>
         </thead>
         <tbody id="show_data"></tbody>
@@ -42,10 +40,12 @@
         for (var i = 0; i < valueData.length; i++) {
             // var row = valueData[i];
             let edoc_bas;
+            let rowClass = '';
             if (valueData[i].edoc_bas != null) {
-                edoc_bas = '<a href="' + valueData[i].edoc_bas + '" target="_blank">Download</a>'
+                edoc_bas = '<a href="' + valueData[i].edoc_bas + '" target="_blank">Download</a>';
             } else {
-                edoc_bas = ''
+                edoc_bas = '';
+                rowClass = 'bg-danger text-white';
             }
             table.row.add([
                 i + 1,
@@ -53,9 +53,8 @@
                 valueData[i].jenis_perkara_text,
                 formatDate(valueData[i].tanggal_sidang),
                 valueData[i].agenda,
-                edoc_bas,
-                formatDate(valueData[i].tgl_unggah_bas)
-            ])
+                edoc_bas
+            ]).node().className = rowClass;
         }
         table.draw();
     }

@@ -65,7 +65,7 @@ class Monitoring_model extends CI_Model
   function get_sidang_pp($ppid, $tanggal_start, $tanggal_end)
   {
 
-    $sql = "SELECT pr.nomor_perkara, pr.jenis_perkara_text, js.agenda, pp.panitera_nama, js.tanggal_sidang, js.edoc_bas, js.diperbaharui_tanggal AS tgl_unggah_bas
+    $sql = "SELECT pr.nomor_perkara, pr.jenis_perkara_text, js.agenda, pp.panitera_nama, js.tanggal_sidang, js.edoc_bas
             FROM perkara pr INNER JOIN perkara_panitera_pn pp ON pp.perkara_id = pr.perkara_id
             INNER JOIN perkara_jadwal_sidang js ON js.perkara_id = pp.perkara_id
             WHERE js.tanggal_sidang >= '$tanggal_start' AND js.tanggal_sidang <= '$tanggal_end' 
