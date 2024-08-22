@@ -84,6 +84,44 @@ class Monitoring_model extends CI_Model
     }
     return $data;
   }
+
+  function getMonitorBHT($ppid, $tahun)
+  {
+    if ($ppid == "all") {
+      $where = " WHERE YEAR(p.`tanggal_pendaftaran`) = $tahun
+            AND pp.`tanggal_putusan` IS NOT NULL
+            AND (pp.tanggal_bht IS NULL OR pp.`tanggal_bht` > NOW()) ";
+    } else {
+      $where = " WHERE YEAR(p.`tanggal_pendaftaran`) = $tahun
+            and panitera_pengganti_id = $ppid
+            AND pp.`tanggal_putusan` IS NOT NULL
+            AND (pp.tanggal_bht IS NULL OR pp.`tanggal_bht` > NOW()) ";
+    }
+
+    $sql = "SELECT nomor_perkara, jenis_perkara_nama, tanggal_putusan,jenis_putusan, 
+            PP,PBT, tanggal_bht, DATEDIFF(CURRENT_DATE(), IFNULL(PBT,tanggal_putusan)) AS selisih_belum_BHT
+            FROM (
+            SELECT p.nomor_perkara, p.jenis_perkara_nama, pp.tanggal_putusan,sp.`nama` AS jenis_putusan, 
+            REPLACE(pt.`panitera_pengganti_text`,'Panitera Pengganti: ','') AS PP, MAX(pbt.tanggal_pemberitahuan_putusan) AS PBT,
+            pp.tanggal_bht
+
+            FROM perkara p LEFT JOIN perkara_putusan pp USING(perkara_id)
+            LEFT JOIN status_putusan sp ON sp.id = pp.`status_putusan_id`
+            LEFT JOIN perkara_penetapan pt USING(perkara_id)
+            LEFT JOIN perkara_putusan_pemberitahuan_putusan pbt USING(perkara_id)
+
+            $where
+
+            GROUP BY 
+                nomor_perkara, 
+                jenis_perkara_nama, 
+                PP
+            ) AS subquery
+            ORDER BY PP ASC, selisih_Belum_BHT DESC";
+    $hasil = $this->db->query($sql);
+    $data = $hasil->result();
+    return $data;
+  }
 }
 
 /* End of file Monitoring_model.php */

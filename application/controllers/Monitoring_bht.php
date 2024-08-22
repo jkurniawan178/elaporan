@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  *
- * Controller Sidang_pp
+ * Controller Monitoring_bht
  *
  * This controller for ...
  *
@@ -18,7 +18,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  *
  */
 
-class Monitoring_sidang_pp extends CI_Controller
+class Monitoring_bht extends CI_Controller
 {
 
   public function __construct()
@@ -34,21 +34,21 @@ class Monitoring_sidang_pp extends CI_Controller
     $this->masuk_model->sequrity('mn_monitoring');
     $menu = $this->masuk_model->getMenu();
     $data['menu'] = $menu;
-    $data['dateNow'] = date('d/m/Y');
-    $data['contents'] = 'v_sidang_pp';
+    $data['contents'] = 'v_monitor_bht';
     $data['pp_list'] = $this->monitoring_model->get_pp();
+    $data['nm_bulan'] = $this->config_library->get_nm_bulan();
     $data['settings'] = $this->config_library->get_config_SIPP();
     $this->load->view('templates/index', $data);
   }
 
-  public function get_sidang_pp()
+  public function get_monitor_bht()
   {
     $jenis_monitor = $this->input->post('jenis_monitor');
     $ppid = $this->input->post('panitera_id');
-    $tanggal_start = tgl_ke_mysql($this->input->post('tanggal_start'));
-    $tanggal_end = tgl_ke_mysql($this->input->post('tanggal_end'));
+    $ppnama = $this->input->post('panitera_nama');
+    $tahun = $this->input->post('tahun');
 
-    $data = $this->monitoring_model->get_sidang_pp($ppid, $tanggal_start, $tanggal_end);
+    $data = $this->monitoring_model->getMonitorBHT($ppid, $tahun);
     if (count($data) != 0) {
       $view_table = 'laporan_table/table_' . $jenis_monitor;
       $response = [
@@ -60,7 +60,7 @@ class Monitoring_sidang_pp extends CI_Controller
     } else {
       $response = [
         'kode' => '201',
-        'data' => 'Persidangan periode ' . tgl_panjang_dari_mysql($tanggal_start) . ' s/d ' . tgl_panjang_dari_mysql($tanggal_end) . ' belum ada!'
+        'data' => 'Perkara belum BHT PP ' . $ppnama . ' belum ada!'
       ];
       echo json_encode($response);
     }
@@ -68,5 +68,5 @@ class Monitoring_sidang_pp extends CI_Controller
 }
 
 
-/* End of file Sidang_pp.php */
-/* Location: ./application/controllers/Sidang_pp.php */
+/* End of file Monitoring_bht.php */
+/* Location: ./application/controllers/Monitoring_bht.php */

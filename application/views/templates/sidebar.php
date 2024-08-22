@@ -42,6 +42,7 @@
           <ul class="nav child_menu">
             <li><a href="<?php echo site_url() ?>monitoring_lama_perkara">Lama Perkara</a></li>
             <li><a href="<?php echo site_url() ?>monitoring_sidang_pp">Persidangan by Panitera Pengganti</a></li>
+            <li><a href="<?php echo site_url() ?>monitoring_bht">Perkara Putus Belum BHT</a></li>
           </ul>
         </li>
       <?php } ?>
