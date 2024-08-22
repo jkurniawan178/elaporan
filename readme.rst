@@ -1,5 +1,5 @@
 ###################
-E-Laporan Perkara 1.1.0 
+E-Laporan Perkara 1.2.0 
 ###################
 
 E-Laporan Perkara adalah Aplikasi yang dirancang untuk mempermudah petugas meja 3
@@ -15,8 +15,12 @@ pada Aplikasi SIPP (Sistem Informasi Penelusuran Perkara).
 *******************
 Release Information
 *******************
+release versi 1.2.0 dengan penambahan feature sebagai berikut:
+- Monitoring Persidangan by Panitera Pengganti
+- Monitoring Perkara Putus belum BHT
+- Monitoring Berkas Perkara Alih Media
 
-saat ini aplikasi E-Laporan Perkara realease versi 1.1.0 dengan penambahan feature sebagai berikut :
+realease versi 1.1.0 dengan penambahan feature sebagai berikut :
 - Laporan Penyerahan Akta Cerai
 - Laporan Penyerahan Salinan Putusan
 - Laporan Lama perkara sesuai Jadwal Sidang Harian

@@ -1,7 +1,7 @@
 <!-- footer content -->
 <footer>
   <div class="pull-right">
-    Hak Cipta © Pengadilan Agama Ternate 2023
+    Hak Cipta © Pengadilan Agama Ternate 2023 <span class="ml-3">ver. 1.2.0</span>
   </div>
   <div class="clearfix"></div>
 </footer>
