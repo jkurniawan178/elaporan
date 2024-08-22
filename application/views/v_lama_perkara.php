@@ -23,7 +23,7 @@
                                     <div class="control-group">
                                         <div class="controls">
                                             <div class="xdisplay_inputx form-group row has-feedback">
-                                                <input type="text" class="form-control has-feedback-left" id="date_lapor" placeholder="Tanggal laporan">
+                                                <input type="text" class="tanggal form-control has-feedback-left" id="date_lapor" value="<?php echo date('d/m/Y') ?>" placeholder="Tanggal laporan">
                                                 <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
                                             </div>
                                         </div>
@@ -84,19 +84,6 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        //datetime picker
-        const format = 'DD/MM/YYYY'
-        $("#date_lapor").daterangepicker({
-                singleDatePicker: true,
-                locale: {
-                    format: format,
-                }
-            },
-            function(start, end, label) {
-                // console.log(start.toISOString(), end.toISOString());
-            }
-        );
-
         function formatTanggal(date) {
             const tanggalMoment = moment(date, 'DD/MM/YYYY');
             // Mendapatkan hari dalam bahasa Indonesia

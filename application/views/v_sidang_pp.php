@@ -96,36 +96,6 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        var datepicker = $.fn.datepicker.noConflict(); // return $.fn.datepicker to previously assigned value
-        $.fn.bootstrapDP = datepicker;
-        //bootsrap-datepicker
-        // $('.tanggal').datepicker({
-        //     format: "dd/mm/yyyy",
-        //     autoclose: true,
-        //     todayHighlight: true,
-        //     language: 'id'
-        // });
-        $('#tgl_start').bootstrapDP({
-            format: "dd/mm/yyyy",
-            autoclose: true,
-            todayHighlight: true,
-            language: 'id',
-            orientation: "bottom left",
-            endDate: '<?php echo date('d/m/Y'); ?>'
-        }).on('changeDate', function(e) {
-            $('#tgl_finish').bootstrapDP('update', this.value);
-            $('#tgl_finish').bootstrapDP('setStartDate', this.value);
-            console.log(this.value);
-        });
-        $('#tgl_finish').bootstrapDP({
-            format: "dd/mm/yyyy",
-            autoclose: true,
-            orientation: "bottom left",
-            todayHighlight: true,
-            language: 'id',
-            endDate: '<?php echo date('d/m/Y'); ?>'
-        });
-
         $('#btn_tampil').on('click', function() {
             const jenis_monitor = 'monitoring_sidang_pp';
             const ppid = $('#panitera_sidang').find(':selected').val();

@@ -25,7 +25,6 @@
 <!-- bootstrap-daterangepicker -->
 <script src="<?php echo base_url() ?>resources/moment/min/moment.min.js"></script>
 <script src="<?php echo base_url() ?>resources/moment/min/locales.min.js"></script>
-<script src="<?php echo base_url() ?>resources/bootstrap-daterangepicker/daterangepicker.js"></script>
 
 <!-- Custom Theme Scripts -->
 <script src="<?php echo base_url() ?>resources/js/custom.js"></script>
@@ -60,4 +59,37 @@
       });
     }, false);
   })();
+
+  $(document).ready(function() {
+    //bootsrap-datepicker
+    var datepicker = $.fn.datepicker.noConflict(); // return $.fn.datepicker to previously assigned value
+    $.fn.bootstrapDP = datepicker;
+    $('.tanggal').bootstrapDP({
+      format: "dd/mm/yyyy",
+      autoclose: true,
+      todayHighlight: true,
+      language: 'id',
+      orientation: "bottom left",
+    });
+    $('#tgl_start').bootstrapDP({
+      format: "dd/mm/yyyy",
+      autoclose: true,
+      todayHighlight: true,
+      language: 'id',
+      orientation: "bottom left",
+      endDate: '<?php echo date('d/m/Y'); ?>'
+    }).on('changeDate', function(e) {
+      $('#tgl_finish').bootstrapDP('update', this.value);
+      $('#tgl_finish').bootstrapDP('setStartDate', this.value);
+      console.log(this.value);
+    });
+    $('#tgl_finish').bootstrapDP({
+      format: "dd/mm/yyyy",
+      autoclose: true,
+      orientation: "bottom left",
+      todayHighlight: true,
+      language: 'id',
+      endDate: '<?php echo date('d/m/Y'); ?>'
+    });
+  });
 </script>

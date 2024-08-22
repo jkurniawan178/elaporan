@@ -67,7 +67,7 @@
                                     <div class="control-group">
                                         <div class="controls">
                                             <div class="xdisplay_inputx form-group row has-feedback">
-                                                <input type="text" class="form-control has-feedback-left" id="date_lapor" placeholder="Tanggal laporan" aria-describedby="inputSuccess2Status2">
+                                                <input type="text" class="tanggal form-control has-feedback-left" id="date_lapor" value="<?php echo date('d/m/Y') ?>" placeholder="Tanggal laporan" aria-describedby="inputSuccess2Status2">
                                                 <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
                                                 <span id="inputSuccess2Status2" class="sr-only">(success)</span>
                                             </div>
@@ -130,20 +130,6 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        //datetime picker
-        const formatDate = 'DD/MM/YYYY'
-        $("#date_lapor").daterangepicker({
-                singleDatePicker: true,
-                singleClasses: "picker_1",
-                locale: {
-                    format: formatDate,
-                }
-            },
-            function(start, end, label) {
-                // console.log(start.toISOString(), end.toISOString());
-            }
-        );
-
         $('#btn_generate').on('click', function() {
             const jenis_laporan = $('#jenis_laporan').val();
             const bulan = $('#bulan').val();
