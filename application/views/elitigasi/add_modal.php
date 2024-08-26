@@ -25,7 +25,7 @@
                             <div class="control-group">
                                 <div class="controls">
                                     <div class="xdisplay_inputx form-group row has-feedback">
-                                        <input type="text" class="form-control has-feedback-left" id="tgl_elitigasi" name="tgl_elitigasi" placeholder="Tanggal Elitigasi" aria-describedby="inputSuccess2Status2">
+                                        <input type="text" class="tanggal form-control has-feedback-left" value="<?php echo date('d/m/Y') ?>" id="tgl_elitigasi" name="tgl_elitigasi" placeholder="Tanggal Elitigasi" aria-describedby="inputSuccess2Status2">
                                         <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
                                         <span id="inputSuccess2Status2" class="sr-only">(success)</span>
                                     </div>
@@ -48,19 +48,7 @@
 
 <script>
     $(document).ready(function() {
-        //datetime picker
-        const format = 'DD/MM/YYYY'
-        $("#tgl_elitigasi").daterangepicker({
-                singleDatePicker: true,
-                singleClasses: "picker_1",
-                locale: {
-                    format: format,
-                }
-            },
-            function(start, end, label) {
-                // console.log(start.toISOString(), end.toISOString());
-            }
-        );
+
 
         $('#add_form').submit(function(event) {
             event.preventDefault();

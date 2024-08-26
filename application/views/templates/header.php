@@ -17,14 +17,17 @@
   <link href="<?php echo base_url() ?>resources/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome -->
   <link href="<?php echo base_url() ?>resources/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
   <!-- Datatables -->
   <!-- Custom styles for this page -->
   <link href="<?php echo base_url() ?>resources/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>resources/datatables-responsive/css/responsive.dataTables.min.css">
-  <!-- bootstrap-daterangepicker -->
-  <link href="<?php echo base_url() ?>resources/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
   <!-- Custom Theme Style -->
   <link href="<?php echo base_url() ?>resources/css/custom.css" rel="stylesheet">
+  <!-- Shard Datepicker -->
+  <link href="<?php echo base_url() ?>resources/css/shards-dashboards.1.1.0.css" rel="stylesheet">
+  <!-- jquery autocomplete -->
+  <link href="<?php echo base_url() ?>resources/jquery-autocomplete/jquery.autocomplete.css" rel="stylesheet">
   <link rel="stylesheet" href="<?php echo base_url() ?>resources/autocomplete/jquery-ui.css">
   <link href="<?php echo base_url() ?>resources/autocomplete/jquery-ui-custom.css" rel="stylesheet">
   <!-- Select2 plugin -->

@@ -27,6 +27,7 @@ class Monitoring_model extends CI_Model
   }
 
   // ------------------------------------------------------------------------
+  // ------------------Monitoring Lama Perkara-------------------------------
   function get_lama_perkara($tanggal_monitor)
   {
 
@@ -50,7 +51,117 @@ class Monitoring_model extends CI_Model
   }
 
   // ------------------------------------------------------------------------
+  // --------------------Monitoring Persidangan by PS------------------------
 
+  function get_pp()
+  {
+    $this->db->select('id, nama_gelar');
+    $this->db->from('panitera_pn');
+    $this->db->where('aktif', 'Y');
+    $hasil = $this->db->get()->result();
+    return $hasil;
+  }
+
+  function get_sidang_pp($ppid, $tanggal_start, $tanggal_end)
+  {
+
+    $sql = "SELECT pr.nomor_perkara, pr.jenis_perkara_text, js.agenda, pp.panitera_nama, js.tanggal_sidang, js.edoc_bas
+            FROM perkara pr INNER JOIN perkara_panitera_pn pp ON pp.perkara_id = pr.perkara_id
+            INNER JOIN perkara_jadwal_sidang js ON js.perkara_id = pp.perkara_id
+            WHERE js.tanggal_sidang >= '$tanggal_start' AND js.tanggal_sidang <= '$tanggal_end' 
+            AND pp.panitera_id ='$ppid' AND aktif = 'Y'
+            ORDER BY js.tanggal_sidang DESC";
+    $hasil = $this->db->query($sql);
+
+    $data = $hasil->result();
+    $server_ip = 'http://' . $_SERVER['HTTP_HOST'];
+    $sipp_folder = '/SIPP311/';
+
+    foreach ($data as $row) {
+      if ($row->edoc_bas != null) {
+        $row->edoc_bas = $server_ip . $sipp_folder . $row->edoc_bas;
+      }
+    }
+    return $data;
+  }
+
+  function getMonitorBHT($ppid, $tahun)
+  {
+
+    $where = " WHERE YEAR(p.`tanggal_pendaftaran`) = $tahun
+            AND pp.`tanggal_putusan` IS NOT NULL
+            AND (pp.tanggal_bht IS NULL OR pp.`tanggal_bht` > NOW())";
+    if ($ppid != "all") {
+      $where .= " AND panitera_pengganti_id = $ppid ";
+    }
+
+    $sql = "SELECT nomor_perkara, jenis_perkara_nama, tanggal_putusan,jenis_putusan, 
+            PP,PBT, tanggal_bht, DATEDIFF(CURRENT_DATE(), IFNULL(PBT,tanggal_putusan)) AS selisih_belum_BHT
+            FROM (
+            SELECT p.nomor_perkara, p.jenis_perkara_nama, pp.tanggal_putusan,sp.`nama` AS jenis_putusan, 
+            REPLACE(pt.`panitera_pengganti_text`,'Panitera Pengganti: ','') AS PP, MAX(pbt.tanggal_pemberitahuan_putusan) AS PBT,
+            pp.tanggal_bht
+
+            FROM perkara p LEFT JOIN perkara_putusan pp USING(perkara_id)
+            LEFT JOIN status_putusan sp ON sp.id = pp.`status_putusan_id`
+            LEFT JOIN perkara_penetapan pt USING(perkara_id)
+            LEFT JOIN perkara_putusan_pemberitahuan_putusan pbt USING(perkara_id)
+
+            $where
+
+            GROUP BY 
+                nomor_perkara, 
+                jenis_perkara_nama, 
+                PP
+            ) AS subquery
+            ORDER BY PP ASC, selisih_Belum_BHT DESC";
+    $hasil = $this->db->query($sql);
+    $data = $hasil->result();
+    return $data;
+  }
+  function getMonitorAlihMedia($ppid, $tahun, $show_ikrar)
+  {
+    // Menampilkan nilai $show_ikrar di console browser
+    $where = " WHERE YEAR(p.`tanggal_pendaftaran`) = $tahun";
+
+    if ($ppid != "all") {
+      $where .= " AND pt.panitera_pengganti_id = $ppid";
+    }
+
+    if ($show_ikrar == 'false') {
+      $where .= " AND tahapan_terakhir_id <> 18 ";
+    }
+
+    $sql = "SELECT nomor_perkara,jenis_perkara_text, tanggal_putusan, jenis_putusan, PP, tanggal_bht, tgl_akta_cerai,proses_terakhir,
+            nomor_arsip, selisih_hari,
+            CASE
+                WHEN selisih_hari <= 5 THEN '5'
+                WHEN selisih_hari = 6 THEN '3'
+                WHEN selisih_hari = 7 THEN '2'
+                WHEN selisih_hari = 8 THEN '1'
+                WHEN selisih_hari >= 9 THEN '0'
+                ELSE 'Cek Kembali'
+            END AS perkiraan_nilai
+            FROM(
+            SELECT p.nomor_perkara, pp.tanggal_putusan, sp.`nama` AS jenis_putusan, p.`jenis_perkara_text`,
+            REPLACE(pt.`panitera_pengganti_text`,'Panitera Pengganti: ','') AS PP, p.`proses_terakhir_text` AS proses_terakhir,
+            pp.tanggal_bht, pa.`tgl_akta_cerai`, a.`nomor_arsip`, DATEDIFF(CURRENT_DATE(), IFNULL(pa.tgl_akta_cerai,pp.`tanggal_bht`)) AS selisih_hari
+
+            FROM perkara p LEFT JOIN perkara_putusan pp USING(perkara_id)
+            LEFT JOIN perkara_akta_cerai pa USING(perkara_id)
+            LEFT JOIN arsip a USING(perkara_id)
+            LEFT JOIN status_putusan sp ON sp.id = pp.`status_putusan_id`
+            LEFT JOIN perkara_penetapan pt USING(perkara_id)
+
+            $where
+            AND a.`nomor_arsip` IS NULL
+            AND pp.`tanggal_putusan` IS NOT NULL
+            AND pp.tanggal_bht IS NOT NULL) AS subquery
+            ORDER BY PP ASC, selisih_hari DESC";
+    $hasil = $this->db->query($sql);
+    $data = $hasil->result();
+    return $data;
+  }
 }
 
 /* End of file Monitoring_model.php */

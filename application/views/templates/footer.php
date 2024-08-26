@@ -1,7 +1,7 @@
 <!-- footer content -->
 <footer>
   <div class="pull-right">
-    Hak Cipta © Pengadilan Agama Ternate 2023
+    Hak Cipta © Pengadilan Agama Ternate 2023 <span class="ml-3">ver. 1.2.0</span>
   </div>
   <div class="clearfix"></div>
 </footer>
@@ -25,12 +25,19 @@
 <!-- bootstrap-daterangepicker -->
 <script src="<?php echo base_url() ?>resources/moment/min/moment.min.js"></script>
 <script src="<?php echo base_url() ?>resources/moment/min/locales.min.js"></script>
-<script src="<?php echo base_url() ?>resources/bootstrap-daterangepicker/daterangepicker.js"></script>
 
 <!-- Custom Theme Scripts -->
 <script src="<?php echo base_url() ?>resources/js/custom.js"></script>
 <script src="<?php echo base_url() ?>resources/js/helper.js"></script>
 <script src="<?php echo base_url() ?>resources/autocomplete/jquery-ui.js"></script>
+
+<!-- shards datepicker-->
+<script src="<?php echo base_url() ?>resources/js/popper.min.js"></script>
+<script src="<?php echo base_url() ?>resources/js/shards.min.js"></script>
+<script src="<?php echo base_url() ?>resources/js/bootstrap-datepicker.id.js"></script>
+
+<!-- jquery autocomplete -->
+<!-- <script src="<?php echo base_url() ?>resources/jquery-autocomplete/jquery.autocomplete.js"></script> -->
 <!-- Select 2 -->
 <script src="<?php echo base_url() ?>resources/select2/dist/js/select2.min.js"></script>
 <script>
@@ -52,4 +59,37 @@
       });
     }, false);
   })();
+
+  $(document).ready(function() {
+    //bootsrap-datepicker
+    var datepicker = $.fn.datepicker.noConflict(); // return $.fn.datepicker to previously assigned value
+    $.fn.bootstrapDP = datepicker;
+    $('.tanggal').bootstrapDP({
+      format: "dd/mm/yyyy",
+      autoclose: true,
+      todayHighlight: true,
+      language: 'id',
+      orientation: "bottom left",
+    });
+    $('#tgl_start').bootstrapDP({
+      format: "dd/mm/yyyy",
+      autoclose: true,
+      todayHighlight: true,
+      language: 'id',
+      orientation: "bottom left",
+      endDate: '<?php echo date('d/m/Y'); ?>'
+    }).on('changeDate', function(e) {
+      $('#tgl_finish').bootstrapDP('update', this.value);
+      $('#tgl_finish').bootstrapDP('setStartDate', this.value);
+      console.log(this.value);
+    });
+    $('#tgl_finish').bootstrapDP({
+      format: "dd/mm/yyyy",
+      autoclose: true,
+      orientation: "bottom left",
+      todayHighlight: true,
+      language: 'id',
+      endDate: '<?php echo date('d/m/Y'); ?>'
+    });
+  });
 </script>
