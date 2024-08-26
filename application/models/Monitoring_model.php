@@ -122,6 +122,49 @@ class Monitoring_model extends CI_Model
     $data = $hasil->result();
     return $data;
   }
+  function getMonitorAlihMedia($ppid, $tahun, $show_ikrar)
+  {
+    // Menampilkan nilai $show_ikrar di console browser
+    $where = " WHERE YEAR(p.`tanggal_pendaftaran`) = $tahun";
+
+    if ($ppid != "all") {
+      $where .= " AND pt.panitera_pengganti_id = $ppid";
+    }
+
+    if ($show_ikrar == 'false') {
+      $where .= " AND tahapan_terakhir_id <> 18 ";
+    }
+
+    $sql = "SELECT nomor_perkara,jenis_perkara_text, tanggal_putusan, jenis_putusan, PP, tanggal_bht, tgl_akta_cerai,proses_terakhir,
+            nomor_arsip, selisih_hari,
+            CASE
+                WHEN selisih_hari <= 5 THEN '5'
+                WHEN selisih_hari = 6 THEN '3'
+                WHEN selisih_hari = 7 THEN '2'
+                WHEN selisih_hari = 8 THEN '1'
+                WHEN selisih_hari >= 9 THEN '0'
+                ELSE 'Cek Kembali'
+            END AS perkiraan_nilai
+            FROM(
+            SELECT p.nomor_perkara, pp.tanggal_putusan, sp.`nama` AS jenis_putusan, p.`jenis_perkara_text`,
+            REPLACE(pt.`panitera_pengganti_text`,'Panitera Pengganti: ','') AS PP, p.`proses_terakhir_text` AS proses_terakhir,
+            pp.tanggal_bht, pa.`tgl_akta_cerai`, a.`nomor_arsip`, DATEDIFF(CURRENT_DATE(), IFNULL(pa.tgl_akta_cerai,pp.`tanggal_bht`)) AS selisih_hari
+
+            FROM perkara p LEFT JOIN perkara_putusan pp USING(perkara_id)
+            LEFT JOIN perkara_akta_cerai pa USING(perkara_id)
+            LEFT JOIN arsip a USING(perkara_id)
+            LEFT JOIN status_putusan sp ON sp.id = pp.`status_putusan_id`
+            LEFT JOIN perkara_penetapan pt USING(perkara_id)
+
+            $where
+            AND a.`nomor_arsip` IS NULL
+            AND pp.`tanggal_putusan` IS NOT NULL
+            AND pp.tanggal_bht IS NOT NULL) AS subquery
+            ORDER BY PP ASC, selisih_hari DESC";
+    $hasil = $this->db->query($sql);
+    $data = $hasil->result();
+    return $data;
+  }
 }
 
 /* End of file Monitoring_model.php */
