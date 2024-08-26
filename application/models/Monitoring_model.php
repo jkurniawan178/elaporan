@@ -87,15 +87,12 @@ class Monitoring_model extends CI_Model
 
   function getMonitorBHT($ppid, $tahun)
   {
-    if ($ppid == "all") {
-      $where = " WHERE YEAR(p.`tanggal_pendaftaran`) = $tahun
+
+    $where = " WHERE YEAR(p.`tanggal_pendaftaran`) = $tahun
             AND pp.`tanggal_putusan` IS NOT NULL
-            AND (pp.tanggal_bht IS NULL OR pp.`tanggal_bht` > NOW()) ";
-    } else {
-      $where = " WHERE YEAR(p.`tanggal_pendaftaran`) = $tahun
-            and panitera_pengganti_id = $ppid
-            AND pp.`tanggal_putusan` IS NOT NULL
-            AND (pp.tanggal_bht IS NULL OR pp.`tanggal_bht` > NOW()) ";
+            AND (pp.tanggal_bht IS NULL OR pp.`tanggal_bht` > NOW())";
+    if ($ppid != "all") {
+      $where .= " AND panitera_pengganti_id = $ppid ";
     }
 
     $sql = "SELECT nomor_perkara, jenis_perkara_nama, tanggal_putusan,jenis_putusan, 

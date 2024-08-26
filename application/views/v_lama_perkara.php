@@ -132,6 +132,10 @@
                         $('#periode_laporan').text(`SIDANG HARI ${formatTanggal(tanggal_monitor)}`);
                         $('#table-content').html(response.table);
                         generateTableRows(response.data);
+
+                        $("html, body").animate({
+                            scrollTop: $("#panel-verifikasi").offset().top
+                        }, 1000);
                     } else if (response.kode == "201" || response.kode == '202') {
                         iziToast.error({
                             title: 'Error!',
