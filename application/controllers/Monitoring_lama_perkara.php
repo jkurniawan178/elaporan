@@ -43,29 +43,28 @@ class Monitoring_lama_perkara extends CI_Controller
   public function get_lama_perkara()
   {
     $jenis_monitor = $this->input->post('jenis_monitor');
-    $tanggal_monitor = tgl_ke_mysql(($this->input->post('tanggal_monitor')));
-    $tanggal_laporan = $this->input->post('tanggal_laporan');
+    $input = $this->input->post();
+    $tanggal_monitor = tgl_ke_mysql($input['tanggal_monitor']);
     $settingSIPP = $this->config_library->get_config_SIPP();
 
     $data = $this->monitoring_model->get_lama_perkara($tanggal_monitor);
-    if (count($data) != 0) {
-      $encoded = json_encode($data);
-      $hasil = $this->export_excel_lama($encoded, $jenis_monitor, $settingSIPP, $tanggal_monitor, $tanggal_laporan);
-      $view_table = 'laporan_table/table_' . $jenis_monitor;
+
+    $response = [
+      'kode' => '201',
+      'data' => 'Jadwal Sidang Pada Tanggal ' . tgl_dari_mysql($tanggal_monitor) . ' belum ada!'
+    ];
+
+    if (!empty($data)) {
+      $hasil = $this->export_excel_lama(json_encode($data), $jenis_monitor, $settingSIPP, $tanggal_monitor, $input['tanggal_laporan']);
       $response = [
         'kode' => '200',
         'link' => $hasil,
-        'table' => $this->load->view($view_table, '', true),
+        'table' => $this->load->view('laporan_table/table_' . $jenis_monitor, '', true),
         'data' => $data
       ];
-      echo json_encode($response);
-    } else {
-      $response = [
-        'kode' => '201',
-        'data' => 'Jadwal Sidang Pada Tanggal ' . $tanggal_monitor . ' belum ada!'
-      ];
-      echo json_encode($response);
     }
+
+    echo json_encode($response);
   }
   //----------------------------------------------------------------------------------------------
   //--------------------------------Helper Output Excel-------------------------------------------

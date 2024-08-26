@@ -48,22 +48,26 @@ class Monitoring_sidang_pp extends CI_Controller
     $tanggal_start = tgl_ke_mysql($this->input->post('tanggal_start'));
     $tanggal_end = tgl_ke_mysql($this->input->post('tanggal_end'));
 
-    $data = $this->monitoring_model->get_sidang_pp($ppid, $tanggal_start, $tanggal_end);
-    if (count($data) != 0) {
-      $view_table = 'laporan_table/table_' . $jenis_monitor;
-      $response = [
-        'kode' => '200',
-        'table' => $this->load->view($view_table, '', true),
-        'data' => $data
-      ];
-      echo json_encode($response);
-    } else {
-      $response = [
-        'kode' => '201',
-        'data' => 'Persidangan periode ' . tgl_panjang_dari_mysql($tanggal_start) . ' s/d ' . tgl_panjang_dari_mysql($tanggal_end) . ' belum ada!'
-      ];
-      echo json_encode($response);
+    $response = [
+      'kode' => '201',
+      'data' => $ppid == '-' ? 'Pilih Panitera Pengganti Terlebih Dahulu!' : ''
+    ];
+
+    if ($ppid != '-') {
+      $data = $this->monitoring_model->get_sidang_pp($ppid, $tanggal_start, $tanggal_end);
+
+      if (!empty($data)) {
+        $response = [
+          'kode' => '200',
+          'table' => $this->load->view('laporan_table/table_' . $jenis_monitor, '', true),
+          'data' => $data
+        ];
+      } else {
+        $response['data'] = "Persidangan periode " . tgl_panjang_dari_mysql($tanggal_start) . " s/d " . tgl_panjang_dari_mysql($tanggal_end) . " belum ada!";
+      }
     }
+
+    echo json_encode($response);
   }
 }
 

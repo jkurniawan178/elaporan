@@ -49,21 +49,20 @@ class Monitoring_alih_media extends CI_Controller
     $show_ikrar = $this->input->post('show_ikrar');
 
     $data = $this->monitoring_model->getMonitorAlihMedia($ppid, $tahun, $show_ikrar);
-    if (count($data) != 0) {
-      $view_table = 'laporan_table/table_' . $jenis_monitor;
+    $response = [
+      'kode' => '201',
+      'data' => 'Berkas Perkara Belum Alih Media PP ' . $ppnama . ' Tidak ada!'
+    ];
+
+    if (!empty($data)) {
       $response = [
         'kode' => '200',
-        'table' => $this->load->view($view_table, '', true),
+        'table' => $this->load->view('laporan_table/table_' . $jenis_monitor, '', true),
         'data' => $data
       ];
-      echo json_encode($response);
-    } else {
-      $response = [
-        'kode' => '201',
-        'data' => 'Berkas Perkara Belum Alih Media PP ' . $ppnama . ' belum ada!'
-      ];
-      echo json_encode($response);
     }
+
+    echo json_encode($response);
   }
 }
 
