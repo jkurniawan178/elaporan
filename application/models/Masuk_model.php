@@ -48,12 +48,12 @@ class Masuk_model extends CI_Model
         }
       } else if ($group_id == '20' || $group_id == '1000' || $group_id == '1010' || $group_id == '1020' || $group_id == '500') // Hakim, Panmud, PP
       {
-        if ($menu == 'mn_saldo' || $menu == 'mn_pagu' || $menu == 'mn_input') {
+        if ($menu == 'mn_saldo' || $menu == 'mn_pagu' || $menu == 'mn_input' || $menu == 'mn_other') {
           redirect('error/forbidden');
         }
       } else if ($group_id == '702') { // KASIR
 
-        if ($menu == 'mn_pagu' || $menu == 'mn_input') {
+        if ($menu == 'mn_pagu' || $menu == 'mn_input' || $menu == 'mn_monitoring' || $menu == 'mn_other') {
           redirect('error/forbidden');
         }
       } else {
@@ -90,7 +90,6 @@ class Masuk_model extends CI_Model
         $menu['mn_pagu'] = false;
         $menu['mn_saldo'] = false;
         $menu['mn_other'] = false;
-        $menu['mn_monitoring'] = false;
       } else if ($group_id == '702') { // KASIR
         $menu['mn_input'] = false;
         $menu['mn_pagu'] = false;
