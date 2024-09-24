@@ -40,7 +40,10 @@
       <?php if ($menu['mn_monitoring']) { ?>
         <li><a><i class="fa fa-book"></i> Monitoring Perkara <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="<?php echo site_url() ?>monitoring_lama_perkara">Monitoring Lama Perkara</a></li>
+            <li><a href="<?php echo site_url() ?>monitoring_lama_perkara">Lama Perkara</a></li>
+            <li><a href="<?php echo site_url() ?>monitoring_sidang_pp">Persidangan by Panitera Pengganti</a></li>
+            <li><a href="<?php echo site_url() ?>monitoring_bht">Perkara Putus Belum BHT</a></li>
+            <li><a href="<?php echo site_url() ?>monitoring_alih_media">Berkas Perkara Alih Media</a></li>
           </ul>
         </li>
       <?php } ?>
