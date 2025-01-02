@@ -88,7 +88,7 @@ class Monitoring_model extends CI_Model
   function getMonitorBHT($ppid, $tahun)
   {
 
-    $where = " WHERE YEAR(p.`tanggal_pendaftaran`) = $tahun
+    $where = "WHERE YEAR(p.`tanggal_pendaftaran`) = $tahun
             AND pp.`tanggal_putusan` IS NOT NULL
             AND (pp.tanggal_bht IS NULL OR pp.`tanggal_bht` > NOW())";
     if ($ppid != "all") {

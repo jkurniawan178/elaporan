@@ -981,16 +981,33 @@ class Laporan_model extends CI_Model
 	public function getLIPA23($bulan, $tahun)
 	{
 		$periode = $tahun . '-' . $bulan;
-		$sql = "SELECT C.sisa_lalu, C.diterima_bulan_ini, C.dicabut, C.putus_elektronik, SUM(C.total_putus) - SUM(C.putus_elektronik) AS putus_biasa, C.total_putus,
-				SUM(C.sisa_lalu) + SUM(C.diterima_bulan_ini) - SUM(C.total_putus) AS sisa_bulan_ini
-				FROM (SELECT
-					SUM(CASE WHEN DATE_FORMAT(vpk.tanggal_pendaftaran,'%Y-%m') < '$periode' AND ((vpk.tanggal_putusan IS NULL) OR (DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m') >= '$periode')) THEN 1 ELSE 0 END) AS sisa_lalu,
-					SUM(CASE WHEN DATE_FORMAT(vpk.tanggal_pendaftaran,'%Y-%m') = '$periode' THEN 1 ELSE 0 END) AS diterima_bulan_ini,
-					SUM( CASE WHEN ((DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m')='$periode'  AND vpk.`status_putusan_id` IN (7,67,85)) OR DATE_FORMAT(vpk.tanggal_cabut,'%Y-%m')='$periode') THEN 1 ELSE 0 END) AS dicabut,
-					(SELECT COUNT(perkara_id) FROM v_perkara vpk INNER JOIN dbelaporan.`elaporan_lipa_24` USING (perkara_id)
-						WHERE DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m')='$periode'  AND vpk.status_putusan_id IS NOT NULL) AS putus_elektronik,
-					SUM(CASE WHEN DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m')='$periode'  AND vpk.status_putusan_id IS NOT NULL THEN 1 ELSE 0 END) AS total_putus
-					FROM v_perkara vpk INNER JOIN perkara_efiling_id USING(perkara_id)) AS C 
+		$sql = "SELECT 
+					C.sisa_lalu,
+					C.diterima_bulan_ini,
+					C.dicabut,
+					C.putus_elektronik,
+					C.total_putus - C.putus_elektronik AS putus_biasa,
+					C.total_putus AS total_putus,
+					C.sisa_lalu + C.diterima_bulan_ini - C.total_putus AS sisa_bulan_ini
+				FROM (
+					SELECT
+						SUM(CASE WHEN DATE_FORMAT(vpk.tanggal_pendaftaran,'%Y-%m') < '$periode' AND 
+								((vpk.tanggal_putusan IS NULL) OR (DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m') >= '$periode')) 
+								THEN 1 ELSE 0 END) AS sisa_lalu,
+						SUM(CASE WHEN DATE_FORMAT(vpk.tanggal_pendaftaran,'%Y-%m') = '$periode' THEN 1 ELSE 0 END) AS diterima_bulan_ini,
+						SUM(CASE WHEN ((DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m')='$periode' AND vpk.`status_putusan_id` IN (7,67,85)) OR 
+									DATE_FORMAT(vpk.tanggal_cabut,'%Y-%m')='$periode') THEN 1 ELSE 0 END) AS dicabut,
+						(SELECT COUNT(DISTINCT vpk.perkara_id) 
+						FROM v_perkara vpk 
+						INNER JOIN dbelaporan.`elaporan_lipa_24` USING (perkara_id)
+						WHERE DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m')='$periode' AND vpk.status_putusan_id IS NOT NULL) AS putus_elektronik,
+						SUM(CASE WHEN DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m')='$periode' AND vpk.status_putusan_id IS NOT NULL THEN 1 ELSE 0 END) AS total_putus
+					FROM (
+						SELECT DISTINCT vpk.perkara_id, vpk.tanggal_pendaftaran, vpk.tanggal_putusan, vpk.status_putusan_id, vpk.tanggal_cabut
+						FROM v_perkara vpk 
+						INNER JOIN perkara_efiling_id USING(perkara_id)
+					) AS vpk
+				) AS C; 
 				";
 		$hasil = $this->db->query($sql);
 		return $hasil->result();
