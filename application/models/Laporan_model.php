@@ -997,16 +997,18 @@ class Laporan_model extends CI_Model
 						SUM(CASE WHEN DATE_FORMAT(vpk.tanggal_pendaftaran,'%Y-%m') = '$periode' THEN 1 ELSE 0 END) AS diterima_bulan_ini,
 						SUM(CASE WHEN ((DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m')='$periode' AND vpk.`status_putusan_id` IN (7,67,85)) OR 
 									DATE_FORMAT(vpk.tanggal_cabut,'%Y-%m')='$periode') THEN 1 ELSE 0 END) AS dicabut,
-						(SELECT COUNT(DISTINCT vpk.perkara_id) 
-						FROM v_perkara vpk 
-						INNER JOIN dbelaporan.`elaporan_lipa_24` USING (perkara_id)
-						WHERE DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m')='$periode' AND vpk.status_putusan_id IS NOT NULL) AS putus_elektronik,
+								
+						sum(case when DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m')='$periode' AND vpk.status_putusan_id IS NOT NULL 
+						and elap.`perkara_id` = vpk.perkara_id then 1 else 0 end) as putus_elektronik,
+						
 						SUM(CASE WHEN DATE_FORMAT(vpk.tanggal_putusan,'%Y-%m')='$periode' AND vpk.status_putusan_id IS NOT NULL THEN 1 ELSE 0 END) AS total_putus
 					FROM (
 						SELECT DISTINCT vpk.perkara_id, vpk.tanggal_pendaftaran, vpk.tanggal_putusan, vpk.status_putusan_id, vpk.tanggal_cabut
 						FROM v_perkara vpk 
 						INNER JOIN perkara_efiling_id USING(perkara_id)
+						where vpk.alur_perkara_id = 15
 					) AS vpk
+					LEFT JOIN dbelaporan.`elaporan_lipa_24` elap ON vpk.perkara_id = elap.perkara_id
 				) AS C; 
 				";
 		$hasil = $this->db->query($sql);
