@@ -45,15 +45,14 @@ class Monitoring_perkara_kecamatan extends CI_Controller
   public function get_monitor_perKecamatan()
   {
     $jenis_monitor = $this->input->post('jenis_monitor');
-    $ppid = $this->input->post('panitera_id');
-    $ppnama = $this->input->post('panitera_nama');
-    $tahun = $this->input->post('tahun');
+    $kabupaten_kode = $this->input->post('kabupaten_kode');
+    $tanggal_start = tgl_ke_mysql($this->input->post('tanggal_start'));
+    $tanggal_end = tgl_ke_mysql($this->input->post('tanggal_end'));
 
-    $data = $this->monitoring_model->getMonitorBHT($ppid, $tahun);
-
+    $data = $this->monitoring_model->getMonitorPerkaraKecamatan($kabupaten_kode, $tanggal_start, $tanggal_end);
     $response = [
       'kode' => '201',
-      'data' => 'Perkara belum BHT PP :' . $ppnama . ' Tidak ada!'
+      'data' => 'Data Perkara Tidak ada!'
     ];
 
     if (!empty($data)) {

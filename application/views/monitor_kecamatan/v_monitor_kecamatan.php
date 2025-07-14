@@ -19,7 +19,7 @@
                         <form id="form-laporan" data-parsley-validate class="form-horizontal form-label-left">
                             <div class="form-group row">
                                 <label class="col-form-label col-md-3 col-sm-3 d-flex justify-content-md-end" for="yuridiksi">Kabupaten <span class="required text-danger">*</span></label>
-                                <div class="col-md-4 col-sm-12">
+                                <div class="col-md-5 col-sm-12">
                                     <select class="form-control" id="yuridiksi" name="yuridiksi" required>
                                         <option value="-" disabled selected>====== Silahkan Pilih Kabupaten ======</option>
                                         <?php foreach ($yuridiksi as $value) { ?>
@@ -102,37 +102,37 @@
     $(document).ready(function() {
 
         $('#btn_tampil').on('click', function() {
-            const jenis_monitor = 'monitoring_perkara_per_Kecamatan';
-            // const ppid = $('#panitera_sidang').find(':selected').val();
-            // const ppnama = $('#panitera_sidang').find(':selected').text();
-            // const nama_PA = $('#nama_PA').text();
-            // const startDate = $('#tgl_start').val();
-            // const endDate = $('#tgl_finish').val();
+            const jenis_monitor = 'monitoring_perkara_kecamatan';
+            const yuridiksi = $('#yuridiksi').find(':selected').val();
+            const nama_PA = $('#nama_PA').text();
+            const startDate = $('#tgl_start').val();
+            const endDate = $('#tgl_finish').val();
+            const kabupaten = $('#yuridiksi').find(':selected').text();
             $('#panel-verifikasi').hide();
 
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url('index.php/monitoring_sidang_pp/get_sidang_pp') ?>",
+                url: "<?php echo base_url('index.php/monitoring_perkara_kecamatan/get_monitor_perKecamatan') ?>",
                 dataType: "JSON",
                 data: {
                     jenis_monitor: jenis_monitor,
+                    kabupaten_kode: yuridiksi,
                     tanggal_start: startDate,
                     tanggal_end: endDate,
-                    panitera_id: ppid,
                 },
                 beforeSend: function() {
                     $('#spinner').show();
                 },
                 success: function(response) {
                     if (response.kode == "200") {
-                        var jenis = jenis_monitor.replace(/_/g, " ").toUpperCase();
+                        var jenis = "Monitoring Perkara per Kecamatan".toUpperCase();
                         $('#panel-verifikasi').show();
 
                         //table view
                         $('#judul_laporan').text(jenis);
                         $('#nama_pengadilan').text(`PADA ${nama_PA.toUpperCase()}`);
-                        $('#nama_pp').text(ppnama);
                         $('#period_laporan').text(startDate + ' s/d ' + endDate);
+                        $('#kabupaten').text(kabupaten.toUpperCase());
                         $('#table-content').html(response.table);
                         generateTableRows(response.data);
 

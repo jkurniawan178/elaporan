@@ -168,14 +168,6 @@ class Monitoring_model extends CI_Model
 
   function getMonitorPerkaraKecamatan($kabupaten_kode, $tanggal_start, $tanggal_end)
   {
-
-    // $where = "WHERE YEAR(p.`tanggal_pendaftaran`) = $tahun
-    //         AND pp.`tanggal_putusan` IS NOT NULL
-    //         AND (pp.tanggal_bht IS NULL OR pp.`tanggal_bht` > NOW())";
-    // if ($ppid != "all") {
-    //   $where .= " AND panitera_pengganti_id = $ppid ";
-    // }
-
     $sql = "SELECT
               kc.`kecamatan_nama` AS nama_kecamatan,
               COUNT(CASE WHEN p.jenis_perkara_id = 346 THEN p.perkara_id END) AS Cerai_Talak,
@@ -189,9 +181,9 @@ class Monitoring_model extends CI_Model
             LEFT JOIN perkara_pihak1 p1 ON ph.`id`=p1.`pihak_id`
             LEFT JOIN perkara p ON p1.`perkara_id` = p.`perkara_id`
             WHERE
-            kb.`kabupaten_kode` = $kabupaten_kode
-            AND DATE_FORMAT(p.`tanggal_pendaftaran`,'%Y-%m') >= $tanggal_start
-            AND DATE_FORMAT(p.`tanggal_pendaftaran`,'%Y-%m') <=$tanggal_end
+            kb.`kabupaten_kode` = '82.71'
+            AND p.`tanggal_pendaftaran` >= '$tanggal_start'
+            AND p.`tanggal_pendaftaran` <='$tanggal_end'
             GROUP BY kc.`kecamatan_kode`
             ORDER BY kc.`kecamatan_kode` ASC";
 
