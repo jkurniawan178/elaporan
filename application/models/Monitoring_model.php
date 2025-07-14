@@ -24,6 +24,8 @@ class Monitoring_model extends CI_Model
   public function __construct()
   {
     parent::__construct();
+    //initialize db2
+    $this->db2 = $this->load->database('dbelaporan', true);
   }
 
   // ------------------------------------------------------------------------
@@ -119,6 +121,7 @@ class Monitoring_model extends CI_Model
     $data = $hasil->result();
     return $data;
   }
+
   function getMonitorAlihMedia($ppid, $tahun, $show_ikrar)
   {
     // Menampilkan nilai $show_ikrar di console browser
@@ -158,6 +161,40 @@ class Monitoring_model extends CI_Model
             AND pp.`tanggal_putusan` IS NOT NULL
             AND pp.tanggal_bht IS NOT NULL) AS subquery
             ORDER BY PP ASC, selisih_hari DESC";
+    $hasil = $this->db->query($sql);
+    $data = $hasil->result();
+    return $data;
+  }
+
+  function getMonitorPerkaraKecamatan($kabupaten_kode, $tanggal_start, $tanggal_end)
+  {
+
+    // $where = "WHERE YEAR(p.`tanggal_pendaftaran`) = $tahun
+    //         AND pp.`tanggal_putusan` IS NOT NULL
+    //         AND (pp.tanggal_bht IS NULL OR pp.`tanggal_bht` > NOW())";
+    // if ($ppid != "all") {
+    //   $where .= " AND panitera_pengganti_id = $ppid ";
+    // }
+
+    $sql = "SELECT
+              kc.`kecamatan_nama` AS nama_kecamatan,
+              COUNT(CASE WHEN p.jenis_perkara_id = 346 THEN p.perkara_id END) AS Cerai_Talak,
+              COUNT(CASE WHEN p.jenis_perkara_id = 347 THEN p.perkara_id END) AS Cerai_Gugat,
+              COUNT(CASE WHEN p.jenis_perkara_id = 360 THEN p.perkara_id END) AS Itsbat_Nikah,
+              COUNT(CASE WHEN p.jenis_perkara_id = 362 THEN p.perkara_id END) AS Dispensasi_Kawin
+              
+            FROM ref_kecamatan_new kc
+            INNER JOIN ref_kabupaten_new kb ON kc.`kabupaten_kode` = kb.`kabupaten_kode`
+            LEFT JOIN pihak ph ON kc.`kecamatan_kode` = ph.`kecamatan`
+            LEFT JOIN perkara_pihak1 p1 ON ph.`id`=p1.`pihak_id`
+            LEFT JOIN perkara p ON p1.`perkara_id` = p.`perkara_id`
+            WHERE
+            kb.`kabupaten_kode` = $kabupaten_kode
+            AND DATE_FORMAT(p.`tanggal_pendaftaran`,'%Y-%m') >= $tanggal_start
+            AND DATE_FORMAT(p.`tanggal_pendaftaran`,'%Y-%m') <=$tanggal_end
+            GROUP BY kc.`kecamatan_kode`
+            ORDER BY kc.`kecamatan_kode` ASC";
+
     $hasil = $this->db->query($sql);
     $data = $hasil->result();
     return $data;

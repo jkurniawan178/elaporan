@@ -27,7 +27,7 @@
   <!-- Shard Datepicker -->
   <link href="<?php echo base_url() ?>resources/css/shards-dashboards.1.1.0.css" rel="stylesheet">
   <!-- jquery autocomplete -->
-  <link href="<?php echo base_url() ?>resources/jquery-autocomplete/jquery.autocomplete.css" rel="stylesheet">
+  <!-- <link href="<?php echo base_url() ?>resources/jquery-autocomplete/jquery.autocomplete.css" rel="stylesheet"> -->
   <link rel="stylesheet" href="<?php echo base_url() ?>resources/autocomplete/jquery-ui.css">
   <link href="<?php echo base_url() ?>resources/autocomplete/jquery-ui-custom.css" rel="stylesheet">
   <!-- Select2 plugin -->

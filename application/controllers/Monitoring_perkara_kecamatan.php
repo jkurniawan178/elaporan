@@ -26,6 +26,7 @@ class Monitoring_perkara_kecamatan extends CI_Controller
     parent::__construct();
     $this->load->model('masuk_model');
     $this->load->model('monitoring_model');
+    $this->load->model('yuridiksi_model');
     $this->load->library('Config_library');
   }
 
@@ -35,10 +36,34 @@ class Monitoring_perkara_kecamatan extends CI_Controller
     $menu = $this->masuk_model->getMenu();
     $data['menu'] = $menu;
     $data['dateNow'] = date('d/m/Y');
-    $data['contents'] = 'v_sidang_pp';
-    $data['pp_list'] = $this->monitoring_model->get_pp();
+    $data['yuridiksi'] = $this->yuridiksi_model->getYuridiksi();
+    $data['contents'] = 'monitor_kecamatan/v_monitor_kecamatan';
     $data['settings'] = $this->config_library->get_config_SIPP();
     $this->load->view('templates/index', $data);
+  }
+
+  public function get_monitor_perKecamatan()
+  {
+    $jenis_monitor = $this->input->post('jenis_monitor');
+    $ppid = $this->input->post('panitera_id');
+    $ppnama = $this->input->post('panitera_nama');
+    $tahun = $this->input->post('tahun');
+
+    $data = $this->monitoring_model->getMonitorBHT($ppid, $tahun);
+
+    $response = [
+      'kode' => '201',
+      'data' => 'Perkara belum BHT PP :' . $ppnama . ' Tidak ada!'
+    ];
+
+    if (!empty($data)) {
+      $response = [
+        'kode' => '200',
+        'table' => $this->load->view('laporan_table/table_' . $jenis_monitor, '', true),
+        'data' => $data
+      ];
+    }
+    echo json_encode($response);
   }
 }
 
